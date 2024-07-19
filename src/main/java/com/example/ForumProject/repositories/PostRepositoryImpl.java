@@ -6,10 +6,12 @@ import com.example.ForumProject.models.Post;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Repository
 public class PostRepositoryImpl implements PostRepository {
     private final UserService userService;
     private final SessionFactory sessionFactory;

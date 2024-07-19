@@ -5,17 +5,17 @@ import com.example.ForumProject.models.User;
 import java.util.List;
 
 public interface UserRepository {
-    List<User> getAll();
+    List<User> getUsers();
 
-    User getById(int id);
+    User getUserById(int id);
 
-    User getByUsername(String username);
+    User getUserByUsername(String username);
 
-    User getByFirstName(String firstName);
+    User getUserByFirstName(String firstName);
 
-    List<User> getByEmail(String email);
+    List<User> getUserByEmail(String email);
 
     User updateUser(User user);
 
-    void createUser(User user);
+    User createUser(User user);
 }

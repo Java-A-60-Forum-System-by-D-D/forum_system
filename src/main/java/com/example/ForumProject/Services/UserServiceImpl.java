@@ -1,6 +1,7 @@
 package com.example.ForumProject.Services;
 
 
+import com.example.ForumProject.helpers.LoggedUser;
 import com.example.ForumProject.models.User;
 import com.example.ForumProject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,37 +15,39 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
+    private LoggedUser loggedUser;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, LoggedUser loggedUser) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.loggedUser = loggedUser;
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.getAll();
+    public List<User> getUsers() {
+        return userRepository.getUsers();
     }
 
     @Override
-    public User getById(int id) {
-        return userRepository.getById(id);
+    public User getUserById(int id) {
+        return userRepository.getUserById(id);
     }
 
     @Override
-    public User getByUsername(String username) {
-        return userRepository.getByUsername(username);
+    public User getUserByUsername(String username) {
+        return userRepository.getUserByUsername(username);
     }
 
     @Override
-    public User getByFirstName(String firstName){
-        return userRepository.getByFirstName(firstName);
+    public User getUserByFirstName(String firstName) {
+        return userRepository.getUserByFirstName(firstName);
     }
 
     @Override
     public User createUser(User user) {
-        userRepository.createUser(user);
-        return user;
+        return userRepository.createUser(user);
+
     }
 
     @Override
@@ -52,11 +55,45 @@ public class UserServiceImpl implements UserService {
         return userRepository.updateUser(user);
     }
 
-
     @Override
     public boolean verifyPassword(User user, String rawPassword) {
-        return passwordEncoder.matches(rawPassword, user.getPassword());
+        return false;
     }
+
+    @Override
+    public void logout() {
+
+    }
+
+    @Override
+    public boolean login(User user) {
+        return false;
+    }
+
+
+
+
+
+//
+//
+//    @Override
+//    public boolean login(User user) {
+//
+//        if (loggedUser != null && passwordEncoder.matches(user.getPassword(), loggedUser.getPassword())) {
+//            loggedUser.setUsername(user.getUsername());
+//            loggedUser.setLogged(true);
+//
+//            return true;
+//        }
+//
+//        return false;
+//    }
+//
+//    @Override
+//    public void logout() {
+//        loggedUser.setUsername(null);
+//        loggedUser.setLogged(false);
+//    }
 
 
 }

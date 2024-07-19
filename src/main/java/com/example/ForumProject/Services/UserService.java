@@ -5,17 +5,20 @@ import com.example.ForumProject.models.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> getAll();
+    List<User> getUsers();
 
-    User getById(int id);
+    User getUserById(int id);
 
-    User getByUsername(String username);
+    User getUserByUsername(String username);
 
-    User getByFirstName(String firstName);
+    User getUserByFirstName(String firstName);
 
     User createUser(User user);
 
     User updateUser(User user);
 
     boolean verifyPassword(User user, String rawPassword);
+
+    void logout();
+    boolean login(User user);
 }

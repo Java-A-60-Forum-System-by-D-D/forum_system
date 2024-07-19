@@ -3,6 +3,7 @@ package com.example.ForumProject.Services;
 import com.example.ForumProject.models.Comment;
 import com.example.ForumProject.models.Post;
 import com.example.ForumProject.repositories.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
+    @Autowired
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
     }

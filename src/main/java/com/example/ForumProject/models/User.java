@@ -25,7 +25,7 @@ public class User extends BaseEntity {
     @NotNull(message = "Field cannot be null")
     private String email;
 
-    //    @JsonIgnore
+    @JsonIgnore
     @Column(name = "password_hash")
     @NotNull(message = "Field cannot be null")
     private String password;
@@ -38,7 +38,8 @@ public class User extends BaseEntity {
     @NotNull(message = "Field cannot be null")
     private String lastName;
 
-    @Column(name = "phone_number",nullable = true)
+    @JsonIgnore
+    @Column(name = "phone_number", nullable = true)
     private String phoneNumber;
 
     @JsonIgnore
@@ -51,15 +52,15 @@ public class User extends BaseEntity {
     private Set<UserRole> userRole;
 
 
-    //    @JsonIgnore
+    @JsonIgnore
     @Column(name = "is_blocked")
     private boolean isBlocked;
 
-    //    @JsonIgnore
+    @JsonIgnore
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    //    @JsonIgnore
+    @JsonIgnore
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 

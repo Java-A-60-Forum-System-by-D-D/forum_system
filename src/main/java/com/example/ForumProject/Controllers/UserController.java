@@ -29,13 +29,13 @@ public class UserController {
 
     @GetMapping
     public List<User> getAll() {
-        return userService.getAll();
+        return userService.getUsers();
     }
 
     @GetMapping("/id/{id}")
     public User getById(@PathVariable int id) {
         try {
-            return userService.getById(id);
+            return userService.getUserById(id);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping("/username/{username}")
     public User getByUsername(@PathVariable String username) {
         try {
-            return userService.getByUsername(username);
+            return userService.getUserByUsername(username);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -53,7 +53,7 @@ public class UserController {
     @GetMapping("/first_name/{firstName}")
     public User getByFirstName(@PathVariable String firstName) {
         try {
-            return userService.getByFirstName(firstName);
+            return userService.getUserByFirstName(firstName);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
