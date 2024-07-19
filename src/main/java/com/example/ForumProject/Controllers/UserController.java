@@ -6,6 +6,7 @@ import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.helpers.UserMapper;
 import com.example.ForumProject.models.User;
 import com.example.ForumProject.models.dto.UserDTO;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -61,9 +62,11 @@ public class UserController {
 
 
     @PostMapping
-    public User createUser(@RequestBody UserDTO userDTO) {
-        User user = userMapper.fromDto(userDTO);
-        return userService.createUser(user);
+    public User createUser(@Valid @RequestBody UserDTO userDTO) {
+
+            User user = userMapper.fromDto(userDTO);
+            return userService.createUser(user);
+
     }
 
 

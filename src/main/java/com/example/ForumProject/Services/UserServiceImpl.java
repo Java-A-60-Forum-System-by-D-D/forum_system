@@ -30,7 +30,7 @@ public class UserServiceImpl {
     }
 
     public User getByUsername(String username) {
-        return userRepository.getByName(username);
+        return userRepository.getByUsername(username);
     }
 
     public User getByFirstName(String firstName){
@@ -38,8 +38,6 @@ public class UserServiceImpl {
     }
 
     public User createUser(User user) {
-        String hashedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(hashedPassword);
         userRepository.createUser(user);
         return user;
     }

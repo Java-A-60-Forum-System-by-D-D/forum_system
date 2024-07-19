@@ -39,7 +39,7 @@ public class UserRepositoryImpl {
         }
     }
 
-    public User getByName(String username) {
+    public User getByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("FROM User where username = :username", User.class);
             query.setParameter("username", username);
@@ -55,7 +55,7 @@ public class UserRepositoryImpl {
 
     public User getByFirstName(String firstName) {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("From User where first_name = :name", User.class);
+            Query<User> query = session.createQuery("From User where firstName = :name", User.class);
             query.setParameter("name", firstName);
             if (query.list()
                      .isEmpty()) {
@@ -66,15 +66,17 @@ public class UserRepositoryImpl {
         }
     }
 
-
+    public List<User> getByEmail(String email) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<User> query = session.createQuery("from User where email=:email", User.class);
+            query.setParameter("email", email);
+            return query.list();
+        }
+    }
 
 
     public void createUser(User user) {
         try (Session session = sessionFactory.openSession()) {
-
-            Query<User> query = session.createQuery("from User where email = :email",User.class);
-
-
 
             session.beginTransaction();
             session.persist(user);

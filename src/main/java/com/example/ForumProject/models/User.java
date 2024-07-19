@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -37,7 +38,7 @@ public class User extends BaseEntity {
     @NotNull(message = "Field cannot be null")
     private String lastName;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number",nullable = true)
     private String phoneNumber;
 
     @JsonIgnore
