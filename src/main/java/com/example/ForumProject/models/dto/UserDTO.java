@@ -1,8 +1,10 @@
 package com.example.ForumProject.models.dto;
 
 import com.example.ForumProject.validation.UniqueEmail;
+import com.example.ForumProject.validation.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.checkerframework.common.aliasing.qual.Unique;
@@ -14,6 +16,7 @@ import org.springframework.format.annotation.NumberFormat;
 public class UserDTO {
 
     @NotNull(message = "Field cannot be null")
+    @UniqueUsername
     private String username;
 
     @NotNull(message = "Field cannot be null")
@@ -31,6 +34,11 @@ public class UserDTO {
     @Email
     @UniqueEmail
     private String email;
+
+
+
+    @Pattern(regexp = "^(((\\+|00)359[- ]?)|(0))([89][- ]?[789]([- ]?\\d){7})$")
+    private String phoneNumber;
 
     public @NotNull String getUsername() {
         return username;

@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public class UserRepositoryImpl {
+public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;
 
@@ -22,6 +22,7 @@ public class UserRepositoryImpl {
         this.sessionFactory = sessionFactory;
     }
 
+    @Override
     public List<User> getAll() {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("FROM User", User.class);
@@ -29,6 +30,7 @@ public class UserRepositoryImpl {
         }
     }
 
+    @Override
     public User getById(int id) {
         try (Session session = sessionFactory.openSession()) {
             User user = session.get(User.class, id);
@@ -39,6 +41,7 @@ public class UserRepositoryImpl {
         }
     }
 
+    @Override
     public User getByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("FROM User where username = :username", User.class);
@@ -53,6 +56,7 @@ public class UserRepositoryImpl {
         }
     }
 
+    @Override
     public User getByFirstName(String firstName) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("From User where firstName = :name", User.class);
@@ -66,6 +70,7 @@ public class UserRepositoryImpl {
         }
     }
 
+    @Override
     public List<User> getByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("from User where email=:email", User.class);
@@ -74,7 +79,20 @@ public class UserRepositoryImpl {
         }
     }
 
+    @Override
+    public User updateUser(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(user);
+            user.setUpdatedAt(LocalDateTime.now());
+            session.getTransaction()
+                   .commit();
+            return user;
+        }
+    }
 
+
+    @Override
     public void createUser(User user) {
         try (Session session = sessionFactory.openSession()) {
 
@@ -91,28 +109,4 @@ public class UserRepositoryImpl {
 }
 
 
-//public List<User> searchByFirstName(String firstName) {
-//        try (Session session = sessionFactory.openSession()) {
-//            Query<User> query = session.createQuery("From User where first_name like :name", User.class);
-//            query.setParameter("first_name", "%" + firstName + "%");
-//            if (query.list()
-//                     .isEmpty()) {
-//                throw new EntityNotFoundException("Users", "first name", firstName);
-//            }
-//            return query.list();
-//
-//        }
-//    }
-//
-//    public List<User> searchByName(String username) {
-//        try (Session session = sessionFactory.openSession()) {
-//            Query<User> query = session.createQuery("FROM User where username like :username", User.class);
-//            query.setParameter("username", "%" + username + "%");
-//            if (query.list()
-//                     .isEmpty()) {
-//                throw new EntityNotFoundException("User", "username", username);
-//            }
-//            return query.list();
-//
-//        }
-//    }
+

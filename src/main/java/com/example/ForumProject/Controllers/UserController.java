@@ -1,7 +1,7 @@
 package com.example.ForumProject.Controllers;
 
 
-import com.example.ForumProject.Services.UserServiceImpl;
+import com.example.ForumProject.Services.UserService;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.helpers.UserMapper;
 import com.example.ForumProject.models.User;
@@ -18,11 +18,11 @@ import java.util.List;
 @RequestMapping("api/users")
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final UserMapper userMapper;
 
     @Autowired
-    public UserController(UserServiceImpl userService, UserMapper userMapper) {
+    public UserController(UserService userService, UserMapper userMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
     }
@@ -64,8 +64,21 @@ public class UserController {
     @PostMapping
     public User createUser(@Valid @RequestBody UserDTO userDTO) {
 
-            User user = userMapper.fromDto(userDTO);
-            return userService.createUser(user);
+        User user = userMapper.createFromDto(userDTO);
+        return userService.createUser(user);
+
+    }
+
+    @PutMapping("/id/{id}")
+    public User updateUser(@Valid @RequestBody UserDTO userDTO, @Valid @PathVariable int id) {
+
+        try {
+            User user = userMapper.createFromDto(id, userDTO);
+            return userService.updateUser(user);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+
 
     }
 
