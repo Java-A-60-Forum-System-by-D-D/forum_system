@@ -9,7 +9,7 @@ public interface UserRepository {
 
     User getUserById(int id);
 
-    User getUserByUsername(String username);
+    List<User> getUserByUsername(String username);
 
     User getUserByFirstName(String firstName);
 

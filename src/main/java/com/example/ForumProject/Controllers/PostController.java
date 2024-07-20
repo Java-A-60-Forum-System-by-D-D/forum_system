@@ -3,10 +3,12 @@ package com.example.ForumProject.Controllers;
 import com.example.ForumProject.Services.PostService;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.Post;
+import com.example.ForumProject.models.User;
 import com.example.ForumProject.models.dto.PostDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,10 +22,12 @@ public class PostController {
     public PostController(PostService postService) {
         this.postService = postService;
     }
+
     @GetMapping
     public List<Post> getAllPosts() {
         return postService.getPosts();
     }
+
     @GetMapping("/{id}")
     public Post getPostById(@PathVariable int id) {
         try{
@@ -35,10 +39,6 @@ public class PostController {
             );
         }
     }
-//    @PostMapping
-//    public Post createPost(@Valid @RequestBody PostDTO postDTO) {
-//
-//
-//    }
+
 
 }

@@ -58,7 +58,7 @@ public class PostRepositoryImpl implements PostRepository {
     public Post createPost(Post post) {
         try(Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.save(post);
+            session.persist(post);
             post.setCreatedAt(LocalDateTime.now());
             post.setUpdatedAt(LocalDateTime.now());
             session.getTransaction().commit();

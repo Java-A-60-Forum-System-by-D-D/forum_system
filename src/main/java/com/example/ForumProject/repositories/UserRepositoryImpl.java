@@ -42,16 +42,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public List<User> getUserByUsername(String username) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> query = session.createQuery("FROM User where username = :username", User.class);
             query.setParameter("username", username);
-            if (query.list()
-                     .isEmpty()) {
-                throw new EntityNotFoundException("User", "username", username);
-            }
-            return query.list()
-                        .get(0);
+            return query.list();
 
         }
     }
