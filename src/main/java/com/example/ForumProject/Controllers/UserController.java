@@ -3,6 +3,7 @@ package com.example.ForumProject.Controllers;
 
 import com.example.ForumProject.Services.PostService;
 import com.example.ForumProject.Services.UserService;
+import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.helpers.LoggedUser;
 import com.example.ForumProject.helpers.PostMapper;
@@ -13,6 +14,7 @@ import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.models.dto.UserDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,7 @@ public class UserController {
     private final PostService postService;
     private final PostMapper postMapper;
 
+
     @Autowired
     public UserController(UserService userService, UserMapper userMapper, LoggedUser loggedUser, PostService postService, PostMapper postMapper) {
         this.userService = userService;
@@ -37,6 +40,7 @@ public class UserController {
         this.loggedUser = loggedUser;
         this.postService = postService;
         this.postMapper = postMapper;
+
     }
 
 
@@ -74,23 +78,25 @@ public class UserController {
     }
 
 
-    @PostMapping
-    public User createUser(@Valid @RequestBody UserDTO userDTO) {
-        User user = userMapper.createFromDto(userDTO);
-        return userService.createUser(user);
 
-    }
 
 
     @PostMapping("/username/{username}/posts")
-    public Post createPost(@Valid @RequestBody PostDTO postDTO, @Valid @PathVariable String username) {
-        if (!loggedUser.isLogged()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "To create posts please log in");
+    public Post createPost(@Valid @RequestBody PostDTO postDTO, @Valid @PathVariable String username, @RequestHeader HttpHeaders headers) {
+//        if (!loggedUser.isLogged()) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "To create posts please log in");
+//        }
+
+        try {
+
+            Post post = postMapper.createFromDto(postDTO, getByUsername(username));
+            return postService.createPost(post);
+
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-
-
-        Post post = postMapper.createFromDto(postDTO, getByUsername(username));
-        return postService.createPost(post);
 
 
     }

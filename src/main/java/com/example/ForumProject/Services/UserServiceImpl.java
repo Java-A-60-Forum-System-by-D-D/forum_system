@@ -1,10 +1,14 @@
 package com.example.ForumProject.Services;
 
 
+import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.helpers.LoggedUser;
 import com.example.ForumProject.models.User;
+import com.example.ForumProject.models.UserRole;
+import com.example.ForumProject.models.UserRoleEnum;
 import com.example.ForumProject.models.dto.LoggInUserDTO;
 import com.example.ForumProject.repositories.UserRepository;
+import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,8 +17,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -23,8 +30,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private PasswordEncoder passwordEncoder;
     private LoggedUser loggedUser;
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.getUserByUsername(username)
+                                  .stream()
+                                  .findFirst()
+                                  .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+
+        return user;
+    }
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, LoggedUser loggedUser) {
+    public UserServiceImpl(UserRepository userRepository, LoggedUser loggedUser, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.loggedUser = loggedUser;
@@ -66,7 +83,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean verifyPassword(User user, String rawPassword) {
-        return false;
+        return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 
 
@@ -90,17 +107,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void logout() {
         loggedUser.setUsername(null);
         loggedUser.setLogged(false);
-    }
-
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-            User user = getUserByUsername(username);
-
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 
 

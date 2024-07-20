@@ -1,35 +1,33 @@
 package com.example.ForumProject.Controllers;
 
-
-import com.example.ForumProject.Services.UserService;
-import com.example.ForumProject.helpers.LoggedUser;
+import com.example.ForumProject.Services.AuthenticationServiceImpl;
+import com.example.ForumProject.helpers.UserMapper;
 import com.example.ForumProject.models.User;
-import com.example.ForumProject.models.dto.LoggInUserDTO;
+import com.example.ForumProject.models.dto.UserDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
-    private final UserService userService;
-
+    private AuthenticationServiceImpl authenticationService;
+    private UserMapper userMapper;
 
     @Autowired
-    public AuthenticationController(UserService userService) {
-        this.userService = userService;
+    public AuthenticationController(AuthenticationServiceImpl authenticationService, UserMapper userMapper) {
+        this.authenticationService = authenticationService;
+        this.userMapper = userMapper;
     }
 
-//    @PostMapping("/register")
-//    public ResponseEntity<?> registerUser(@Valid @RequestBody User user) {
-//        try {
-//            User registeredUser = userService.registerNewUser(user);
-//            return ResponseEntity.ok("User registered successfully");
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-//    }
+    @PostMapping("/register")
+    public User createUser(@Valid @RequestBody UserDTO userDTO) {
+        User user = userMapper.createFromDto(userDTO);
+        return authenticationService.createUser(user);
 
+    }
 }

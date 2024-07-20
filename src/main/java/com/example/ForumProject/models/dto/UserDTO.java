@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 
-
+@Data
 @NoArgsConstructor
 @EqualsAndHashCode
 public class UserDTO {
@@ -39,43 +39,5 @@ public class UserDTO {
     @Pattern(regexp = "^(((\\+|00)359[- ]?)|(0))([89][- ]?[789]([- ]?\\d){7})$")
     private String phoneNumber;
 
-    public @NotNull String getUsername() {
-        return username;
-    }
-
-    public void setUsername(@NotNull String username) {
-        this.username = username;
-    }
-
-    public @NotNull(message = "Field cannot be null") @Size(min = 4, max = 32, message = "First name must be between 4 and 32 symbols") String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(@NotNull(message = "Field cannot be null") @Size(min = 4, max = 32, message = "First name must be between 4 and 32 symbols") String firstName) {
-        this.firstName = firstName;
-    }
-
-    public @NotNull(message = "Field cannot be null") @Size(min = 4, max = 32, message = "Last name must be between 4 and 32 symbols") String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(@NotNull(message = "Field cannot be null") @Size(min = 4, max = 32, message = "Last name must be between 4 and 32 symbols") String lastName) {
-        this.lastName = lastName;
-    }
-
-    public @NotNull(message = "Field cannot be null") String getPassword() {
-        return password;
-    }
-
-    public void setPassword(@NotNull(message = "Field cannot be null") String password) {
-        this.password = password;
-    }
-
-    public @NotNull(message = "Field cannot be null") @Email String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@NotNull(message = "Field cannot be null") @Email String email) {
-        this.email = email;
-    }
+  
 }
