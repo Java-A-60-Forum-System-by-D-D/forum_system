@@ -83,9 +83,6 @@ public class UserController {
 
     @PostMapping("/username/{username}/posts")
     public Post createPost(@Valid @RequestBody PostDTO postDTO, @Valid @PathVariable String username, @RequestHeader HttpHeaders headers) {
-//        if (!loggedUser.isLogged()) {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "To create posts please log in");
-//        }
 
         try {
 
