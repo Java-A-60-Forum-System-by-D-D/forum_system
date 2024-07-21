@@ -21,4 +21,19 @@ public class PostMapper {
         post.setUser(user);
         return post;
     }
+
+
+
+    public Post updatePostFromDto(PostDTO postDTO, User user) {
+        Post post = modelMapper.map(postDTO, Post.class);
+        post.setUser(user);
+        return post;
+    }
+
+
+    public Post fromDto(int id, PostDTO postDTO) {
+
+        Post post = modelMapper.map(postDTO, Post.class);
+        return null;
+    }
 }
