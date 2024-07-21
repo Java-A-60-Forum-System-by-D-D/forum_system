@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(name = "Posts")
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"user", "comments", "likes"})
 public class Post extends BaseEntity {
 
     @JsonIgnore
@@ -44,7 +44,7 @@ public class Post extends BaseEntity {
     private LocalDateTime updatedAt;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "post")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
     private Set<Comment> comments;
 
     @JsonIgnore

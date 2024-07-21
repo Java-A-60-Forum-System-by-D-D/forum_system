@@ -37,6 +37,8 @@ public class PostController {
     public List<Post> getAllPosts() {
         return postService.getPosts();
     }
+
+
     @PostMapping
 //    @ResponseStatus(HttpStatus.CREATED)
     public Post createPost(@Valid @RequestBody PostDTO postDTO) {
