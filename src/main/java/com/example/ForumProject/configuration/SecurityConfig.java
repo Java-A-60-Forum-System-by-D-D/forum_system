@@ -9,13 +9,11 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.JwkSetUriJwtDecoderBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
@@ -29,20 +27,16 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.swing.plaf.nimbus.NimbusStyle;
-
-import static org.springframework.security.oauth2.jwt.JoseHeaderNames.JWK;
-
 
 @Configuration
 
 public class SecurityConfig {
 
-    private final RSAKeyProperties keyProperties;
+    private final RSAKeyProperties keys;
 
     @Autowired
-    public SecurityConfig(RSAKeyProperties keyProperties) {
-        this.keyProperties = keyProperties;
+    public SecurityConfig(RSAKeyProperties keys) {
+        this.keys = keys;
     }
 
     @Bean
@@ -66,22 +60,24 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     public AuthenticationManager authenticationManager(UserDetailsService detailsService) {
         DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
+        daoProvider.setPasswordEncoder(passwordEncoder());
         daoProvider.setUserDetailsService(detailsService);
         return new ProviderManager(daoProvider);
     }
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withPublicKey(keyProperties.getPublicKey())
+        return NimbusJwtDecoder.withPublicKey(keys.getPublicKey())
                                .build();
     }
 
     @Bean
     public JwtEncoder jwtEncoder() {
-        com.nimbusds.jose.jwk.JWK jwk = new RSAKey.Builder(keyProperties.getPublicKey()).privateKey(keyProperties.getPrivateKey())
-                                                                                        .build();
+        JWK jwk = new RSAKey.Builder(keys.getPublicKey()).privateKey(keys.getPrivateKey())
+                                                         .build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }

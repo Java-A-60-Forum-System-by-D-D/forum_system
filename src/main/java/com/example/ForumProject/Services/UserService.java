@@ -1,7 +1,7 @@
 package com.example.ForumProject.Services;
 
 import com.example.ForumProject.models.User;
-import com.example.ForumProject.models.dto.LoggInUserDTO;
+
 
 import java.util.List;
 
@@ -20,6 +20,5 @@ public interface UserService {
 
     boolean verifyPassword(User user, String rawPassword);
 
-    void logout();
-    boolean login(LoggInUserDTO loggInUserDTO);
+
 }
