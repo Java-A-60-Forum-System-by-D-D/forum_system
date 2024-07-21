@@ -3,7 +3,7 @@ package com.example.ForumProject.helpers;
 import com.example.ForumProject.models.User;
 import com.example.ForumProject.models.UserRole;
 import com.example.ForumProject.models.dto.UserDTO;
-import com.example.ForumProject.repositories.UserRoleRepositoryImpl;
+import com.example.ForumProject.repositories.UserRoleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,10 +17,10 @@ public class UserMapper {
 
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
-    private final UserRoleRepositoryImpl userRoleRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Autowired
-    public UserMapper(ModelMapper modelMapper, PasswordEncoder passwordEncoder, UserRoleRepositoryImpl userRoleRepository) {
+    public UserMapper(ModelMapper modelMapper, PasswordEncoder passwordEncoder, UserRoleRepository userRoleRepository) {
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.userRoleRepository = userRoleRepository;

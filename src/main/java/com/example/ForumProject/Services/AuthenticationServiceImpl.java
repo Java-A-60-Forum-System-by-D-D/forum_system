@@ -2,6 +2,7 @@ package com.example.ForumProject.Services;
 
 import com.example.ForumProject.helpers.UserMapper;
 import com.example.ForumProject.models.User;
+import com.example.ForumProject.models.dto.LoggInUserDTO;
 import com.example.ForumProject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,13 +36,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public String loginUser(String username, String password) {
+    public LoggInUserDTO loginUser(String username, String password) {
 
 
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         String token = tokenService.generateJwt(auth);
 
-        return token;
+        LoggInUserDTO loggedUser = new LoggInUserDTO(username, passwordEncoder.encode(password), token);
+
+        return loggedUser;
 
     }
 
