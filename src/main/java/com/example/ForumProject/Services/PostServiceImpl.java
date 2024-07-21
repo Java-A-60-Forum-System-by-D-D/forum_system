@@ -44,17 +44,16 @@ public class PostServiceImpl implements PostService {
     }
 
 
-
     @Override
     public Post createPost(Post post) {
         return postRepository.createPost(post);
     }
 
     @Override
-    public void deletePost(int id,User user) {
+    public void deletePost(int id, User user) {
 
 
-        authenticationValidator(user,getPostById(id));
+        authenticationValidator(user, getPostById(id));
 
         postRepository.deletePost(id);
     }
@@ -72,12 +71,10 @@ public class PostServiceImpl implements PostService {
 
         if (!userRoleSet
                 .contains(userRoleAdmin) && !Objects.equals(existingPost.getUser()
-                                                                        .getUsername(), user.getUsername())) {
-            throw new AuthorizationException("You have no permision to update this post");
+                .getUsername(), user.getUsername())) {
+            throw new AuthorizationException("You have no permission to perform this action");
         }
     }
-
-
 
 
 }
