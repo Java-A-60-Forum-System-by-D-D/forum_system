@@ -2,7 +2,6 @@ package com.example.ForumProject.Services;
 
 import com.example.ForumProject.helpers.UserMapper;
 import com.example.ForumProject.models.User;
-import com.example.ForumProject.models.dto.LoggInUserDTO;
 import com.example.ForumProject.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,16 +11,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationServiceImpl {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
-    private final TokenServiceImpl tokenService;
+    private final TokenService tokenService;
 
     @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, UserRepository userRepository1, PasswordEncoder passwordEncoder, UserMapper userMapper, TokenServiceImpl tokenService,AuthenticationManager authenticationManager) {
+    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, UserRepository userRepository1, PasswordEncoder passwordEncoder, UserMapper userMapper, TokenService tokenService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository1;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
@@ -30,10 +29,12 @@ public class AuthenticationServiceImpl {
     }
 
 
+    @Override
     public User createUser(User user) {
         return userRepository.createUser(user);
     }
 
+    @Override
     public String loginUser(String username, String password) {
 
 

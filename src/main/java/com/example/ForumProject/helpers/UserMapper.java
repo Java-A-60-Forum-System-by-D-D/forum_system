@@ -1,9 +1,7 @@
 package com.example.ForumProject.helpers;
 
-import com.example.ForumProject.Services.UserService;
 import com.example.ForumProject.models.User;
 import com.example.ForumProject.models.UserRole;
-import com.example.ForumProject.models.UserRoleEnum;
 import com.example.ForumProject.models.dto.UserDTO;
 import com.example.ForumProject.repositories.UserRoleRepositoryImpl;
 import org.modelmapper.ModelMapper;
@@ -28,14 +26,14 @@ public class UserMapper {
         this.userRoleRepository = userRoleRepository;
     }
 
-    public User createFromDto(int id, UserDTO userDTO) {
-        User user = createFromDto(userDTO);
+    public User createUserFromDto(int id, UserDTO userDTO) {
+        User user = createUserFromDto(userDTO);
         user.setId(id);
         return user;
     }
 
 
-    public User createFromDto(UserDTO userDTO) {
+    public User createUserFromDto(UserDTO userDTO) {
 
         User user = modelMapper.map(userDTO, User.class);
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -45,6 +43,20 @@ public class UserMapper {
 
 
         return user;
+    }
+
+    public User createAdminFromDto(UserDTO userDTO) {
+
+        User user = modelMapper.map(userDTO, User.class);
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        Set<UserRole> userRoles = new HashSet<>();
+        userRoles.add(userRoleRepository.getUserRole());
+        userRoles.add(userRoleRepository.getAdminRole());
+        user.setUserRole(userRoles);
+
+        return user;
+
+
     }
 
 

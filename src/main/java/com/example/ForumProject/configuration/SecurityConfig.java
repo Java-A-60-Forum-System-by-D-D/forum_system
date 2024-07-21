@@ -46,11 +46,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/auth/**").permitAll();
-                    auth.requestMatchers("/admin/**").hasRole("ADMIN");
-                    auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
-                    auth.requestMatchers("/api/users/**").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.anyRequest().permitAll();
+
                 });
 
         http.oauth2ResourceServer()
@@ -61,6 +58,21 @@ public class SecurityConfig {
         );
 
         return http.build();
+
+//        http
+//                .csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(auth -> {
+//                    auth.anyRequest().permitAll();
+//                });
+//
+//
+//        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//
+//        return http.build();
+
+
+
+
     }
 
     @Bean

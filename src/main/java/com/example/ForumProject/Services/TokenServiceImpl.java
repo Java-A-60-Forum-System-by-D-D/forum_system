@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.stream.Collectors;
 
 @Service
-public class TokenServiceImpl {
+public class TokenServiceImpl implements TokenService {
 
     private JwtEncoder jwtEncoder;
     private JwtDecoder jwtDecoder;
@@ -24,6 +24,7 @@ public class TokenServiceImpl {
         this.jwtDecoder = jwtDecoder;
     }
 
+    @Override
     public String generateJwt(Authentication auth) {
 
         Instant now = Instant.now();

@@ -20,5 +20,12 @@ public class UserRoleRepositoryImpl {
         }
     }
 
+    public UserRole getAdminRole(){
+        try(Session session = sessionFactory.openSession()){
+            UserRole userRole = session.get(UserRole.class,1);
+            return userRole;
+        }
+    }
+
 
 }
