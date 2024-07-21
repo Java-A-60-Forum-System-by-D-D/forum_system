@@ -69,7 +69,7 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public void deletePost(int id) {
         try(Session session = sessionFactory.openSession()) {
-            Query<Post> query = session.createQuery("delete from Post where id = :id", Post.class);
+            Query<Post> query = session.createQuery("from Post where id = :id", Post.class);
             query.setParameter("id", id);
             if(query.list().isEmpty()){
                 throw new EntityNotFoundException("Post", id);

@@ -10,17 +10,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "Posts")
-@NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
 public class Post extends BaseEntity {
 
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -59,6 +59,9 @@ public class Post extends BaseEntity {
     )
     private Set<Tag> tags;
 
-
-
+    public Post() {
+        this.comments = new HashSet<>();
+        this.likes = new HashSet<>();
+        this.tags = new HashSet<>();
+    }
 }

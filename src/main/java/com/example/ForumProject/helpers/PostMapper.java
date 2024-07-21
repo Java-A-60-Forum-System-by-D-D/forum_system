@@ -23,7 +23,6 @@ public class PostMapper {
     }
 
 
-
     public Post updatePostFromDto(PostDTO postDTO, User user) {
         Post post = modelMapper.map(postDTO, Post.class);
         post.setUser(user);
@@ -34,6 +33,7 @@ public class PostMapper {
     public Post fromDto(int id, PostDTO postDTO) {
 
         Post post = modelMapper.map(postDTO, Post.class);
-        return null;
+        post.setId(id);
+        return post;
     }
 }
