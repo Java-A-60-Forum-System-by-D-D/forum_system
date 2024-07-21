@@ -1,9 +1,10 @@
 package com.example.ForumProject.Services;
 
 import com.example.ForumProject.models.User;
+import com.example.ForumProject.models.dto.LoggInUserDTO;
 
 public interface AuthenticationService {
     User createUser(User user);
 
-    String loginUser(String username, String password);
+    LoggInUserDTO loginUser(String username, String password);
 }

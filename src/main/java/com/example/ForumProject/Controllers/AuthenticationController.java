@@ -33,16 +33,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@Valid @RequestBody LoggInUserDTO loggInUserDTO) {
+    public LoggInUserDTO loginUser(@Valid @RequestBody LoggInUserDTO loggInUserDTO) {
         return authenticationService.loginUser(loggInUserDTO.getUsername(), loggInUserDTO.getPassword());
     }
 
 
-    @PostMapping("/register/admin")
-    public User createAdmin(@Valid @RequestBody UserDTO userDTO){
 
-        User user = userMapper.createAdminFromDto(userDTO);
-        return authenticationService.createUser(user);
 
-    }
+    /*TODO Implement Logout method*/
 }

@@ -12,11 +12,14 @@ public class LoggInUserDTO {
 
     private String password;
 
+    private String token;
+
     public LoggInUserDTO() {
     }
 
-    public LoggInUserDTO(String username, String password) {
+    public LoggInUserDTO(String username, String password, String token) {
         this.username = username;
         this.password = password;
+        this.token = token;
     }
 }
