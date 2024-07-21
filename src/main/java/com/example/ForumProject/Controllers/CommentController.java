@@ -20,7 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts/{id}/comments")
+@RequestMapping("api/posts/{postId}/comments")
 public class CommentController {
     private final CommentService commentService;
     private final PostService postService;
@@ -36,14 +36,19 @@ public class CommentController {
     }
 
     @GetMapping
-    public List<Comment> getAllComments(@PathVariable int id) {
-        return commentService.getComments();
+    public List<Comment> getAllComments(@PathVariable int postId) {
+
+        return postService.getPostById(postId)
+                          .getComments()
+                          .stream()
+                          .toList();
     }
 
     @GetMapping("/{id}")
-    public Comment getCommentById(@PathVariable int id) {
+    public Comment getCommentById(@PathVariable int postId, @PathVariable int id) {
         try {
-            return commentService.getCommentById(id);
+            Post post = postService.getPostById(postId);
+            return commentService.getCommentById(id,post);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
@@ -53,13 +58,13 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment createComment(@PathVariable int id, @Valid @RequestBody CommentDTO commentDTO) {
+    public Comment createComment(@PathVariable int postId, @Valid @RequestBody CommentDTO commentDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
-            Post post = postService.getPostById(id);
+            Post post = postService.getPostById(postId);
             Comment comment = commentMapper.createFromDto(post, commentDTO, user);
             return commentService.createComment(comment);
         } catch (EntityNotFoundException e) {
@@ -73,11 +78,12 @@ public class CommentController {
     public Comment updateComment(@PathVariable int postId, @Valid @RequestBody CommentDTO commentDto, @PathVariable int id) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
-            Comment existingComment = commentService.getCommentById(id);
             Post post = postService.getPostById(postId);
+            Comment existingComment = commentService.getCommentById(id,post);
+
 
             Comment updateComment = commentMapper.updateFromDto(existingComment, commentDto, user);
             return commentService.updateComment(updateComment, user);
@@ -93,14 +99,17 @@ public class CommentController {
             );
         }
     }
+
     @DeleteMapping("/{id}")
     public void deleteComment(@PathVariable int postId, @PathVariable int id) {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Authentication authentication = SecurityContextHolder.getContext()
+                                                                 .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
-            Comment comment = commentService.getCommentById(id);
             Post post = postService.getPostById(postId);
+            Comment comment = commentService.getCommentById(id,post);
+
             commentService.deleteComment(id, user);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(

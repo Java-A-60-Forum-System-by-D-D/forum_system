@@ -13,7 +13,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "Users")
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"posts", "comments", "likes"})
 @Getter
 @Setter
 public class User extends BaseEntity implements UserDetails {
@@ -77,7 +77,7 @@ public class User extends BaseEntity implements UserDetails {
     private Set<Post> posts;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Comment> comments;
 
     @JsonIgnore

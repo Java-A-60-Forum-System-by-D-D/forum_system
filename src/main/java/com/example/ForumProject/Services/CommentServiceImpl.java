@@ -1,8 +1,10 @@
 package com.example.ForumProject.Services;
 
 import com.example.ForumProject.exceptions.AuthorizationException;
+import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.*;
 import com.example.ForumProject.repositories.CommentRepository;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +25,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getCommentById(int id) {
-        return commentRepository.getCommentById(id);
+    public Comment getCommentById(int id, Post post) {
+        Comment comment = commentRepository.getCommentById(id);
+        if (!post.getComments()
+                 .contains(comment)) {
+            throw new EntityNotFoundException("Comment", id);
+        }
+
+
+        return comment;
     }
 
     @Override
@@ -35,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment updateComment(Comment comment, User user) {
         authenticationValidator(user, comment);
-        return null;
+        return commentRepository.updateComment(comment);
     }
 
     @Override
@@ -44,6 +53,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteComment(id);
 
     }
+
     private static void authenticationValidator(User user, Comment existingComment) {
 
         Set<UserRole> userRoleSet = user.getUserRole();
@@ -51,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
 
         if (!userRoleSet
                 .contains(userRoleAdmin) && !Objects.equals(existingComment.getUser()
-                .getUsername(), user.getUsername())) {
+                                                                           .getUsername(), user.getUsername())) {
             throw new AuthorizationException("You have no permission to perform this action");
         }
     }
