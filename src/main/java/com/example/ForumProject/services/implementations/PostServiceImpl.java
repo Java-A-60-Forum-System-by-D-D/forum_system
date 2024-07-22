@@ -1,5 +1,6 @@
 package com.example.ForumProject.services.implementations;
 
+import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
@@ -26,13 +27,13 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<Post> getPosts(User user) {
+    public List<Post> getPosts(User user, FilterOptionsPosts filterOptionsPosts) {
 
         ValidatorHelpers.roleAuthenticationValidator(user,new UserRole(UserRoleEnum.ADMIN), INVALID_GET_ALL_POSTS_COMMAND);
 
 
 
-        return postRepository.getPosts();
+        return postRepository.getPosts(filterOptionsPosts);
     }
 
     @Override
