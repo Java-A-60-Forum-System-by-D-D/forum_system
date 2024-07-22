@@ -12,6 +12,12 @@ import com.example.ForumProject.models.Post;
 import com.example.ForumProject.models.User;
 import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.models.dto.UserDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -43,14 +49,20 @@ public class UserController {
 
     }
 
-
+    @Operation(summary = "Get all users", description = "Retrieve a list of all users")
+    @ApiResponse(responseCode = "200", description = "List of users", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
     @GetMapping
     public List<User> getAll() {
         return userService.getUsers();
     }
 
+    @Operation(summary = "Get user by ID", description = "Retrieve a user by their ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @GetMapping("/id/{id}")
-    public User getById(@PathVariable int id) {
+    public User getById(@Parameter(description = "ID of the user to be retrieved", required = true) @PathVariable int id) {
         try {
             return userService.getUserById(id);
         } catch (EntityNotFoundException e) {
@@ -58,8 +70,13 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get user by username", description = "Retrieve a user by their username")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @GetMapping("/username/{username}")
-    public User getByUsername(@PathVariable String username) {
+    public User getByUsername(@Parameter(description = "Username of the user to be retrieved", required = true) @PathVariable String username) {
         try {
             return userService.getUserByUsername(username);
         } catch (EntityNotFoundException e) {
@@ -67,8 +84,13 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Get user by first name", description = "Retrieve a user by their first name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @GetMapping("/first_name/{firstName}")
-    public User getByFirstName(@PathVariable String firstName) {
+    public User getByFirstName(@Parameter(description = "First name of the user to be retrieved", required = true) @PathVariable String firstName) {
         try {
             return userService.getUserByFirstName(firstName);
         } catch (EntityNotFoundException e) {
@@ -77,10 +99,12 @@ public class UserController {
 
     }
 
-
-
-
-
+    @Operation(summary = "Create a new post for a user", description = "Create a new post for a specific user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Post created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Post.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    })
     @PostMapping("/username/{username}/posts")
     public Post createPost(@Valid @RequestBody PostDTO postDTO, @Valid @PathVariable String username, @RequestHeader HttpHeaders headers) {
 
@@ -98,6 +122,11 @@ public class UserController {
 
     }
 
+    @Operation(summary = "Update user information", description = "Update the details of a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @PutMapping("/id/{id}")
     public User updateUser(@Valid @RequestBody UserDTO userDTO, @Valid @PathVariable int id) {
 
