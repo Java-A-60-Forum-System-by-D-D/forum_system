@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +31,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/users")
+@Tag(name = "Users", description = "Endpoints for managing users")
 public class UserController {
 
     private final UserService userService;
@@ -48,8 +50,6 @@ public class UserController {
         this.postMapper = postMapper;
 
     }
-
-
 
     @Operation(summary = "Create a new post for a user", description = "Create a new post for a specific user")
     @ApiResponses(value = {
