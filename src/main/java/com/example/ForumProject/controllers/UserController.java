@@ -1,15 +1,15 @@
 package com.example.ForumProject.controllers;
 
 
-import com.example.ForumProject.services.PostService;
-import com.example.ForumProject.services.UserService;
+import com.example.ForumProject.services.contracts.PostService;
+import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
-import com.example.ForumProject.helpers.LoggedUser;
-import com.example.ForumProject.helpers.PostMapper;
-import com.example.ForumProject.helpers.UserMapper;
-import com.example.ForumProject.models.Post;
-import com.example.ForumProject.models.User;
+import com.example.ForumProject.models.helpers.LoggedUser;
+import com.example.ForumProject.models.helpers.PostMapper;
+import com.example.ForumProject.models.helpers.UserMapper;
+import com.example.ForumProject.models.persistentClasses.Post;
+import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.models.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,55 +49,7 @@ public class UserController {
 
     }
 
-    @Operation(summary = "Get all users", description = "Retrieve a list of all users")
-    @ApiResponse(responseCode = "200", description = "List of users", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
-    @GetMapping
-    public List<User> getAll() {
-        return userService.getUsers();
-    }
 
-    @Operation(summary = "Get user by ID", description = "Retrieve a user by their ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
-    })
-    @GetMapping("/id/{id}")
-    public User getById(@Parameter(description = "ID of the user to be retrieved", required = true) @PathVariable int id) {
-        try {
-            return userService.getUserById(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
-    @Operation(summary = "Get user by username", description = "Retrieve a user by their username")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
-    })
-    @GetMapping("/username/{username}")
-    public User getByUsername(@Parameter(description = "Username of the user to be retrieved", required = true) @PathVariable String username) {
-        try {
-            return userService.getUserByUsername(username);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
-    @Operation(summary = "Get user by first name", description = "Retrieve a user by their first name")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
-    })
-    @GetMapping("/first_name/{firstName}")
-    public User getByFirstName(@Parameter(description = "First name of the user to be retrieved", required = true) @PathVariable String firstName) {
-        try {
-            return userService.getUserByFirstName(firstName);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-
-    }
 
     @Operation(summary = "Create a new post for a user", description = "Create a new post for a specific user")
     @ApiResponses(value = {
@@ -110,7 +62,7 @@ public class UserController {
 
         try {
 
-            Post post = postMapper.createFromDto(postDTO, getByUsername(username));
+            Post post = postMapper.createFromDto(postDTO, userService.getUserByUsername(username));
             return postService.createPost(post);
 
         } catch (EntityNotFoundException e) {

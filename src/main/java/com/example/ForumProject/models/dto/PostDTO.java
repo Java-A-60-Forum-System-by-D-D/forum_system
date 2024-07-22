@@ -1,6 +1,6 @@
 package com.example.ForumProject.models.dto;
 
-import com.example.ForumProject.models.User;
+import com.example.ForumProject.models.persistentClasses.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;

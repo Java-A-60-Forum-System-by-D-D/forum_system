@@ -1,7 +1,7 @@
 package com.example.ForumProject.models.dto;
 
-import com.example.ForumProject.validation.UniqueEmail;
-import com.example.ForumProject.validation.UniqueUsername;
+import com.example.ForumProject.utility.validation.UniqueEmail;
+import com.example.ForumProject.utility.validation.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

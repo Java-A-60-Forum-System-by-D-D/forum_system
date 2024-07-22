@@ -1,14 +1,14 @@
 package com.example.ForumProject.controllers;
 
-import com.example.ForumProject.services.CommentService;
-import com.example.ForumProject.services.PostService;
-import com.example.ForumProject.services.UserService;
+import com.example.ForumProject.services.contracts.CommentService;
+import com.example.ForumProject.services.contracts.PostService;
+import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
-import com.example.ForumProject.helpers.CommentMapper;
-import com.example.ForumProject.models.Comment;
-import com.example.ForumProject.models.Post;
-import com.example.ForumProject.models.User;
+import com.example.ForumProject.models.helpers.CommentMapper;
+import com.example.ForumProject.models.persistentClasses.Comment;
+import com.example.ForumProject.models.persistentClasses.Post;
+import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.CommentDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
