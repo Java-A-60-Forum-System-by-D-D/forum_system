@@ -35,6 +35,18 @@ public class AdminController {
 
     }
 
+    @PostMapping("/moderator-privileges/{user_id}")
+    public User grantModeratorRights(@PathVariable int user_id){
+        try {
+            return adminService.grantModeratorRights(user_id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+
+    }
+
     @DeleteMapping("/admin-privileges/{user_id}")
     public User revokeAdminRights(@PathVariable int user_id) {
 
@@ -47,6 +59,49 @@ public class AdminController {
         }
 
     }
+
+    @DeleteMapping("/moderator-privileges/{user_id}")
+    public User revokeModeratorRights(@PathVariable int user_id) {
+
+        try {
+            return adminService.revokeModeratorRights(user_id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+
+    }
+
+
+    @PostMapping("/block/{user_id}")
+    public User blockUser(@PathVariable int user_id){
+
+        try {
+            return adminService.blockUser(user_id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+
+
+    }
+
+    @DeleteMapping("/block/{user_id}")
+    public User unblockUser(@PathVariable int user_id){
+
+        try {
+            return adminService.unblockUser(user_id);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
+
+
+    }
+
 
 
 }

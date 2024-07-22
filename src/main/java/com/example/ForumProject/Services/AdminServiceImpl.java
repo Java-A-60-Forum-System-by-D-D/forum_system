@@ -54,5 +54,65 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    @Override
+    public User grantModeratorRights(int userId) {
+        User user = userRepository.getUserById(userId);
+        UserRole userRole = userRoleRepository.getModeratorRole();
+
+        if(user.getUserRole().contains(userRole)){
+            throw new AuthorizationException("User has moderator privileges");
+        }
+
+        user.getUserRole()
+            .add(userRole);
+
+        return userRepository.updateUser(user);
+    }
+
+    @Override
+    public User revokeModeratorRights(int userId) {
+        User user = userRepository.getUserById(userId);
+        UserRole userRole = userRoleRepository.getModeratorRole();
+
+        if(!user.getUserRole().contains(userRole)){
+            throw new AuthorizationException("User doesnt have moderator privileges");
+        }
+
+        user.getUserRole()
+            .remove(userRole);
+
+        return userRepository.updateUser(user);
+    }
+
+
+
+    @Override
+    public User blockUser(int userId) {
+
+        User user = userRepository.getUserById(userId);
+        if(user.isBlocked()){
+            throw new AuthorizationException("User is already blocked");
+        }
+
+        user.setBlocked(true);
+
+        return userRepository.updateUser(user);
+
+    }
+
+    @Override
+    public User unblockUser(int userId) {
+
+        User user = userRepository.getUserById(userId);
+        if(!user.isBlocked()){
+            throw new AuthorizationException("User is not blocked");
+        }
+
+        user.setBlocked(false);
+
+        return userRepository.updateUser(user);
+
+    }
+
 
 }

@@ -40,7 +40,6 @@ public class PostController {
 
 
     @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
     public Post createPost(@Valid @RequestBody PostDTO postDTO) {
         Authentication authentication = SecurityContextHolder.getContext()
                 .getAuthentication();
