@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@Tag(name = "Admin", description = "Endpoints for managing admin privileges")
 public class AdminController {
 
     private final AdminService adminService;
@@ -37,7 +39,13 @@ public class AdminController {
     }
 
     @PostMapping("/admin-privileges/{user_id}")
-    public User grantAdminRights(@PathVariable int user_id) {
+    @Operation(summary = "Grant admin rights to a user", description = "Grant admin rights to a specific user by user ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Admin rights granted successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "Conflict in granting admin rights", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public User grantAdminRights(@Parameter(description = "ID of the user to grant admin rights") @PathVariable int user_id) {
 
         try {
             return adminService.grantAdminRights(user_id);
@@ -50,7 +58,13 @@ public class AdminController {
     }
 
     @PostMapping("/moderator-privileges/{user_id}")
-    public User grantModeratorRights(@PathVariable int user_id) {
+    @Operation(summary = "Grant moderator rights to a user", description = "Grant moderator rights to a specific user by user ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Moderator rights granted successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "Conflict in granting moderator rights", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public User grantModeratorRights(@Parameter(description = "ID of the user to grant moderator rights") @PathVariable int user_id) {
         try {
             return adminService.grantModeratorRights(user_id);
         } catch (EntityNotFoundException e) {
@@ -62,8 +76,13 @@ public class AdminController {
     }
 
     @DeleteMapping("/admin-privileges/{user_id}")
-    public User revokeAdminRights(@PathVariable int user_id) {
-
+    @Operation(summary = "Revoke admin rights from a user", description = "Revoke admin rights from a specific user by user ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Admin rights revoked successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "Conflict in revoking admin rights", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public User revokeAdminRights(@Parameter(description = "ID of the user to revoke admin rights") @PathVariable int user_id) {
         try {
             return adminService.revokeAdminRights(user_id);
         } catch (EntityNotFoundException e) {
@@ -75,8 +94,13 @@ public class AdminController {
     }
 
     @DeleteMapping("/moderator-privileges/{user_id}")
-    public User revokeModeratorRights(@PathVariable int user_id) {
-
+    @Operation(summary = "Revoke moderator rights from a user", description = "Revoke moderator rights from a specific user by user ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Moderator rights revoked successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "Conflict in revoking moderator rights", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public User revokeModeratorRights(@Parameter(description = "ID of the user to revoke moderator rights") @PathVariable int user_id) {
         try {
             return adminService.revokeModeratorRights(user_id);
         } catch (EntityNotFoundException e) {
@@ -88,8 +112,13 @@ public class AdminController {
     }
 
     @PostMapping("/block/{user_id}")
-    public User blockUser(@PathVariable int user_id) {
-
+    @Operation(summary = "Block a user", description = "Block a specific user by user ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User blocked successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "Conflict in blocking the user", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public User blockUser(@Parameter(description = "ID of the user to block") @PathVariable int user_id) {
         try {
             return adminService.blockUser(user_id);
         } catch (EntityNotFoundException e) {
@@ -102,8 +131,13 @@ public class AdminController {
     }
 
     @DeleteMapping("/block/{user_id}")
-    public User unblockUser(@PathVariable int user_id) {
-
+    @Operation(summary = "Unblock a user", description = "Unblock a specific user by user ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User unblocked successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "Conflict in unblocking the user", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public User unblockUser(@Parameter(description = "ID of the user to unblock") @PathVariable int user_id) {
         try {
             return adminService.unblockUser(user_id);
         } catch (EntityNotFoundException e) {
@@ -114,7 +148,6 @@ public class AdminController {
 
 
     }
-
 
 
 //    @GetMapping("/users")
@@ -199,8 +232,6 @@ public class AdminController {
         }
 
     }
-
-
 
 
 }
