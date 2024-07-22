@@ -5,6 +5,7 @@ import com.example.ForumProject.models.helpers.UserMapper;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.LoggInUserDTO;
 import com.example.ForumProject.models.dto.UserDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Authentication", description = "Endpoints for user authentication")
 public class AuthenticationController {
 
     private AuthenticationService authenticationService;

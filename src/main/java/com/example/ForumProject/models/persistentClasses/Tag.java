@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "tags")
 @NoArgsConstructor
@@ -15,14 +17,8 @@ import lombok.Setter;
 @EqualsAndHashCode(callSuper = false)
 public class Tag extends BaseEntity {
 
-
-
-
     @Column(name = "name")
     private String name;
-
-
-
 
 
 }
