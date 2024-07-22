@@ -18,66 +18,85 @@ import java.util.Map;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
-    private final UserService userService;
+
     private final SessionFactory sessionFactory;
 
 
-    public PostRepositoryImpl(UserService userService, SessionFactory sessionFactory) {
-        this.userService = userService;
+    public PostRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
     public List<Post> getPosts(FilterOptionsPosts filterOptionsPosts) {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
 
             List<String> filters = new ArrayList<>();
             Map<String, Object> params = new HashMap<>();
 
             filterOptionsPosts.getTitle()
-                    .ifPresent(value -> {
-                        filters.add("title like :title");
-                        params.put("title", String.format("%%%s%%", value));
-                    });
+                              .ifPresent(value -> {
+                                  filters.add("p.title like :title"); // Use alias `p`
+                                  params.put("title", String.format("%%%s%%", value));
+                              });
 
-            StringBuilder queryString = new StringBuilder("from Post");
-            if (!filters.isEmpty()) {
-                queryString
-                        .append(" where ")
-                        .append(String.join(" and ", filters));
+            filterOptionsPosts.getUserId()
+                              .ifPresent(value -> {
+                                  filters.add("p.user.id = :userId"); // Use alias `p`
+                                  params.put("userId", value);
+                              });
+
+            filterOptionsPosts.getContent()
+                              .ifPresent(value -> {
+                                  filters.add("p.content like :content"); // Use alias `p`
+                                  params.put("content", String.format("%%%s%%", value));
+                              });
+
+            filterOptionsPosts.getTagId()
+                              .ifPresent(value -> {
+                                  filters.add("t.id = :tagId"); // Use alias `t` for tags
+                                  params.put("tagId", value);
+                              });
+
+            StringBuilder queryString = new StringBuilder("select p from Post p");
+
+            if (filterOptionsPosts.getTagId().isPresent()) {
+                queryString.append(" join p.tags t"); // Correct join path
             }
 
-
-//            queryString.append(generateOrderBy(filterOptions));
+            if (!filters.isEmpty()) {
+                queryString.append(" where ").append(String.join(" and ", filters));
+            }
 
             Query<Post> query = session.createQuery(queryString.toString(), Post.class);
-            query.setProperties(params);
+            params.forEach(query::setParameter);
             return query.list();
-
-
 
 
         }
     }
+
     @Override
     public Post getPostById(int id) {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<Post> query = session.createQuery("from Post where id = :id", Post.class);
             query.setParameter("id", id);
-            if(query.list().isEmpty()){
+            if (query.list()
+                     .isEmpty()) {
                 throw new EntityNotFoundException("Post", id);
             }
-            return query.list().get(0);
+            return query.list()
+                        .get(0);
         }
     }
 
     @Override
     public Post updatePost(Post post) {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.merge(post);
             post.setUpdatedAt(LocalDateTime.now());
-            session.getTransaction().commit();
+            session.getTransaction()
+                   .commit();
             return post;
         }
 
@@ -85,35 +104,39 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Post createPost(Post post) {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.persist(post);
             post.setCreatedAt(LocalDateTime.now());
             post.setUpdatedAt(LocalDateTime.now());
-            session.getTransaction().commit();
+            session.getTransaction()
+                   .commit();
             return post;
         }
     }
 
     @Override
     public void deletePost(int id) {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<Post> query = session.createQuery("from Post where id = :id", Post.class);
             query.setParameter("id", id);
-            if(query.list().isEmpty()){
+            if (query.list()
+                     .isEmpty()) {
                 throw new EntityNotFoundException("Post", id);
             }
-            Post post = query.list().get(0);
+            Post post = query.list()
+                             .get(0);
             session.beginTransaction();
             session.remove(post);
-            session.getTransaction().commit();
+            session.getTransaction()
+                   .commit();
         }
 
     }
 
     @Override
     public List<Post> getPostsByUser(int id) {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             Query<Post> query = session.createQuery("from Post where user.id = :id", Post.class);
             query.setParameter("id", id);
             return query.list();

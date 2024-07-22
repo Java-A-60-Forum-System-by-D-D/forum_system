@@ -10,13 +10,13 @@ public class FilterOptionsPosts {
 
     private final Optional<String> title;
     private final Optional<String> content;
-    private final Optional<String> user;
-    private final Optional<String> tag;
+    private final Optional<Integer> userId;
+    private final Optional<Integer> tagId;
 
-    public FilterOptionsPosts(String title, String content, String user, String tag) {
+    public FilterOptionsPosts(String title, String content, Integer userId, Integer tagId) {
         this.title = Optional.ofNullable(title);
         this.content = Optional.ofNullable(content);
-        this.user = Optional.ofNullable(user);
-        this.tag = Optional.ofNullable(tag);
+        this.userId = Optional.ofNullable(userId);
+        this.tagId = Optional.ofNullable(tagId);
     }
 }
