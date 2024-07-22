@@ -1,9 +1,8 @@
-package com.example.ForumProject.Services;
+package com.example.ForumProject.services;
 
 import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.models.User;
 import com.example.ForumProject.models.UserRole;
-import com.example.ForumProject.models.UserRoleEnum;
 import com.example.ForumProject.repositories.UserRepository;
 import com.example.ForumProject.repositories.UserRoleRepository;
 import lombok.Data;
