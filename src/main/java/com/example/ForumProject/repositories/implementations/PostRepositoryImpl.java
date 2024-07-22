@@ -35,10 +35,10 @@ public class PostRepositoryImpl implements PostRepository {
             Map<String, Object> params = new HashMap<>();
 
             filterOptionsPosts.getTitle()
-                         .ifPresent(value -> {
-                             filters.add("title like :title");
-                             params.put("title", String.format("%%%s%%", value));
-                         });
+                    .ifPresent(value -> {
+                        filters.add("title like :title");
+                        params.put("title", String.format("%%%s%%", value));
+                    });
 
             StringBuilder queryString = new StringBuilder("from Post");
             if (!filters.isEmpty()) {
@@ -59,7 +59,6 @@ public class PostRepositoryImpl implements PostRepository {
 
         }
     }
-
     @Override
     public Post getPostById(int id) {
         try(Session session = sessionFactory.openSession()) {

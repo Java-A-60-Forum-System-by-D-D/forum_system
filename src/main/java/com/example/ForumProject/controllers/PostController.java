@@ -1,5 +1,6 @@
 package com.example.ForumProject.controllers;
 
+import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.AuthorizationException;
@@ -51,12 +52,13 @@ public class PostController {
                                   @Parameter(description = "Filter posts by content") @RequestParam(required = false) String content,
                                   @Parameter(description = "Filter posts by user") @RequestParam(required = false) String user,
                                   @Parameter(description = "Filter posts by tag") @RequestParam(required = false) String tag) {
+        FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(title,content,user,tag);
         Authentication authentication = SecurityContextHolder.getContext()
                 .getAuthentication();
         String username = authentication.getName();
         User loggedUser = userService.getUserByUsername(username);
         try {
-            return postService.getPosts(loggedUser);
+            return postService.getPosts(loggedUser,filterOptionsPosts);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
