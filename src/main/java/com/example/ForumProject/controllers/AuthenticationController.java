@@ -1,6 +1,6 @@
-package com.example.ForumProject.Controllers;
+package com.example.ForumProject.controllers;
 
-import com.example.ForumProject.Services.AuthenticationService;
+import com.example.ForumProject.services.AuthenticationService;
 import com.example.ForumProject.helpers.UserMapper;
 import com.example.ForumProject.models.User;
 import com.example.ForumProject.models.dto.LoggInUserDTO;

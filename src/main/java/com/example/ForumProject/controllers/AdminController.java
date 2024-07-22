@@ -1,6 +1,6 @@
-package com.example.ForumProject.Controllers;
+package com.example.ForumProject.controllers;
 
-import com.example.ForumProject.Services.AdminService;
+import com.example.ForumProject.services.AdminService;
 import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.User;

@@ -1,6 +1,6 @@
 package com.example.ForumProject.repositories;
 
-import com.example.ForumProject.Services.UserService;
+import com.example.ForumProject.services.UserService;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.Post;
 import org.hibernate.Session;
