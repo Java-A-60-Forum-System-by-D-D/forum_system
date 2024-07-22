@@ -24,7 +24,7 @@ public class LikeRepositoryImpl implements LikeRepository {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             like.setCreatedAt(LocalDateTime.now());
-            session.remove(like);
+            session.persist(like);
             session.getTransaction().commit();
             return like;
         }
@@ -57,14 +57,14 @@ public class LikeRepositoryImpl implements LikeRepository {
         }
     }
 
-    public Integer countByPostId(int postId) {
+    public int countByPostId(int postId) {
         try (Session session = sessionFactory.openSession()) {
-           Query<Like> query = session.createQuery("FROM Like WHERE post.id = :postId", Like.class);
-           query.setParameter("postId", postId);
-           return query.list().size();
-//            Query<Integer> query = session.createQuery("SELECT COUNT(*) FROM Like WHERE post.id = :postId", Integer.class);
-//            query.setParameter("postId", postId);
-//            return query.;
+//           Query<Like> query = session.createQuery("FROM Like WHERE post.id = :postId", Like.class);
+//           query.setParameter("postId", postId);
+//           return query.list().size();
+            Query<Integer> query = session.createQuery("SELECT COUNT(*) FROM Like WHERE post.id = :postId", Integer.class);
+            query.setParameter("postId", postId);
+            return query.uniqueResult().intValue();
         }
     }
 
