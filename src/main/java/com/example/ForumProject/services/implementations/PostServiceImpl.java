@@ -1,11 +1,8 @@
 package com.example.ForumProject.services.implementations;
 
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
+import com.example.ForumProject.models.persistentClasses.*;
 import com.example.ForumProject.services.contracts.PostService;
-import com.example.ForumProject.models.persistentClasses.Post;
-import com.example.ForumProject.models.persistentClasses.User;
-import com.example.ForumProject.models.persistentClasses.UserRole;
-import com.example.ForumProject.models.persistentClasses.UserRoleEnum;
 import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.utility.ValidatorHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +70,11 @@ public class PostServiceImpl implements PostService {
     public List<Post> getPostsByUser(int id) {
         return postRepository.getPostsByUser(id);
     }
+
+//    @Override
+//    public Like addLike(Like like) {
+//        postRepository.addLike(like)
+//    }
 
 
 }

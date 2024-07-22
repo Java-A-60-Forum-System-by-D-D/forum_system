@@ -33,6 +33,7 @@ public class LikeServiceImpl implements LikeService {
         Post post = postService.getPostById(postId);
         User user = userService.getUserById(userId);
         Like like = new Like(post, user);
+//        postService.addLike(like);
         return likeRepository.save(like);
     }
 

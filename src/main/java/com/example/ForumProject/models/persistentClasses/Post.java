@@ -64,4 +64,8 @@ public class Post extends BaseEntity {
         this.likes = new HashSet<>();
         this.tags = new HashSet<>();
     }
+
+    public int getLikesCount() {
+        return this.likes.size();
+    }
 }

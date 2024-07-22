@@ -10,7 +10,7 @@ public interface LikeRepository {
     void delete(Like like);
     Optional<Like> findByPostIdAndUserId(int postId, int userId);
     List<Like> findByPostId(int postId);
-    Integer countByPostId(int postId);
+    int countByPostId(int postId);
 
 
 }
