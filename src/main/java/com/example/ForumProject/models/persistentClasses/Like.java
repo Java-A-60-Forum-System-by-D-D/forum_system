@@ -29,5 +29,15 @@ public class Like extends BaseEntity {
     @Column(name = "created_At")
     private LocalDateTime createdAt;
 
+    public Like(Post post, User user) {
+        this.post = post;
+        this.user = user;
+    }
+    public Like(int id, Post post, User user) {
+        this.id = id;
+        this.post = post;
+        this.user = user;
+    }
+
 
 }
