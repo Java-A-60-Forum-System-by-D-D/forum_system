@@ -1,5 +1,6 @@
 package com.example.ForumProject.repositories.implementations;
 
+import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
@@ -10,7 +11,10 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PostRepositoryImpl implements PostRepository {
@@ -24,10 +28,35 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public List<Post> getPosts() {
+    public List<Post> getPosts(FilterOptionsPosts filterOptionsPosts) {
         try(Session session = sessionFactory.openSession()) {
-            Query<Post> query = session.createQuery("from Post", Post.class);
+
+            List<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            filterOptionsPosts.getTitle()
+                         .ifPresent(value -> {
+                             filters.add("title like :title");
+                             params.put("title", String.format("%%%s%%", value));
+                         });
+
+            StringBuilder queryString = new StringBuilder("from Post");
+            if (!filters.isEmpty()) {
+                queryString
+                        .append(" where ")
+                        .append(String.join(" and ", filters));
+            }
+
+
+//            queryString.append(generateOrderBy(filterOptions));
+
+            Query<Post> query = session.createQuery(queryString.toString(), Post.class);
+            query.setProperties(params);
             return query.list();
+
+
+
+
         }
     }
 

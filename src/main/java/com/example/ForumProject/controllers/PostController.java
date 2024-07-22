@@ -1,5 +1,6 @@
 package com.example.ForumProject.controllers;
 
+import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.AuthorizationException;
@@ -8,13 +9,6 @@ import com.example.ForumProject.models.helpers.PostMapper;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.PostDTO;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 
@@ -27,7 +21,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
-@Tag(name = "Posts", description = "Endpoints for managing posts")
 public class PostController {
     private final PostService postService;
     private final PostMapper postMapper;
@@ -41,22 +34,19 @@ public class PostController {
 
     }
 
-    @Operation(summary = "Get all posts", description = "Get a list of all posts, optionally filtered by title, content, user, or tag")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of posts"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
-    })
     @GetMapping
-    public List<Post> getAllPosts(@Parameter(description = "Filter posts by title") @RequestParam(required = false) String title,
-                                  @Parameter(description = "Filter posts by content") @RequestParam(required = false) String content,
-                                  @Parameter(description = "Filter posts by user") @RequestParam(required = false) String user,
-                                  @Parameter(description = "Filter posts by tag") @RequestParam(required = false) String tag) {
+    public List<Post> getAllPosts(@RequestParam(required = false) String title,
+                                  @RequestParam(required = false) String content,
+                                  @RequestParam(required = false) String user,
+                                  @RequestParam(required = false) String tag)
+    {
+        FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(title,content,user,tag);
         Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
+                                                             .getAuthentication();
         String username = authentication.getName();
         User loggedUser = userService.getUserByUsername(username);
         try {
-            return postService.getPosts(loggedUser);
+            return postService.getPosts(loggedUser,filterOptionsPosts);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
@@ -64,15 +54,9 @@ public class PostController {
 
 
     @PostMapping
-    @Operation(summary = "Create a new post", description = "Create a new post with the given details")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Post created successfully"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(hidden = true)))
-    })
     public Post createPost(@Valid @RequestBody PostDTO postDTO) {
         Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
+                                                             .getAuthentication();
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
         Post post = postMapper.createFromDto(postDTO, user);
@@ -81,12 +65,7 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Get a post by ID", description = "Get the details of a post by its ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved the post"),
-            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true)))
-    })
-    public Post getPostById(@Parameter(description = "ID of the post to retrieve") @PathVariable int id) {
+    public Post getPostById(@PathVariable int id) {
         try {
             return postService.getPostById(id);
         } catch (EntityNotFoundException e) {
@@ -98,16 +77,10 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Update a post by ID", description = "Update the details of a post by its ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully updated the post"),
-            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
-    })
-    public Post updatePost(@Parameter(description = "ID of the post to update") @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
+    public Post updatePost(@PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             Post existingPost = postService.getPostById(id);
@@ -125,16 +98,10 @@ public class PostController {
 
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a post by ID", description = "Delete a post by its ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully deleted the post"),
-            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
-    })
-    public void deletePost(@Parameter(description = "ID of the post to delete") @PathVariable int id) {
+    public void deletePost(@PathVariable int id) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
 
             User user = userService.getUserByUsername(username);
