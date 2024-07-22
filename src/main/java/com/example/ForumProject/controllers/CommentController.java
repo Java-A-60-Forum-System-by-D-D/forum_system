@@ -10,6 +10,13 @@ import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.CommentDTO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -21,6 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/posts/{postId}/comments")
+@Tag(name = "Comments", description = "Endpoints for managing comments")
 public class CommentController {
     private final CommentService commentService;
     private final PostService postService;
@@ -36,19 +44,30 @@ public class CommentController {
     }
 
     @GetMapping
-    public List<Comment> getAllComments(@PathVariable int postId) {
+    @Operation(summary = "Get all comments for a post", description = "Get a list of all comments for a specific post")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of comments"),
+            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public List<Comment> getAllComments(@Parameter(description = "ID of the post to get comments for") @PathVariable int postId) {
 
         return postService.getPostById(postId)
-                          .getComments()
-                          .stream()
-                          .toList();
+                .getComments()
+                .stream()
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Comment getCommentById(@PathVariable int postId, @PathVariable int id) {
+    @Operation(summary = "Get a comment by ID", description = "Get the details of a comment by its ID for a specific post")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the comment"),
+            @ApiResponse(responseCode = "404", description = "Comment or post not found", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public Comment getCommentById(@Parameter(description = "ID of the post") @PathVariable int postId,
+                                  @Parameter(description = "ID of the comment") @PathVariable int id) {
         try {
             Post post = postService.getPostById(postId);
-            return commentService.getCommentById(id,post);
+            return commentService.getCommentById(id, post);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
@@ -58,10 +77,17 @@ public class CommentController {
     }
 
     @PostMapping
-    public Comment createComment(@PathVariable int postId, @Valid @RequestBody CommentDTO commentDTO) {
+    @Operation(summary = "Create a new comment", description = "Create a new comment for a specific post")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Comment created successfully"),
+            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public Comment createComment(@Parameter(description = "ID of the post to add a comment to") @PathVariable int postId,
+                                 @Valid @RequestBody CommentDTO commentDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                                                                 .getAuthentication();
+                    .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             Post post = postService.getPostById(postId);
@@ -74,15 +100,22 @@ public class CommentController {
         }
     }
 
-    @PutMapping("/{id}")
-    public Comment updateComment(@PathVariable int postId, @Valid @RequestBody CommentDTO commentDto, @PathVariable int id) {
+    @Operation(summary = "Update a comment by ID", description = "Update the details of a comment by its ID for a specific post")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated the comment"),
+            @ApiResponse(responseCode = "404", description = "Comment or post not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public Comment updateComment(@Parameter(description = "ID of the post") @PathVariable int postId,
+                                 @Valid @RequestBody CommentDTO commentDto,
+                                 @Parameter(description = "ID of the comment to update") @PathVariable int id) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                                                                 .getAuthentication();
+                    .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             Post post = postService.getPostById(postId);
-            Comment existingComment = commentService.getCommentById(id,post);
+            Comment existingComment = commentService.getCommentById(id, post);
 
 
             Comment updateComment = commentMapper.updateFromDto(existingComment, commentDto, user);
@@ -101,14 +134,21 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable int postId, @PathVariable int id) {
+    @Operation(summary = "Delete a comment by ID", description = "Delete a comment by its ID for a specific post")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully deleted the comment"),
+            @ApiResponse(responseCode = "404", description = "Comment or post not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public void deleteComment(@Parameter(description = "ID of the post") @PathVariable int postId,
+                              @Parameter(description = "ID of the comment to delete") @PathVariable int id) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                                                                 .getAuthentication();
+                    .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             Post post = postService.getPostById(postId);
-            Comment comment = commentService.getCommentById(id,post);
+            Comment comment = commentService.getCommentById(id, post);
 
             commentService.deleteComment(id, user);
         } catch (EntityNotFoundException e) {
