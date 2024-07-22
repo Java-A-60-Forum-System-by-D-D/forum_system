@@ -1,10 +1,10 @@
 package com.example.ForumProject.utility;
 
 import com.example.ForumProject.exceptions.AuthorizationException;
-import com.example.ForumProject.models.Comment;
-import com.example.ForumProject.models.Post;
-import com.example.ForumProject.models.User;
-import com.example.ForumProject.models.UserRole;
+import com.example.ForumProject.models.persistentClasses.Comment;
+import com.example.ForumProject.models.persistentClasses.Post;
+import com.example.ForumProject.models.persistentClasses.User;
+import com.example.ForumProject.models.persistentClasses.UserRole;
 
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +17,7 @@ public class ValidatorHelpers {
 
         if (!userRoleSet
                 .contains(userRole) && !Objects.equals(existingPost.getUser()
-                                                                        .getUsername(), user.getUsername())) {
+                                                                   .getUsername(), user.getUsername())) {
             throw new AuthorizationException(errorMessage);
         }
     }
@@ -28,13 +28,18 @@ public class ValidatorHelpers {
 
         if (!userRoleSet
                 .contains(userRole) && !Objects.equals(existingComment.getUser()
-                                                                   .getUsername(), user.getUsername())) {
+                                                                      .getUsername(), user.getUsername())) {
             throw new AuthorizationException(errorMessage);
         }
     }
 
 
-
+    public static void roleAuthenticationValidator(User user, UserRole userRole, String errorMessage) {
+        if (!user.getUserRole()
+                 .contains(userRole) ){
+            throw new AuthorizationException(errorMessage);
+        }
+    }
 
 
 }

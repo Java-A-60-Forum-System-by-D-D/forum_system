@@ -1,8 +1,8 @@
 package com.example.ForumProject.controllers;
 
-import com.example.ForumProject.services.AuthenticationService;
-import com.example.ForumProject.helpers.UserMapper;
-import com.example.ForumProject.models.User;
+import com.example.ForumProject.services.contracts.AuthenticationService;
+import com.example.ForumProject.models.helpers.UserMapper;
+import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.LoggInUserDTO;
 import com.example.ForumProject.models.dto.UserDTO;
 import jakarta.validation.Valid;

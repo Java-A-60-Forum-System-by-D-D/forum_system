@@ -1,12 +1,12 @@
 package com.example.ForumProject.controllers;
 
-import com.example.ForumProject.services.PostService;
-import com.example.ForumProject.services.UserService;
+import com.example.ForumProject.services.contracts.PostService;
+import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
-import com.example.ForumProject.helpers.PostMapper;
-import com.example.ForumProject.models.Post;
-import com.example.ForumProject.models.User;
+import com.example.ForumProject.models.helpers.PostMapper;
+import com.example.ForumProject.models.persistentClasses.Post;
+import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.PostDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -34,15 +34,27 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> getAllPosts() {
-        return postService.getPosts();
+    public List<Post> getAllPosts(@RequestParam(required = false) String title,
+                                  @RequestParam(required = false) String content,
+                                  @RequestParam(required = false) String user,
+                                  @RequestParam(required = false) String tag)
+    {
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User loggedUser = userService.getUserByUsername(username);
+        try {
+            return postService.getPosts(loggedUser);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 
 
     @PostMapping
     public Post createPost(@Valid @RequestBody PostDTO postDTO) {
         Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
+                                                             .getAuthentication();
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
         Post post = postMapper.createFromDto(postDTO, user);
@@ -66,7 +78,7 @@ public class PostController {
     public Post updatePost(@PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             Post existingPost = postService.getPostById(id);
@@ -87,7 +99,7 @@ public class PostController {
     public void deletePost(@PathVariable int id) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
 
             User user = userService.getUserByUsername(username);
