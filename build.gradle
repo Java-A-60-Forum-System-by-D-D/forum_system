@@ -34,8 +34,9 @@ dependencies {
 	implementation 'org.modelmapper:modelmapper:3.1.1'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-//	implementation 'io.springfox:springfox-swagger2:3.0.0'
-//	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+	implementation 'com.cloudinary:cloudinary-http44:1.36.0'
+	implementation 'com.cloudinary:cloudinary-taglib:1.36.0'
+	implementation 'io.github.cdimascio:dotenv-java:2.2.4'
 }
 
 tasks.named('test') {
