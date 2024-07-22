@@ -1,22 +1,23 @@
 package com.example.ForumProject.Services;
 
-import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.*;
 import com.example.ForumProject.repositories.CommentRepository;
-import org.hibernate.Hibernate;
+import com.example.ForumProject.utility.ValidatorHelpers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 @Service
 public class CommentServiceImpl implements CommentService {
+    public static final String INVALID_DELETE_COMMAND = "You dont have rights to delete this comment";
+    public static final String INVALID_UPDATE_COMMAND = "You dont have rights to update this comment";
     private final CommentRepository commentRepository;
+
 
     public CommentServiceImpl(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
+
     }
 
     @Override
@@ -43,26 +44,20 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment updateComment(Comment comment, User user) {
-        authenticationValidator(user, comment);
+
+        ValidatorHelpers.roleAuthenticationValidator(user,new UserRole(UserRoleEnum.ADMIN) ,comment, INVALID_UPDATE_COMMAND);
+
         return commentRepository.updateComment(comment);
     }
 
     @Override
     public void deleteComment(int id, User user) {
-        authenticationValidator(user, commentRepository.getCommentById(id));
+
+        ValidatorHelpers.roleAuthenticationValidator(user,new UserRole(UserRoleEnum.ADMIN) ,commentRepository.getCommentById(id), INVALID_DELETE_COMMAND);
+
         commentRepository.deleteComment(id);
 
     }
 
-    private static void authenticationValidator(User user, Comment existingComment) {
 
-        Set<UserRole> userRoleSet = user.getUserRole();
-        UserRole userRoleAdmin = new UserRole(UserRoleEnum.ADMIN);
-
-        if (!userRoleSet
-                .contains(userRoleAdmin) && !Objects.equals(existingComment.getUser()
-                                                                           .getUsername(), user.getUsername())) {
-            throw new AuthorizationException("You have no permission to perform this action");
-        }
-    }
 }
