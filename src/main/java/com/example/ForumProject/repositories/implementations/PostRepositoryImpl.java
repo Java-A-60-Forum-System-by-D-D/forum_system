@@ -34,44 +34,59 @@ public class PostRepositoryImpl implements PostRepository {
             List<String> filters = new ArrayList<>();
             Map<String, Object> params = new HashMap<>();
 
-            filterOptionsPosts.getTitle()
-                              .ifPresent(value -> {
-                                  filters.add("p.title like :title"); // Use alias `p`
-                                  params.put("title", String.format("%%%s%%", value));
-                              });
+            StringBuilder queryString = new StringBuilder("select distinct p from Post p");
 
-            filterOptionsPosts.getUserId()
-                              .ifPresent(value -> {
-                                  filters.add("p.user.id = :userId"); // Use alias `p`
-                                  params.put("userId", value);
-                              });
 
-            filterOptionsPosts.getContent()
-                              .ifPresent(value -> {
-                                  filters.add("p.content like :content"); // Use alias `p`
-                                  params.put("content", String.format("%%%s%%", value));
-                              });
-
-            filterOptionsPosts.getTagId()
-                              .ifPresent(value -> {
-                                  filters.add("t.id = :tagId"); // Use alias `t` for tags
-                                  params.put("tagId", value);
-                              });
-
-            StringBuilder queryString = new StringBuilder("select p from Post p");
-
+            queryString.append(" left join fetch p.user");
             if (filterOptionsPosts.getTagId().isPresent()) {
-                queryString.append(" join p.tags t"); // Correct join path
+                queryString.append(" left join fetch p.tags t");
             }
+
+
+            filterOptionsPosts.getTitle().ifPresent(value -> {
+                filters.add("p.title like :title");
+                params.put("title", "%" + value + "%");
+            });
+
+            filterOptionsPosts.getUserId().ifPresent(value -> {
+                filters.add("p.user.id = :userId");
+                params.put("userId", value);
+            });
+
+            filterOptionsPosts.getContent().ifPresent(value -> {
+                filters.add("p.content like :content");
+                params.put("content", "%" + value + "%");
+            });
+
+            filterOptionsPosts.getTagId().ifPresent(value -> {
+                filters.add("t.id = :tagId");
+                params.put("tagId", value);
+            });
 
             if (!filters.isEmpty()) {
                 queryString.append(" where ").append(String.join(" and ", filters));
             }
 
+
+            if (filterOptionsPosts.getSortBy().isPresent()) {
+                String sortBy = filterOptionsPosts.getSortBy().get();
+                String sortOrder = filterOptionsPosts.getSortOrder().orElse("asc");
+
+                String orderByClause = switch (sortBy) {
+                    case "title" -> "p.title";
+                    case "content" -> "p.content";
+                    case "user" -> "p.user.name";
+                    case "tag" -> "t.name";
+                    default -> "p.id";  // default sort
+                };
+
+                queryString.append(" order by ").append(orderByClause).append(" ").append(sortOrder);
+            }
+
             Query<Post> query = session.createQuery(queryString.toString(), Post.class);
             params.forEach(query::setParameter);
-            return query.list();
 
+            return query.list();
 
         }
     }
@@ -144,6 +159,8 @@ public class PostRepositoryImpl implements PostRepository {
         }
 
     }
+
+
 
 
 }
