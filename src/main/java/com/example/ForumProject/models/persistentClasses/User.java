@@ -4,6 +4,7 @@ package com.example.ForumProject.models.persistentClasses;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -17,6 +18,7 @@ import java.util.*;
 @Table(name = "Users")
 @Getter
 @Setter
+@Schema(description = "User Entity")
 public class User extends BaseEntity implements UserDetails {
 
 
@@ -28,6 +30,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "username")
     @NotNull(message = "Field cannot be null")
+    @Schema(description = "Username")
     private String username;
 
     @Column(name = "email")
