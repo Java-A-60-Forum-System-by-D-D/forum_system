@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.Optional;
+
 
 @Data
 @NoArgsConstructor
@@ -34,10 +36,11 @@ public class UserDTO {
     @UniqueEmail
     private String email;
 
+    private Optional<String> photoURL;
 
 
     @Pattern(regexp = "^(((\\+|00)359[- ]?)|(0))([89][- ]?[789]([- ]?\\d){7})$")
     private String phoneNumber;
 
-  
+
 }
