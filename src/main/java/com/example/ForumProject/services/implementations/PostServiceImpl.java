@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -26,8 +27,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getPosts(User user, FilterOptionsPosts filterOptionsPosts) {
 
-        ValidatorHelpers.roleAuthenticationValidator(user,new UserRole(UserRoleEnum.ADMIN), INVALID_GET_ALL_POSTS_COMMAND);
-
+        ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), INVALID_GET_ALL_POSTS_COMMAND);
 
 
         return postRepository.getPosts(filterOptionsPosts);
@@ -43,7 +43,7 @@ public class PostServiceImpl implements PostService {
     public Post updatePost(Post post, User user, Post existingPost) {
 
 
-        ValidatorHelpers.roleAuthenticationValidator(user,new UserRole(UserRoleEnum.ADMIN),existingPost, INVALID_UPDATE_COMMAND);
+        ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), existingPost, INVALID_UPDATE_COMMAND);
 
         existingPost.setTitle(post.getTitle());
         existingPost.setContent(post.getContent());
@@ -71,10 +71,31 @@ public class PostServiceImpl implements PostService {
         return postRepository.getPostsByUser(id);
     }
 
-//    @Override
-//    public Like addLike(Like like) {
-//        postRepository.addLike(like)
-//    }
+    @Override
+    public Like addLike(Like like, Post post) {
+
+
+        post.getLikes()
+            .add(like);
+
+        post.setLikesCount(post.getLikes()
+                               .size());
+        postRepository.updatePost(post);
+
+        return like;
+
+    }
+
+    @Override
+    public Like deleteLike(Like like, Post post) {
+        post.getLikes()
+            .remove(like);
+        post.setLikesCount(post.getLikes()
+                               .size());
+        postRepository.updatePost(post);
+
+        return like;
+    }
 
 
 }

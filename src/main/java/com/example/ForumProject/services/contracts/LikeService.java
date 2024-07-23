@@ -7,5 +7,5 @@ public interface LikeService {
 
     void unlikePost(int userId, int postId);
 
-    int getLikesCount(int postId);
+    Integer getLikesCount(int postId);
 }

@@ -1,6 +1,7 @@
 package com.example.ForumProject.repositories.implementations;
 
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
+import com.example.ForumProject.models.persistentClasses.Like;
 import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
@@ -143,4 +144,6 @@ public class PostRepositoryImpl implements PostRepository {
         }
 
     }
+
+
 }

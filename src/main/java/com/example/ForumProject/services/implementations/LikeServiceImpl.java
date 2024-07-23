@@ -30,10 +30,13 @@ public class LikeServiceImpl implements LikeService {
         if (existingLike.isPresent()) {
             throw new EntityDuplicateException("User", String.valueOf(userId));
         }
+
         Post post = postService.getPostById(postId);
         User user = userService.getUserById(userId);
+
         Like like = new Like(post, user);
-//        postService.addLike(like);
+
+        postService.addLike(like,post);
         return likeRepository.save(like);
     }
 
@@ -44,9 +47,10 @@ public class LikeServiceImpl implements LikeService {
         }
 
         likeRepository.delete(like.get());
+        postService.deleteLike(like.get(),postService.getPostById(postId));
     }
 
-    public int getLikesCount(int postId) {
+    public Integer getLikesCount(int postId) {
         return likeRepository.countByPostId(postId);
     }
 }
