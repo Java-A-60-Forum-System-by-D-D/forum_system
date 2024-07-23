@@ -15,7 +15,6 @@ import java.util.*;
 
 @Entity
 @Table(name = "Users")
-@EqualsAndHashCode(callSuper = false, exclude = {"posts", "comments", "likes"})
 @Getter
 @Setter
 public class User extends BaseEntity implements UserDetails {
@@ -120,5 +119,18 @@ public class User extends BaseEntity implements UserDetails {
         this.comments = new HashSet<>();
         this.likes = new HashSet<>();
         this.userRole = new HashSet<>();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

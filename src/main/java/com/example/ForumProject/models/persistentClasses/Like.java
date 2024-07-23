@@ -1,6 +1,7 @@
 package com.example.ForumProject.models.persistentClasses;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,16 +9,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "likes")
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false)
 public class Like extends BaseEntity {
 
-
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
@@ -39,5 +40,17 @@ public class Like extends BaseEntity {
         this.user = user;
     }
 
+    @Override
+    public boolean equals(Object o) {
 
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Like like  = (Like) o;
+        return id == like.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

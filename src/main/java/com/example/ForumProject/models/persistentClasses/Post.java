@@ -11,13 +11,14 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "Posts")
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false, exclude = {"user", "comments", "likes"})
 public class Post extends BaseEntity {
 
     @JsonIgnore
@@ -48,7 +49,7 @@ public class Post extends BaseEntity {
     private Set<Comment> comments;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "post")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post")
     private Set<Like> likes;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -60,12 +61,26 @@ public class Post extends BaseEntity {
     private Set<Tag> tags;
 
     public Post() {
-        this.comments = new HashSet<>();
-        this.likes = new HashSet<>();
-        this.tags = new HashSet<>();
     }
 
     public int getLikesCount() {
         return this.likes.size();
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post  = (Post) o;
+        return id == post.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
+
+
+

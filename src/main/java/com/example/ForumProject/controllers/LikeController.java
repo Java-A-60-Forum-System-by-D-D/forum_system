@@ -36,8 +36,7 @@ public class LikeController {
             String username = authentication.getName();
 
             User user = userService.getUserByUsername(username);
-            Like like = likeService.likePost(user.getId(), postId);
-            return like;
+            return likeService.likePost(user.getId(), postId);
         } catch (EntityDuplicateException e) {
 
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -62,7 +61,6 @@ public class LikeController {
 
     @GetMapping("/{postId}/likes")
     public Integer getLikesCount(@PathVariable int postId) {
-        Integer likesCount = likeService.getLikesCount(postId);
-        return likesCount;
+        return likeService.getLikesCount(postId);
     }
 }

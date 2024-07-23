@@ -15,5 +15,6 @@ public interface PostService {
     void deletePost(int id, User user);
     List<Post> getPostsByUser(int id);
 
-//    Like addLike(Like like);
+    Like addLike(Like like,Post post);
+    Like deleteLike(Like like, Post post);
 }
