@@ -34,6 +34,9 @@ public class User extends BaseEntity implements UserDetails {
     @NotNull(message = "Field cannot be null")
     private String email;
 
+    @Column(name = "photo_url")
+    private String photoURL;
+
     @JsonIgnore
     @Column(name = "password_hash")
     @NotNull(message = "Field cannot be null")
