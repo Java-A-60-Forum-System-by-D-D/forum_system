@@ -2,7 +2,8 @@ package com.example.ForumProject.repositories.implementations;
 
 
 import com.example.ForumProject.exceptions.EntityNotFoundException;
-import com.example.ForumProject.models.persistentClasses.Tag;
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
+import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.repositories.contracts.UserRepository;
 import org.hibernate.Session;
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -22,6 +26,67 @@ public class UserRepositoryImpl implements UserRepository {
     @Autowired
     public UserRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    @Override
+    public List<Post> getUsersPosts(User user, FilterOptionsUsersPosts filterOptionsUsersPosts){
+        try(Session session = sessionFactory.openSession()){
+
+            List<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            StringBuilder queryString = new StringBuilder("select distinct p from Post p");
+
+
+            queryString.append(" left join fetch p.user");
+            if (filterOptionsUsersPosts.getTagId().isPresent()) {
+                queryString.append(" left join fetch p.tags t");
+            }
+
+            filters.add("p.user = :user");
+            params.put("user", user);
+
+            filterOptionsUsersPosts.getTitle().ifPresent(value -> {
+                filters.add("p.title like :title");
+                params.put("title", "%" + value + "%");
+            });
+
+
+
+            filterOptionsUsersPosts.getContent().ifPresent(value -> {
+                filters.add("p.content like :content");
+                params.put("content", "%" + value + "%");
+            });
+
+            filterOptionsUsersPosts.getTagId().ifPresent(value -> {
+                filters.add("t.id = :tagId");
+                params.put("tagId", value);
+            });
+
+            if (!filters.isEmpty()) {
+                queryString.append(" where ").append(String.join(" and ", filters));
+            }
+
+
+            if (filterOptionsUsersPosts.getSortBy().isPresent()) {
+                String sortBy = filterOptionsUsersPosts.getSortBy().get();
+                String sortOrder = filterOptionsUsersPosts.getSortOrder().orElse("asc");
+
+                String orderByClause = switch (sortBy) {
+                    case "title" -> "p.title";
+                    case "content" -> "p.content";
+                    case "tag" -> "t.name";
+                    default -> "p.id";  // default sort
+                };
+
+                queryString.append(" order by ").append(orderByClause).append(" ").append(sortOrder);
+            }
+
+            Query<Post> query = session.createQuery(queryString.toString(), Post.class);
+            params.forEach(query::setParameter);
+
+            return query.list();
+        }
     }
 
     @Override
@@ -87,15 +152,6 @@ public class UserRepositoryImpl implements UserRepository {
             session.getTransaction()
                    .commit();
             return user;
-        }
-    }
-
-    @Override
-    public List<Tag> getUserTags(User user) {
-        try (Session session = sessionFactory.openSession()) {
-            Query<Tag> query = session.createQuery("select distinct t from Post p join p.tags t where p.user = :user", Tag.class);
-            query.setParameter("user", user);
-            return query.list();
         }
     }
 

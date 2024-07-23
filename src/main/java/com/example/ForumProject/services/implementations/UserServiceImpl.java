@@ -1,8 +1,9 @@
 package com.example.ForumProject.services.implementations;
 
 
-import com.example.ForumProject.models.persistentClasses.Tag;
-import com.example.ForumProject.services.contracts.CloudinaryImageService;
+import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
+import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.models.persistentClasses.User;
 
@@ -15,7 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    private CloudinaryImageService cloudinaryImageService;
 
 
     @Override
@@ -85,8 +84,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<Tag> getUserTags(User user) {
-        return userRepository.getUserTags(user);
+    public List<Post> getPostsByUser(User user, FilterOptionsUsersPosts filterOptionsUsersPosts) {
+        return userRepository.getUsersPosts(user, filterOptionsUsersPosts);
     }
 
 

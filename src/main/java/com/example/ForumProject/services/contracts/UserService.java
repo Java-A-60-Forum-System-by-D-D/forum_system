@@ -1,6 +1,8 @@
 package com.example.ForumProject.services.contracts;
 
-import com.example.ForumProject.models.persistentClasses.Tag;
+import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
+import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 
 
@@ -20,7 +22,7 @@ public interface UserService {
     User updateUser(User user);
 
     boolean verifyPassword(User user, String rawPassword);
+    List<Post> getPostsByUser(User user, FilterOptionsUsersPosts filterOptionsUsersPosts);
 
 
-    List<Tag> getUserTags(User user);
 }
