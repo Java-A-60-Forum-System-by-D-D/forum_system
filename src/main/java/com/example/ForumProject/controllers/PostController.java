@@ -51,8 +51,12 @@ public class PostController {
     public List<Post> getAllPosts(@Parameter(description = "Filter posts by title") @RequestParam(required = false) String title,
                                   @Parameter(description = "Filter posts by content") @RequestParam(required = false) String content,
                                   @Parameter(description = "Filter posts by user") @RequestParam(required = false) Integer userId,
-                                  @Parameter(description = "Filter posts by tag") @RequestParam(required = false) Integer tagId) {
-        FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(title,content,userId,tagId);
+                                  @Parameter(description = "Filter posts by tag") @RequestParam(required = false) Integer tagId,
+                                  @RequestParam(required = false) String sortBy,
+                                  @RequestParam(required = false) String sortOrder
+    )
+    {
+        FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(title,content,userId,tagId,sortBy,sortOrder);
         Authentication authentication = SecurityContextHolder.getContext()
                 .getAuthentication();
         String username = authentication.getName();

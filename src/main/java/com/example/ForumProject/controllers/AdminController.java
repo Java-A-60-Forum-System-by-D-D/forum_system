@@ -150,39 +150,6 @@ public class AdminController {
     }
 
 
-//    @GetMapping("/users")
-//    public List<User> getAll() {
-//        return userService.getUsers();
-//    }
-//
-//    @GetMapping("users/id/{id}")
-//    public User getById(@PathVariable int id) {
-//        try {
-//            return userService.getUserById(id);
-//        } catch (EntityNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//        }
-//    }
-//
-//    @GetMapping("/users/username/{username}")
-//    public User getByUsername(@PathVariable String username) {
-//        try {
-//            return userService.getUserByUsername(username);
-//        } catch (EntityNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//        }
-//    }
-//
-//    @GetMapping("/users/first_name/{firstName}")
-//    public User getByFirstName(@PathVariable String firstName) {
-//        try {
-//            return userService.getUserByFirstName(firstName);
-//        } catch (EntityNotFoundException e) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-//        }
-//
-//    }
-
     @Operation(summary = "Get all users", description = "Retrieve a list of all users")
     @ApiResponse(responseCode = "200", description = "List of users", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
     @GetMapping
