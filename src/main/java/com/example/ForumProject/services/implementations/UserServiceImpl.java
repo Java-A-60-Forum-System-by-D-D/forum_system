@@ -1,6 +1,9 @@
 package com.example.ForumProject.services.implementations;
 
 
+import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
+import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.models.persistentClasses.User;
 
@@ -78,6 +81,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean verifyPassword(User user, String rawPassword) {
         return passwordEncoder.matches(rawPassword, user.getPassword());
+    }
+
+    @Override
+    public List<Post> getPostsByUser(User user, FilterOptionsUsersPosts filterOptionsUsersPosts) {
+        return userRepository.getUsersPosts(user, filterOptionsUsersPosts);
     }
 
 
