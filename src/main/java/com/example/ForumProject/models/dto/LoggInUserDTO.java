@@ -1,5 +1,6 @@
 package com.example.ForumProject.models.dto;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 

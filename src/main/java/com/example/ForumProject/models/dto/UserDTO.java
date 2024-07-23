@@ -2,6 +2,7 @@ package com.example.ForumProject.models.dto;
 
 import com.example.ForumProject.utility.validation.UniqueEmail;
 import com.example.ForumProject.utility.validation.UniqueUsername;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode
+
 public class UserDTO {
 
     @NotNull(message = "Field cannot be null")

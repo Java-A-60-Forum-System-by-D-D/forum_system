@@ -1,5 +1,7 @@
 package com.example.ForumProject.models.persistentClasses;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 public enum UserRoleEnum {
 
     USER,
