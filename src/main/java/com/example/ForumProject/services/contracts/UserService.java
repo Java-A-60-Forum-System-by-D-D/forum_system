@@ -25,4 +25,5 @@ public interface UserService {
     List<Post> getPostsByUser(User user, FilterOptionsUsersPosts filterOptionsUsersPosts);
 
 
+
 }
