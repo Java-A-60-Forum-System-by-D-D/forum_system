@@ -13,4 +13,7 @@ public class EntityNotFoundException extends RuntimeException {
         super(String.format("%s with id %s doesn't like this post", type, attribute));
     }
 
+    public EntityNotFoundException() {
+        super("Not found url for upload");
+    }
 }
