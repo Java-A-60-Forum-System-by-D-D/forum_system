@@ -86,10 +86,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 
-    @Override
-    public List<Tag> getUserTags(User user) {
-        return userRepository.getUserTags(user);
-    }
 
     @Override
     public List<Post> getPostsByUser(User user, FilterOptionsUsersPosts filterOptionsUsersPosts) {

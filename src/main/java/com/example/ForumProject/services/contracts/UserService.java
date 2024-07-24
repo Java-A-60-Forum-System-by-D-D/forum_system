@@ -25,7 +25,4 @@ public interface UserService {
     boolean verifyPassword(User user, String rawPassword);
     List<Post> getPostsByUser(User user, FilterOptionsUsersPosts filterOptionsUsersPosts);
 
-
-
-    List<Tag> getUserTags(User user);
 }
