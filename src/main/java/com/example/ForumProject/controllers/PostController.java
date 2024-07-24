@@ -124,7 +124,7 @@ public class PostController {
     }
 
     @PostMapping("/{id}/tags")
-    public Tag createTag(@PathVariable int id, @Valid @RequestParam TagDTO tagDTO) {
+    public Tag createTag(@PathVariable int id, @Valid @RequestBody TagDTO tagDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
                                                                  .getAuthentication();

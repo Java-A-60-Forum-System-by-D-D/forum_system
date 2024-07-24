@@ -54,10 +54,10 @@ public class TagRepositoryImpl implements TagRepository {
     @Override
     public List<Tag> findTagsByPostId(int postId) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Tag> query = session.createQuery(
-                    "select t from Tag t join Post p on t.id = p.id where p.id = :postId", Tag.class);
+            String hql = "SELECT t FROM Post p JOIN p.tags t WHERE p.id = :postId";
+            Query<Tag> query = session.createQuery(hql, Tag.class);
             query.setParameter("postId", postId);
-            return query.list();
+            return query.getResultList();
         }
     }
 
