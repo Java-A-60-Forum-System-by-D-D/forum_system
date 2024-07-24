@@ -15,4 +15,5 @@ public interface PostRepository {
     List<Post> getPostsByUser(int id);
 
 
+    List<Post> getPostsByTagId(int id);
 }

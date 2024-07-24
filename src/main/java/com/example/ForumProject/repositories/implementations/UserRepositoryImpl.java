@@ -2,6 +2,7 @@ package com.example.ForumProject.repositories.implementations;
 
 
 import com.example.ForumProject.exceptions.EntityNotFoundException;
+import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.repositories.contracts.UserRepository;
 import org.hibernate.Session;
@@ -86,6 +87,15 @@ public class UserRepositoryImpl implements UserRepository {
             session.getTransaction()
                    .commit();
             return user;
+        }
+    }
+
+    @Override
+    public List<Tag> getUserTags(User user) {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Tag> query = session.createQuery("select distinct t from Post p join p.tags t where p.user = :user", Tag.class);
+            query.setParameter("user", user);
+            return query.list();
         }
     }
 

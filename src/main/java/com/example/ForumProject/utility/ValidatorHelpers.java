@@ -22,6 +22,7 @@ public class ValidatorHelpers {
         }
     }
 
+
     public static void roleAuthenticationValidator(User user, UserRole userRole, Comment existingComment, String errorMessage) {
 
         Set<UserRole> userRoleSet = user.getUserRole();
