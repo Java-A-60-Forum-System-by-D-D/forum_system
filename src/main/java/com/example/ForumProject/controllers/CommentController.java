@@ -100,6 +100,7 @@ public class CommentController {
         }
     }
 
+    @PutMapping("/{id}")
     @Operation(summary = "Update a comment by ID", description = "Update the details of a comment by its ID for a specific post")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully updated the comment"),

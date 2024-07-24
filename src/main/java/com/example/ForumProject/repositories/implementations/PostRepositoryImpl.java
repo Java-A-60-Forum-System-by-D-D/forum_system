@@ -38,39 +38,48 @@ public class PostRepositoryImpl implements PostRepository {
 
 
             queryString.append(" left join fetch p.user");
-            if (filterOptionsPosts.getTagId().isPresent()) {
+            if (filterOptionsPosts.getTagId()
+                                  .isPresent()) {
                 queryString.append(" left join fetch p.tags t");
             }
 
 
-            filterOptionsPosts.getTitle().ifPresent(value -> {
-                filters.add("p.title like :title");
-                params.put("title", "%" + value + "%");
-            });
+            filterOptionsPosts.getTitle()
+                              .ifPresent(value -> {
+                                  filters.add("p.title like :title");
+                                  params.put("title", "%" + value + "%");
+                              });
 
-            filterOptionsPosts.getUserId().ifPresent(value -> {
-                filters.add("p.user.id = :userId");
-                params.put("userId", value);
-            });
+            filterOptionsPosts.getUserId()
+                              .ifPresent(value -> {
+                                  filters.add("p.user.id = :userId");
+                                  params.put("userId", value);
+                              });
 
-            filterOptionsPosts.getContent().ifPresent(value -> {
-                filters.add("p.content like :content");
-                params.put("content", "%" + value + "%");
-            });
+            filterOptionsPosts.getContent()
+                              .ifPresent(value -> {
+                                  filters.add("p.content like :content");
+                                  params.put("content", "%" + value + "%");
+                              });
 
-            filterOptionsPosts.getTagId().ifPresent(value -> {
-                filters.add("t.id = :tagId");
-                params.put("tagId", value);
-            });
+            filterOptionsPosts.getTagId()
+                              .ifPresent(value -> {
+                                  filters.add("t.id = :tagId");
+                                  params.put("tagId", value);
+                              });
 
             if (!filters.isEmpty()) {
-                queryString.append(" where ").append(String.join(" and ", filters));
+                queryString.append(" where ")
+                           .append(String.join(" and ", filters));
             }
 
 
-            if (filterOptionsPosts.getSortBy().isPresent()) {
-                String sortBy = filterOptionsPosts.getSortBy().get();
-                String sortOrder = filterOptionsPosts.getSortOrder().orElse("asc");
+            if (filterOptionsPosts.getSortBy()
+                                  .isPresent()) {
+                String sortBy = filterOptionsPosts.getSortBy()
+                                                  .get();
+                String sortOrder = filterOptionsPosts.getSortOrder()
+                                                     .orElse("asc");
 
                 String orderByClause = switch (sortBy) {
                     case "title" -> "p.title";
@@ -80,7 +89,10 @@ public class PostRepositoryImpl implements PostRepository {
                     default -> "p.id";  // default sort
                 };
 
-                queryString.append(" order by ").append(orderByClause).append(" ").append(sortOrder);
+                queryString.append(" order by ")
+                           .append(orderByClause)
+                           .append(" ")
+                           .append(sortOrder);
             }
 
             Query<Post> query = session.createQuery(queryString.toString(), Post.class);
@@ -88,6 +100,42 @@ public class PostRepositoryImpl implements PostRepository {
 
             return query.list();
 
+        }
+    }
+
+
+    @Override
+    public List<Post> get10MostCommentedPosts() {
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "SELECT DISTINCT p " +
+                    "FROM Post p " +
+                    "LEFT JOIN FETCH p.comments " +
+                    "LEFT JOIN FETCH p.user " +
+                    "LEFT JOIN FETCH p.tags " +
+                    "GROUP BY p " +
+                    "ORDER BY SIZE(p.comments) DESC";
+
+            Query<Post> query = session.createQuery(hql, Post.class);
+            query.setMaxResults(10);
+
+            return query.getResultList();
+        }
+    }
+
+    @Override
+    public List<Post> get10MostRecentlyAddedPosts() {
+        try (Session session = sessionFactory.openSession()) {
+            String hql = "SELECT DISTINCT p " +
+                    "FROM Post p " +
+                    "LEFT JOIN FETCH p.comments " +
+                    "LEFT JOIN FETCH p.user " +
+                    "LEFT JOIN FETCH p.tags " +
+                    "ORDER BY p.id DESC";
+
+            Query<Post> query = session.createQuery(hql, Post.class);
+            query.setMaxResults(10);
+
+            return query.getResultList();
         }
     }
 
@@ -162,7 +210,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public List<Post> getPostsByTagId(int id) {
-        try(Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             Query<Post> query = session.createQuery("select p from Post p join p.tags t where t.id = :tagId", Post.class);
             query.setParameter("tagId", id);
             return query.list();

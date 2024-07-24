@@ -54,6 +54,36 @@ public class TagController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
+
+    @GetMapping("{id}/posts")
+    public List<Post> getPostsByTagId(@PathVariable int id) {
+        try {
+            Tag tag = tagService.findById(id);
+            List<Post> posts = postService.findPostsByTagId(tag.getId());
+            return posts;
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    e.getMessage()
+            );
+        }
+
+    }
+    @GetMapping("/name/posts")
+    public List<Post> getPostsByTagName(@RequestParam String name) {
+        try{
+            Optional<Tag> tag = tagService.findByName(name);
+            List<Post> posts = postService.findPostsByTagId(tag.get().getId());
+            return posts;
+        }catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    e.getMessage()
+            );
+        }
+    }
+
+
     @PostMapping
     public Tag createTag( @Valid @RequestParam TagDTO tagDTO) {
         try {
@@ -93,33 +123,6 @@ public class TagController {
     }
 
 
-    @GetMapping("{id}/posts")
-    public List<Post> getPostsByTagId(@PathVariable int id) {
-        try {
-            Tag tag = tagService.findById(id);
-            List<Post> posts = postService.findPostsByTagId(tag.getId());
-            return posts;
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        }
-
-    }
-    @GetMapping("/name/posts")
-    public List<Post> getPostsByTagName(@RequestParam String name) {
-        try{
-            Optional<Tag> tag = tagService.findByName(name);
-            List<Post> posts = postService.findPostsByTagId(tag.get().getId());
-            return posts;
-        }catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        }
-    }
 
     @DeleteMapping("/{tagId}")
     public void deleteTag(@PathVariable int tagId) {

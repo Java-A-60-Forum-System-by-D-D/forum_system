@@ -1,6 +1,7 @@
 package com.example.ForumProject.services.implementations;
 
 
+import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.services.contracts.CloudinaryImageService;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
@@ -55,10 +56,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUserById(int id) {
         return userRepository.getUserById(id);
+
     }
 
     @Override
     public User getUserByUsername(String username) {
+        if (userRepository.getUserByUsername(username)
+                          .isEmpty()) {
+            throw new EntityNotFoundException("User", "username", username);
+        }
 
         return userRepository.getUserByUsername(username)
                              .get(0);
@@ -68,6 +74,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUserByFirstName(String firstName) {
         return userRepository.getUserByFirstName(firstName);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        if (userRepository.getUserByEmail(email)
+                          .isEmpty()) {
+            throw new EntityNotFoundException("User", "email", email);
+        }
+
+        return userRepository.getUserByEmail(email).get(0);
     }
 
     @Override

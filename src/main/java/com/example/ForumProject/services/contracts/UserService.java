@@ -18,11 +18,14 @@ public interface UserService {
 
     User getUserByFirstName(String firstName);
 
+    User getUserByEmail(String email);
+
     User createUser(User user);
 
     User updateUser(User user);
 
     boolean verifyPassword(User user, String rawPassword);
+
     List<Post> getPostsByUser(User user, FilterOptionsUsersPosts filterOptionsUsersPosts);
 
 }
