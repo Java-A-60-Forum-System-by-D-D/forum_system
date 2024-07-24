@@ -46,25 +46,20 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**").permitAll();
                     auth.requestMatchers("/api").permitAll();
-                    auth.requestMatchers("/api/users/**").hasAnyRole("User","Admin");
+                    auth.requestMatchers("/api/users/**").hasAnyRole("User", "Admin");
                     auth.requestMatchers("/api/admin/**").hasAnyRole("Admin");
 //                    auth.requestMatchers("/api/posts/**").hasAnyRole("Admin","User,","ADMIN","USER");
                     auth.anyRequest().permitAll();
                 });
 
         http.oauth2ResourceServer()
-            .jwt()
-            .jwtAuthenticationConverter(jwtAuthenticationConverter());
+                .jwt()
+                .jwtAuthenticationConverter(jwtAuthenticationConverter());
         http.sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
         return http.build();
-
-
-
-
-
     }
 
     @Bean
@@ -83,19 +78,19 @@ public class SecurityConfig {
     @Bean
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(keys.getPublicKey())
-                               .build();
+                .build();
     }
 
     @Bean
     public JwtEncoder jwtEncoder() {
         JWK jwk = new RSAKey.Builder(keys.getPublicKey()).privateKey(keys.getPrivateKey())
-                                                         .build();
+                .build();
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
     }
 
     @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter(){
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
