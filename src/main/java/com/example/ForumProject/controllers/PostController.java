@@ -32,7 +32,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
-//@Tag(name = "Posts", description = "Endpoints for managing posts")
+@io.swagger.v3.oas.annotations.tags.Tag(name = "PostController", description = "Endpoints for managing posts")
 public class PostController {
     private final PostService postService;
     private final PostMapper postMapper;
@@ -90,9 +90,13 @@ public class PostController {
             );
         }
     }
-
+    @Operation(summary = "Get tags for a post", description = "Retrieve all tags associated with a specific post by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the tags"),
+            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true)))
+    })
     @GetMapping("/{id}/tags")
-    public List<Tag> getPostTags(@Parameter(description = "ID of the post to retrieve") @PathVariable int id) {
+    public List<Tag> getPostTags(@Parameter(description = "ID of the post to retrieve tags for") @PathVariable int id) {
         try {
             Post post = postService.getPostById(id);
             List<Tag> tags = tagService.findTagsByPostId(post.getId());
@@ -104,8 +108,6 @@ public class PostController {
             );
         }
     }
-
-
     @PostMapping
     @Operation(summary = "Create a new post", description = "Create a new post with the given details")
     @ApiResponses(value = {
@@ -122,7 +124,12 @@ public class PostController {
         return postService.createPost(post,user);
 
     }
-
+    @Operation(summary = "Add a tag to a post", description = "Create a new tag and associate it with a specific post by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Tag created and associated with the post"),
+            @ApiResponse(responseCode = "404", description = "Post or tag not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "409", description = "Tag already exists", content = @Content(schema = @Schema(hidden = true)))
+    })
     @PostMapping("/{id}/tags")
     public Tag createTag(@PathVariable int id, @Valid @RequestBody TagDTO tagDTO) {
         try {
@@ -172,7 +179,12 @@ public class PostController {
         }
     }
 
-
+    @Operation(summary = "Update a tag for a post", description = "Update an existing tag associated with a post")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated the tag"),
+            @ApiResponse(responseCode = "404", description = "Post or tag not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
+    })
     @PutMapping("/{postId}/tags/{tagId}")
     public Tag updatePostTag(@PathVariable int postId, @PathVariable int tagId, @Valid @RequestBody TagDTO tagDTO) {
         try {
@@ -191,7 +203,12 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
-
+    @Operation(summary = "Delete a tag from a post", description = "Remove a tag from a specific post")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully removed the tag"),
+            @ApiResponse(responseCode = "404", description = "Post or tag not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
+    })
     @DeleteMapping("{postId}/tags/{tagId}")
     public void deleteTagFromPost(@PathVariable int postId, @PathVariable int tagId) {
         try {

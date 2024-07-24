@@ -28,7 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/posts/{postId}/comments")
-@Tag(name = "Comments", description = "Endpoints for managing comments")
+@Tag(name = "CommentController", description = "Endpoints for managing comments")
 public class CommentController {
     private final CommentService commentService;
     private final PostService postService;

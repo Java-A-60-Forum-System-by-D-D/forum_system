@@ -13,7 +13,6 @@ import com.example.ForumProject.models.helpers.PostMapper;
 import com.example.ForumProject.models.helpers.UserMapper;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
-import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.models.dto.UserDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,7 +23,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +33,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/users")
-@Tag(name = "Users", description = "Endpoints for managing users")
+@Tag(name = "UserController", description = "Endpoints for managing users")
 public class UserController {
 
     private final UserService userService;
@@ -54,7 +52,12 @@ public class UserController {
         this.commentService = commentService;
     }
 
-
+    @Operation(summary = "Get posts by user ID", description = "Retrieve posts created by a specific user, with optional filtering by title, content, tag, sorting by specified fields.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the user's posts"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "Forbidden - User does not have permission", content = @Content(schema = @Schema(hidden = true)))
+    })
     @GetMapping("/id/{user_id}/posts")
     public List<Post> getUsersPosts(@PathVariable int user_id, @Parameter(description = "Filter posts by title") @RequestParam(required = false) String title,
                                     @Parameter(description = "Filter posts by content") @RequestParam(required = false) String content,
@@ -64,7 +67,7 @@ public class UserController {
 
         FilterOptionsUsersPosts filterOptionsUsersPosts = new FilterOptionsUsersPosts(title, content, tagId, sortBy, sortOrder);
         Authentication authentication = SecurityContextHolder.getContext()
-                                                             .getAuthentication();
+                .getAuthentication();
         String username = authentication.getName();
         User userPosts = userService.getUserById(user_id);
         try {
@@ -75,14 +78,19 @@ public class UserController {
     }
 
 
-
+    @Operation(summary = "Get comments by user ID", description = "Retrieve comments made by a specific user, with optional sorting by specified fields.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the user's comments"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = "Forbidden - User does not have permission", content = @Content(schema = @Schema(hidden = true)))
+    })
     @GetMapping("/id/{user_id}/comments")
     public List<Comment> getUsersComments(@Valid @PathVariable int user_id,
                                           @RequestParam(required = false) String sortBy,
                                           @RequestParam(required = false) String sortOrder) {
         FilterOptionsComments filterOptionsComments = new FilterOptionsComments(sortBy, sortOrder);
         Authentication authentication = SecurityContextHolder.getContext()
-                                                             .getAuthentication();
+                .getAuthentication();
         String username = authentication.getName();
         User userPosts = userService.getUserById(user_id);
         try {
@@ -91,11 +99,7 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
 
-
-
     }
-
-
 
     @Operation(summary = "Update user information", description = "Update the details of a user")
     @ApiResponses(value = {
@@ -111,8 +115,6 @@ public class UserController {
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
-
-
     }
 
 
