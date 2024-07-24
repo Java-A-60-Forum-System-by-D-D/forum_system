@@ -1,7 +1,6 @@
 package com.example.ForumProject.models.helpers;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
+
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.persistentClasses.UserRole;
@@ -12,11 +11,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 

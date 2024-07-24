@@ -19,15 +19,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
 
     @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, UserRepository userRepository1, PasswordEncoder passwordEncoder, UserMapper userMapper, TokenService tokenService, AuthenticationManager authenticationManager) {
+    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, UserRepository userRepository1, PasswordEncoder passwordEncoder, TokenService tokenService, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository1;
         this.passwordEncoder = passwordEncoder;
-        this.userMapper = userMapper;
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
     }

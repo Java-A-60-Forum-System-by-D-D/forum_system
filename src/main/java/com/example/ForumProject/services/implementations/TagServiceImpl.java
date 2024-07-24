@@ -3,9 +3,7 @@ package com.example.ForumProject.services.implementations;
 import com.example.ForumProject.exceptions.EntityDuplicateException;
 import com.example.ForumProject.models.persistentClasses.*;
 import com.example.ForumProject.repositories.contracts.TagRepository;
-import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.TagService;
-import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.utility.ValidatorHelpers;
 import org.springframework.stereotype.Service;
 

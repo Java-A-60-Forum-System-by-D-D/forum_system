@@ -5,14 +5,13 @@ import com.example.ForumProject.models.persistentClasses.*;
 import com.example.ForumProject.repositories.contracts.TagRepository;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.repositories.contracts.PostRepository;
-import com.example.ForumProject.services.contracts.TagService;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.utility.ValidatorHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
+
 
 @Service
 public class PostServiceImpl implements PostService {

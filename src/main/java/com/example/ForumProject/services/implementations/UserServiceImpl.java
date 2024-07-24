@@ -2,24 +2,17 @@ package com.example.ForumProject.services.implementations;
 
 
 import com.example.ForumProject.exceptions.EntityNotFoundException;
-import com.example.ForumProject.models.persistentClasses.Tag;
-import com.example.ForumProject.services.contracts.CloudinaryImageService;
-import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.models.persistentClasses.User;
-
 import com.example.ForumProject.repositories.contracts.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+
 
 
 import java.util.List;
@@ -29,7 +22,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -43,9 +35,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+
     }
 
     @Override
@@ -86,20 +78,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.getUserByEmail(email).get(0);
     }
 
-    @Override
-    public User createUser(User user) {
-        return userRepository.createUser(user);
-
-    }
 
     @Override
     public User updateUser(User user) {
         return userRepository.updateUser(user);
-    }
-
-    @Override
-    public boolean verifyPassword(User user, String rawPassword) {
-        return passwordEncoder.matches(rawPassword, user.getPassword());
     }
 
 

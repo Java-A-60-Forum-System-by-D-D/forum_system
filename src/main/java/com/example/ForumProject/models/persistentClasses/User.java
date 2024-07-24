@@ -1,9 +1,8 @@
 package com.example.ForumProject.models.persistentClasses;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -88,8 +87,6 @@ public class User extends BaseEntity implements UserDetails {
     private Set<Comment> comments;
 
     @JsonIgnore
-//    @JsonManagedReference /*TODO Read about it*/
-//    @JsonBackReference/*TODO Read about it*/
     @OneToMany(mappedBy = "user")
     private Set<Like> likes;
 

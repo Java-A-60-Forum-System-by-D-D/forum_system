@@ -54,20 +54,11 @@ public class CloudinaryImageServiceImpl implements CloudinaryImageService {
 
     @Override
     public String uploadImageFromUrl(String imageUrl) throws IOException {
-//        URL url = new URL(imageUrl);
-//        File tempFile = File.createTempFile(TEMP_FILE_PREFIX, ".tmp");
-//        Files.copy(url.openStream(), Paths.get(tempFile.toURI()));
-        Map result = cloudinary.uploader().upload(imageUrl, ObjectUtils.asMap("resource_type", "image"));
-        return result.get("url").toString();
-//        try {
-//            return this.cloudinary
-//                    .uploader()
-//                    .upload(tempFile, Collections.emptyMap())
-//                    .get(URL_KEY)
-//                    .toString();
-//        } finally {
-//            tempFile.delete();
-//        }
-//
+
+        Map result = cloudinary.uploader()
+                               .upload(imageUrl, ObjectUtils.asMap("resource_type", "image"));
+        return result.get("url")
+                     .toString();
+
     }
 }
