@@ -1,11 +1,6 @@
 package com.example.ForumProject.models.dto;
 
-import com.example.ForumProject.models.persistentClasses.User;
-import io.swagger.v3.oas.annotations.Hidden;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
+
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
