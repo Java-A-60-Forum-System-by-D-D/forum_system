@@ -45,7 +45,6 @@ public class PostController {
         this.postService = postService;
         this.postMapper = postMapper;
         this.userService = userService;
-
         this.tagService = tagService;
         this.tagMapper = tagMapper;
     }
@@ -62,36 +61,17 @@ public class PostController {
                                   @Parameter(description = "Filter posts by tag") @RequestParam(required = false) Integer tagId,
                                   @RequestParam(required = false) String sortBy,
                                   @RequestParam(required = false) String sortOrder
-    )
-    {
-        FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(title,content,userId,tagId,sortBy,sortOrder);
+    ) {
+        FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(title, content, userId, tagId, sortBy, sortOrder);
         Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
+                                                             .getAuthentication();
         String username = authentication.getName();
         User loggedUser = userService.getUserByUsername(username);
         try {
-            return postService.getPosts(loggedUser,filterOptionsPosts);
+            return postService.getPosts(loggedUser, filterOptionsPosts);
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
-    }
-
-
-    @PostMapping
-    @Operation(summary = "Create a new post", description = "Create a new post with the given details")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Post created successfully"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(hidden = true)))
-    })
-    public Post createPost(@Valid @RequestBody PostDTO postDTO) {
-        Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
-        String username = authentication.getName();
-        User user = userService.getUserByUsername(username);
-        Post post = postMapper.createFromDto(postDTO, user);
-        return postService.createPost(post);
-
     }
 
     @GetMapping("/{id}")
@@ -110,78 +90,44 @@ public class PostController {
             );
         }
     }
-    @PutMapping("/{id}")
-    @Operation(summary = "Update a post by ID", description = "Update the details of a post by its ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully updated the post"),
-            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
-    })
-    public Post updatePost(@Parameter(description = "ID of the post to update") @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            Post existingPost = postService.getPostById(id);
-
-            Post post = postMapper.fromDto(id, postDTO);
-            return postService.updatePost(post, user, existingPost);
-
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-    }
-
-
-    @DeleteMapping("/{id}")
-    @Operation(summary = "Delete a post by ID", description = "Delete a post by its ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully deleted the post"),
-            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
-    })
-    public void deletePost(@Parameter(description = "ID of the post to delete") @PathVariable int id) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
-            String username = authentication.getName();
-
-            User user = userService.getUserByUsername(username);
-
-            postService.deletePost(id, user);
-
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-
-    }
 
     @GetMapping("/{id}/tags")
     public List<Tag> getPostTags(@Parameter(description = "ID of the post to retrieve") @PathVariable int id) {
-        try{
+        try {
             Post post = postService.getPostById(id);
             List<Tag> tags = tagService.findTagsByPostId(post.getId());
             return tags;
-        }catch (EntityNotFoundException e){
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     e.getMessage()
             );
         }
     }
+
+
+    @PostMapping
+    @Operation(summary = "Create a new post", description = "Create a new post with the given details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Post created successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public Post createPost(@Valid @RequestBody PostDTO postDTO) {
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        Post post = postMapper.createFromDto(postDTO, user);
+        return postService.createPost(post,user);
+
+    }
+
     @PostMapping("/{id}/tags")
     public Tag createTag(@PathVariable int id, @Valid @RequestParam TagDTO tagDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             Post post = postService.getPostById(id);
@@ -199,11 +145,39 @@ public class PostController {
             );
         }
     }
-    @PutMapping("/{postId}/tags/{tagId}")
-    public Tag updatePostTag(@PathVariable int postId,@PathVariable int tagId, @Valid @RequestBody TagDTO tagDTO) {
+
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update a post by ID", description = "Update the details of a post by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated the post"),
+            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public Post updatePost(@Parameter(description = "ID of the post to update") @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
+            String username = authentication.getName();
+            User user = userService.getUserByUsername(username);
+            Post existingPost = postService.getPostById(id);
+
+            Post post = postMapper.fromDto(id, postDTO);
+            return postService.updatePost(post, user, existingPost);
+
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+
+    @PutMapping("/{postId}/tags/{tagId}")
+    public Tag updatePostTag(@PathVariable int postId, @PathVariable int tagId, @Valid @RequestBody TagDTO tagDTO) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext()
+                                                                 .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             Tag tag = tagService.findById(tagId);
@@ -211,27 +185,56 @@ public class PostController {
             Post post = postService.getPostById(postId);
             postService.updatePostTag(tag, post, user, newTag);
             return tag;
-        }catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }catch (AuthorizationException e) {
+        } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     }
+
     @DeleteMapping("{postId}/tags/{tagId}")
     public void deleteTagFromPost(@PathVariable int postId, @PathVariable int tagId) {
-        try{
+        try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             Post post = postService.getPostById(postId);
             Tag tag = tagService.findById(tagId);
             postService.deleteTagFromPost(tag, post);
-        }catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         } catch (AuthorizationException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Delete a post by ID", description = "Delete a post by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully deleted the post"),
+            @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
+    })
+    public void deletePost(@Parameter(description = "ID of the post to delete") @PathVariable int id) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext()
+                                                                 .getAuthentication();
+            String username = authentication.getName();
+
+            User user = userService.getUserByUsername(username);
+
+            postService.deletePost(id, user);
+
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    e.getMessage()
+            );
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
     }
 
 }

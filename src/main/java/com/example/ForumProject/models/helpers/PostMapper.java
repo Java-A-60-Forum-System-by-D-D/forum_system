@@ -6,6 +6,8 @@ import com.example.ForumProject.models.dto.PostDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+
 @Component
 public class PostMapper {
     private final ModelMapper modelMapper;
@@ -18,6 +20,8 @@ public class PostMapper {
     public Post createFromDto(PostDTO postDTO, User user) {
         Post post = modelMapper.map(postDTO, Post.class);
         post.setUser(user);
+
+        post.setLikes(new HashSet<>());
         return post;
     }
 

@@ -4,6 +4,7 @@ import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.CommentDTO;
+import com.example.ForumProject.services.contracts.CommentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -12,16 +13,27 @@ import java.time.LocalDateTime;
 @Component
 public class CommentMapper {
     private ModelMapper modelMapper;
+    private final CommentService commentService;
 
-    public CommentMapper(ModelMapper modelMapper) {
+    public CommentMapper(ModelMapper modelMapper, CommentService commentService) {
         this.modelMapper = modelMapper;
+        this.commentService = commentService;
     }
+
+
     public Comment createFromDto(Post post, CommentDTO commentDTO, User user){
         Comment comment = modelMapper.map(commentDTO, Comment.class);
         comment.setCreatedAt(LocalDateTime.now());
         comment.setUpdatedAt(LocalDateTime.now());
         comment.setUser(user);
         comment.setPost(post);
+
+        if (commentDTO.getParentCommentId()
+                      .isPresent()) {
+            comment.setParentComment(new Comment());
+
+            comment.getParentComment().setId((commentDTO.getParentCommentId().orElse(null)));
+        }
         return comment;
     }
     public Comment updateFromDto(Comment existingComment, CommentDTO commentDTO, User user) {

@@ -4,7 +4,6 @@ import com.example.ForumProject.services.contracts.AdminService;
 import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.persistentClasses.User;
-import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -27,15 +26,13 @@ public class AdminController {
 
     private final AdminService adminService;
     private final UserService userService;
-    private final PostService postService;
 
 
     @Autowired
-    public AdminController(AdminService adminService, UserService userService, PostService postService) {
+    public AdminController(AdminService adminService, UserService userService) {
 
         this.adminService = adminService;
         this.userService = userService;
-        this.postService = postService;
     }
 
     @PostMapping("/admin-privileges/{user_id}")
@@ -194,6 +191,21 @@ public class AdminController {
     public User getByFirstName(@Parameter(description = "First name of the user to be retrieved", required = true) @PathVariable String firstName) {
         try {
             return userService.getUserByFirstName(firstName);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+
+    }
+
+    @Operation(summary = "Get user by email", description = "Retrieve a user by their email")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
+    @GetMapping("/email/{userEmail}")
+    public User getByEmail(@Parameter(description = "Email of the user to be retrieved", required = true) @PathVariable String userEmail) {
+        try {
+            return userService.getUserByEmail(userEmail);
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

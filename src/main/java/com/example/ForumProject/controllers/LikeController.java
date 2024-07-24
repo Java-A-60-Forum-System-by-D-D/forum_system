@@ -5,7 +5,6 @@ import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.persistentClasses.Like;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.services.contracts.LikeService;
-import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -19,12 +18,11 @@ public class LikeController {
 
     private final LikeService likeService;
     private final UserService userService;
-    private final PostService postService;
 
-    public LikeController(LikeService likeService, UserService userService, PostService postService) {
+    public LikeController(LikeService likeService, UserService userService) {
         this.likeService = likeService;
         this.userService = userService;
-        this.postService = postService;
+
     }
 
     @PostMapping("/{postId}/like")
@@ -32,7 +30,7 @@ public class LikeController {
             @PathVariable int postId) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
 
             User user = userService.getUserByUsername(username);
@@ -48,7 +46,7 @@ public class LikeController {
             @PathVariable int postId) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
+                                                                 .getAuthentication();
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             likeService.unlikePost(user.getId(), postId);

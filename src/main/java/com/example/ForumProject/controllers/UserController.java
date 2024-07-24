@@ -26,7 +26,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +51,6 @@ public class UserController {
         this.userMapper = userMapper;
         this.postService = postService;
         this.postMapper = postMapper;
-
         this.commentService = commentService;
     }
 
@@ -98,28 +96,6 @@ public class UserController {
     }
 
 
-    @Operation(summary = "Create a new post for a user", description = "Create a new post for a specific user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Post created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Post.class))),
-            @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
-    })
-    @PostMapping("/username/{username}/posts")
-    public Post createPost(@Valid @RequestBody PostDTO postDTO, @Valid @PathVariable String username, @RequestHeader HttpHeaders headers) {
-
-        try {
-
-            Post post = postMapper.createFromDto(postDTO, userService.getUserByUsername(username));
-            return postService.createPost(post);
-
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-
-
-    }
 
     @Operation(summary = "Update user information", description = "Update the details of a user")
     @ApiResponses(value = {
