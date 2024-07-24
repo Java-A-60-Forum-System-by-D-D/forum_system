@@ -1,5 +1,6 @@
 package com.example.ForumProject.services.implementations;
 
+import com.example.ForumProject.models.filterOptions.FilterOptionsComments;
 import com.example.ForumProject.services.contracts.CommentService;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.persistentClasses.*;
@@ -24,6 +25,13 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getComments() {
         return commentRepository.getComments();
+    }
+
+
+    @Override
+    public List<Comment> getCommentsByUser(User user, FilterOptionsComments filterOptionsComments) {
+
+        return commentRepository.getCommentsByUser(user,filterOptionsComments);
     }
 
     @Override

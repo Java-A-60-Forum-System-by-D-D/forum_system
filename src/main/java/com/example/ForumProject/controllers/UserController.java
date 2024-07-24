@@ -1,11 +1,14 @@
 package com.example.ForumProject.controllers;
 
 
+import com.example.ForumProject.models.filterOptions.FilterOptionsComments;
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
+import com.example.ForumProject.models.persistentClasses.Comment;
+import com.example.ForumProject.services.contracts.CommentService;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
-import com.example.ForumProject.models.helpers.LoggedUser;
 import com.example.ForumProject.models.helpers.PostMapper;
 import com.example.ForumProject.models.helpers.UserMapper;
 import com.example.ForumProject.models.persistentClasses.Post;
@@ -24,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -36,20 +41,62 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
-    private final LoggedUser loggedUser;
     private final PostService postService;
     private final PostMapper postMapper;
+    private final CommentService commentService;
 
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper, LoggedUser loggedUser, PostService postService, PostMapper postMapper) {
+    public UserController(UserService userService, UserMapper userMapper, PostService postService, PostMapper postMapper, CommentService commentService) {
         this.userService = userService;
         this.userMapper = userMapper;
-        this.loggedUser = loggedUser;
         this.postService = postService;
         this.postMapper = postMapper;
 
+        this.commentService = commentService;
     }
+
+
+    @GetMapping("/id/{user_id}/posts")
+    public List<Post> getUsersPosts(@PathVariable int user_id, @Parameter(description = "Filter posts by title") @RequestParam(required = false) String title,
+                                    @Parameter(description = "Filter posts by content") @RequestParam(required = false) String content,
+                                    @Parameter(description = "Filter posts by tag") @RequestParam(required = false) Integer tagId,
+                                    @RequestParam(required = false) String sortBy,
+                                    @RequestParam(required = false) String sortOrder) {
+
+        FilterOptionsUsersPosts filterOptionsUsersPosts = new FilterOptionsUsersPosts(title, content, tagId, sortBy, sortOrder);
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User userPosts = userService.getUserById(user_id);
+        try {
+            return userService.getPostsByUser(userPosts, filterOptionsUsersPosts);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+
+
+
+    @GetMapping("/id/{user_id}/comments")
+    public List<Comment> getUsersComments(@Valid @PathVariable int user_id,
+                                          @RequestParam(required = false) String sortBy,
+                                          @RequestParam(required = false) String sortOrder) {
+        FilterOptionsComments filterOptionsComments = new FilterOptionsComments(sortBy, sortOrder);
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User userPosts = userService.getUserById(user_id);
+        try {
+            return commentService.getCommentsByUser(userPosts, filterOptionsComments);
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
+
+
+    }
+
 
     @Operation(summary = "Create a new post for a user", description = "Create a new post for a specific user")
     @ApiResponses(value = {
