@@ -160,7 +160,14 @@ public class PostRepositoryImpl implements PostRepository {
 
     }
 
-
+    @Override
+    public List<Post> getPostsByTagId(int id) {
+        try(Session session = sessionFactory.openSession()){
+            Query<Post> query = session.createQuery("select p from Post p join p.tags t where t.id = :tagId", Post.class);
+            query.setParameter("tagId", id);
+            return query.list();
+        }
+    }
 
 
 }

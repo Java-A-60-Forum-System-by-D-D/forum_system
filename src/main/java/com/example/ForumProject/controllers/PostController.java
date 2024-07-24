@@ -1,7 +1,12 @@
 package com.example.ForumProject.controllers;
 
+import com.example.ForumProject.exceptions.EntityDuplicateException;
+import com.example.ForumProject.models.dto.TagDTO;
+import com.example.ForumProject.models.helpers.TagMapper;
+import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.services.contracts.PostService;
+import com.example.ForumProject.services.contracts.TagService;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
@@ -15,7 +20,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 
@@ -28,18 +32,22 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
-@Tag(name = "Posts", description = "Endpoints for managing posts")
+//@Tag(name = "Posts", description = "Endpoints for managing posts")
 public class PostController {
     private final PostService postService;
     private final PostMapper postMapper;
     private final UserService userService;
+    private final TagService tagService;
+    private final TagMapper tagMapper;
 
 
-    public PostController(PostService postService, PostMapper postMapper, UserService userService) {
+    public PostController(PostService postService, PostMapper postMapper, UserService userService, TagService tagService, TagMapper tagMapper) {
         this.postService = postService;
         this.postMapper = postMapper;
         this.userService = userService;
 
+        this.tagService = tagService;
+        this.tagMapper = tagMapper;
     }
 
     @Operation(summary = "Get all posts", description = "Get a list of all posts, optionally filtered by title, content, user, or tag")
@@ -102,7 +110,6 @@ public class PostController {
             );
         }
     }
-
     @PutMapping("/{id}")
     @Operation(summary = "Update a post by ID", description = "Update the details of a post by its ID")
     @ApiResponses(value = {
@@ -120,7 +127,6 @@ public class PostController {
 
             Post post = postMapper.fromDto(id, postDTO);
             return postService.updatePost(post, user, existingPost);
-
 
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -156,6 +162,76 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
 
+    }
+
+    @GetMapping("/{id}/tags")
+    public List<Tag> getPostTags(@Parameter(description = "ID of the post to retrieve") @PathVariable int id) {
+        try{
+            Post post = postService.getPostById(id);
+            List<Tag> tags = tagService.findTagsByPostId(post.getId());
+            return tags;
+        }catch (EntityNotFoundException e){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    e.getMessage()
+            );
+        }
+    }
+    @PostMapping("/{id}/tags")
+    public Tag createTag(@PathVariable int id, @Valid @RequestParam TagDTO tagDTO) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext()
+                    .getAuthentication();
+            String username = authentication.getName();
+            User user = userService.getUserByUsername(username);
+            Post post = postService.getPostById(id);
+            Tag tag = tagMapper.tagFromDTO(tagDTO);
+            return postService.createTag(tag, post, user);
+        } catch (EntityDuplicateException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    e.getMessage()
+            );
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    e.getMessage()
+            );
+        }
+    }
+    @PutMapping("/{postId}/tags/{tagId}")
+    public Tag updatePostTag(@PathVariable int postId,@PathVariable int tagId, @Valid @RequestBody TagDTO tagDTO) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext()
+                    .getAuthentication();
+            String username = authentication.getName();
+            User user = userService.getUserByUsername(username);
+            Tag tag = tagService.findById(tagId);
+            Tag newTag = tagMapper.tagFromDTO(tagDTO);
+            Post post = postService.getPostById(postId);
+            postService.updatePostTag(tag, post, user, newTag);
+            return tag;
+        }catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+    }
+    @DeleteMapping("{postId}/tags/{tagId}")
+    public void deleteTagFromPost(@PathVariable int postId, @PathVariable int tagId) {
+        try{
+            Authentication authentication = SecurityContextHolder.getContext()
+                    .getAuthentication();
+            String username = authentication.getName();
+            User user = userService.getUserByUsername(username);
+            Post post = postService.getPostById(postId);
+            Tag tag = tagService.findById(tagId);
+            postService.deleteTagFromPost(tag, post);
+        }catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (AuthorizationException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
     }
 
 }

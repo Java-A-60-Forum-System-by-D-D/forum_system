@@ -2,13 +2,12 @@ package com.example.ForumProject.models.persistentClasses;
 
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "tags")

@@ -1,5 +1,6 @@
 package com.example.ForumProject.services.contracts;
 
+import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.models.persistentClasses.User;
 
 
@@ -21,4 +22,5 @@ public interface UserService {
     boolean verifyPassword(User user, String rawPassword);
 
 
+    List<Tag> getUserTags(User user);
 }

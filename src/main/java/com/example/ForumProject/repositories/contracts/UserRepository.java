@@ -1,5 +1,6 @@
 package com.example.ForumProject.repositories.contracts;
 
+import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.models.persistentClasses.User;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface UserRepository {
     User updateUser(User user);
 
     User createUser(User user);
+
+    List<Tag> getUserTags(User user);
 }

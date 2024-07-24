@@ -1,6 +1,7 @@
 package com.example.ForumProject.services.implementations;
 
 
+import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.services.contracts.CloudinaryImageService;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.models.persistentClasses.User;
@@ -81,6 +82,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean verifyPassword(User user, String rawPassword) {
         return passwordEncoder.matches(rawPassword, user.getPassword());
+    }
+
+    @Override
+    public List<Tag> getUserTags(User user) {
+        return userRepository.getUserTags(user);
     }
 
 
