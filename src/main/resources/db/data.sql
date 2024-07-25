@@ -17,7 +17,7 @@ VALUES ('Java'),
        ('Database'),
        ('Security');
 
--- Insert users with hashed passwords (bcrypt) - like "password1", "password2"... and phone numbers for admins
+-- Insert users with hashed passwords (bcrypt) - like "hashed_password" and phone numbers for admins
 INSERT INTO users (is_blocked, email, first_name, last_name, password_hash, phone_number, username)
 VALUES (0, 'admin1@example.com', 'Alice', 'Admin', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW',
         '1234567890', 'admin1'),
