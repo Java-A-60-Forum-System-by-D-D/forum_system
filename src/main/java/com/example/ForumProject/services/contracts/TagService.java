@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface TagService {
     Optional<Tag> findByName(String name);
 
-    void deleteTag(Tag tag);
+    void deleteTag(Tag tag,User user);
 
     List<Tag> findTagsByPostId(int postId);
 

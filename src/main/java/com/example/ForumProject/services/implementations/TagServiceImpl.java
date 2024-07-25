@@ -2,6 +2,7 @@ package com.example.ForumProject.services.implementations;
 
 import com.example.ForumProject.exceptions.EntityDuplicateException;
 import com.example.ForumProject.models.persistentClasses.*;
+import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.repositories.contracts.TagRepository;
 import com.example.ForumProject.services.contracts.TagService;
 import com.example.ForumProject.utility.ValidatorHelpers;
@@ -12,11 +13,14 @@ import java.util.Optional;
 
 @Service
 public class TagServiceImpl implements TagService {
+    public static final String ONLY_ADMINS_CAN_DELETE_TAGS_FROM_THE_SYSTEM = "Only Admins can delete tags from the system";
     private final TagRepository tagRepository;
+    private final PostRepository postRepository;
 
 
-    public TagServiceImpl(TagRepository tagRepository) {
+    public TagServiceImpl(TagRepository tagRepository, PostRepository postRepository) {
         this.tagRepository = tagRepository;
+        this.postRepository = postRepository;
     }
 
 
@@ -27,7 +31,14 @@ public class TagServiceImpl implements TagService {
 
 
     @Override
-    public void deleteTag(Tag tag) {
+    public void deleteTag(Tag tag,User user) {
+        ValidatorHelpers.roleAuthenticationValidator(user,new UserRole(UserRoleEnum.ADMIN), ONLY_ADMINS_CAN_DELETE_TAGS_FROM_THE_SYSTEM);
+
+        List<Post> posts = postRepository.getPostsByTagId(tag.getId());
+        for (Post post : posts) {
+            post.getTags().remove(tag);
+            postRepository.updatePost(post);
+        }
         tagRepository.deleteTag(tag);
 
     }
