@@ -67,6 +67,7 @@ public class PostServiceImpl implements PostService {
 
 
         ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), existingPost, INVALID_UPDATE_COMMAND);
+        postRepository.checkIfPostWithTitleExistsForUser(post,user);
 
         existingPost.setTitle(post.getTitle());
         existingPost.setContent(post.getContent());
@@ -77,6 +78,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post createPost(Post post, User user) {
+        postRepository.checkIfPostWithTitleExistsForUser(post,user);
 
         user.getPosts()
             .add(post);
