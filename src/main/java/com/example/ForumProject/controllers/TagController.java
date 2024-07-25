@@ -114,7 +114,7 @@ public class TagController {
             @ApiResponse(responseCode = "409", description = "Tag already exists", content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping
-    public Tag createTag( @Valid @RequestParam TagDTO tagDTO) {
+    public Tag createTag( @Valid @RequestBody TagDTO tagDTO) {
         try {
             Authentication authentication = SecurityContextHolder.getContext()
                     .getAuthentication();

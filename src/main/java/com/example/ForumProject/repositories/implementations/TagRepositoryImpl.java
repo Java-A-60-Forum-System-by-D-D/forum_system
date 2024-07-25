@@ -25,8 +25,8 @@ public class TagRepositoryImpl implements TagRepository {
         try (Session session = sessionFactory.openSession()) {
             Query<Tag> query = session.createQuery("from Tag where name = :name", Tag.class);
             query.setParameter("name", name);
-            if (query.getResultList().isEmpty()) {
-                throw new EntityNotFoundException("Tag", "name", name);
+            if(query.getResultList().isEmpty()){
+                return Optional.empty();
             }
             return Optional.ofNullable(query.list().get(0));
         }

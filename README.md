@@ -42,7 +42,8 @@ It is a RESTful API for a social media platform that allows users to create and 
 2.2 Filling the base
 - In application.properties setting spring.sql.init.mode=always, after filling should be set to never.
 
+!!!For now, it's fine to use insert_into_all_tables with "hashed_password" for all users
 !!! If you want to manually run the scripts they are located in the resources folder.
-
+!!! Functionality with Tags has not yet been tested
 - 
   

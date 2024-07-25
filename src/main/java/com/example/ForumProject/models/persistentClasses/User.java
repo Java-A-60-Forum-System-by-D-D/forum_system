@@ -79,7 +79,7 @@ public class User extends BaseEntity implements UserDetails {
     private LocalDateTime updatedAt;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Post> posts;
 
     @JsonIgnore

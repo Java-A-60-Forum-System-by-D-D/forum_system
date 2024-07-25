@@ -147,7 +147,6 @@ public class PostServiceImpl implements PostService {
                  .contains(tag)) {
             tagRepository.createTag(tag);
         }
-        addTagToPost(tag, post);
         return tag;
 
 
