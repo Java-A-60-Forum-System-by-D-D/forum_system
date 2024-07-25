@@ -56,13 +56,25 @@ public class PostServiceImpl implements PostService {
         return postRepository.get10MostRecentlyAddedPosts();
     }
 
+
+    @Override
+    public Post createPost(Post post, User user) {
+        postRepository.checkIfPostWithTitleExistsForUser(post,user);
+
+        user.getPosts()
+            .add(post);
+
+        userService.updateUser(user);
+
+        return postRepository.createPost(post);
+    }
+
     @Override
     public Post updatePost(Post post) {
         return postRepository.updatePost(post);
     }
 
     @Override
-
     public Post updatePost(Post post, User user, Post existingPost) {
 
 
@@ -76,17 +88,7 @@ public class PostServiceImpl implements PostService {
     }
 
 
-    @Override
-    public Post createPost(Post post, User user) {
-        postRepository.checkIfPostWithTitleExistsForUser(post,user);
 
-        user.getPosts()
-            .add(post);
-
-        userService.updateUser(user);
-
-        return postRepository.createPost(post);
-    }
 
     @Override
     public void deletePost(int id, User user) {

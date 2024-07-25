@@ -1,12 +1,15 @@
 package com.example.ForumProject.services.implementations;
 
 import com.example.ForumProject.Helpers;
+import com.example.ForumProject.exceptions.EntityDuplicateException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.services.contracts.PostService;
+import com.example.ForumProject.services.contracts.UserService;
+import com.sun.jdi.request.DuplicateRequestException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +34,8 @@ class PostServiceImplTest {
     @Mock
     PostRepository postRepository;
 
+    @Mock
+    UserService userService;
 
     @InjectMocks
     PostServiceImpl postService;
@@ -102,11 +107,39 @@ class PostServiceImplTest {
                .get10MostRecentlyAddedPosts();
     }
 
+
+    @Test
+    void createPost_should_create_post_whenParametersAreCorrect() {
+
+
+        Post mockPost = Helpers.createMockPost();
+        User mockUser = Helpers.createMockUser();
+
+        postService.createPost(mockPost, mockUser);
+
+        Mockito.verify(postRepository, Mockito.times(1))
+               .createPost(mockPost);
+
+    }
+
+
+    @Test
+    void createPost_should_throw_whenUserAlreadyHasSuchTitle() {
+
+
+        Post mockPost = Helpers.createMockPost();
+        User mockUser = Helpers.createMockUser();
+
+
+        Mockito.when(postRepository.createPost(mockPost)).thenThrow(EntityDuplicateException.class);
+
+        Assertions.assertThrows(EntityDuplicateException.class,()->postService.createPost(mockPost,mockUser));
+
+    }
+
     @Test
     void updatePost() {
 
-//        Post mockPost = Helpers.createMockPost();
-//        Post
 
     }
 
@@ -114,9 +147,6 @@ class PostServiceImplTest {
     void testUpdatePost() {
     }
 
-    @Test
-    void createPost() {
-    }
 
     @Test
     void deletePost() {

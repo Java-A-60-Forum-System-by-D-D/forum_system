@@ -17,7 +17,7 @@ public class CommentDTO {
     private String content;
 
     @Schema(description = "ID of the parent comment if this is a reply to another comment. Optional field.", example = "123")
-    private Optional<Integer> parentCommentId;
+    private Integer parentCommentId;
 
 
 }

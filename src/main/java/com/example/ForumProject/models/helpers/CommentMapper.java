@@ -21,21 +21,21 @@ public class CommentMapper {
     }
 
 
-    public Comment createFromDto(Post post, CommentDTO commentDTO, User user){
+    public Comment createFromDto(Post post, CommentDTO commentDTO, User user) {
         Comment comment = modelMapper.map(commentDTO, Comment.class);
         comment.setCreatedAt(LocalDateTime.now());
         comment.setUpdatedAt(LocalDateTime.now());
         comment.setUser(user);
         comment.setPost(post);
 
-        if (commentDTO.getParentCommentId()
-                      .isPresent()) {
-            comment.setParentComment(new Comment());
+        if (commentDTO.getParentCommentId() != null) {
+            Comment parentComment = commentService.getCommentById(commentDTO.getParentCommentId(), post);
+            comment.setParentComment(parentComment);
 
-            comment.getParentComment().setId((commentDTO.getParentCommentId().orElse(null)));
         }
         return comment;
     }
+
     public Comment updateFromDto(Comment existingComment, CommentDTO commentDTO, User user) {
         modelMapper.map(commentDTO, existingComment);
         existingComment.setUpdatedAt(LocalDateTime.now());
