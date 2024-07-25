@@ -18,6 +18,7 @@ public class PostServiceImpl implements PostService {
     public static final String INVALID_DELETE_COMMAND = "You have no rights to delete this post";
     public static final String INVALID_UPDATE_COMMAND = "You have no rights to update this post";
     public static final String INVALID_GET_ALL_POSTS_COMMAND = "Only admins can see all posts";
+    public static final String USER_IS_NOT_AUTHOR_OF_THE_POST_OR_ADMIN = "User is not author of the post or admin";
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final UserService userService;
@@ -165,7 +166,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deleteTagFromPost(Tag tag, Post post) {
+    public void deleteTagFromPost(Tag tag, Post post,User user) {
+        ValidatorHelpers.roleAuthenticationValidator(user,new UserRole(UserRoleEnum.ADMIN),post, USER_IS_NOT_AUTHOR_OF_THE_POST_OR_ADMIN);
+
         post.getTags()
             .remove(tag);
         updatePost(post);

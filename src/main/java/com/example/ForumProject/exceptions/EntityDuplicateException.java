@@ -9,4 +9,8 @@ public class EntityDuplicateException extends RuntimeException {
         super(String.format("%s with id %s already likes this post.", type, attribute));
     }
 
+    public EntityDuplicateException(String message) {
+        super(String.format(message));
+    }
+
 }

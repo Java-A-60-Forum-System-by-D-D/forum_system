@@ -39,17 +39,12 @@ public class LikeController {
     @PostMapping("/{postId}/like")
     public Like likePost(@Parameter(description = "ID of the post to be liked")
                          @PathVariable int postId) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
-            String username = authentication.getName();
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
 
-            User user = userService.getUserByUsername(username);
-            return likeService.likePost(user.getId(), postId);
-        } catch (EntityDuplicateException e) {
-
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        User user = userService.getUserByUsername(username);
+        return likeService.likePost(user.getId(), postId);
     }
 
     @Operation(summary = "Unlike a post", description = "Remove like from a specific post by its ID")
@@ -60,17 +55,12 @@ public class LikeController {
     @DeleteMapping("/{postId}/like")
     public void unlikePost(@Parameter(description = "ID of the post to be unliked")
                            @PathVariable int postId) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            likeService.unlikePost(user.getId(), postId);
 
-        } catch (EntityNotFoundException e) {
-
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        likeService.unlikePost(user.getId(), postId);
     }
 
     @Operation(summary = "Get likes count", description = "Get the number of likes for a specific post by its ID")
