@@ -1,8 +1,8 @@
 package com.example.ForumProject.repositories.contracts;
 
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
-import com.example.ForumProject.models.persistentClasses.Like;
 import com.example.ForumProject.models.persistentClasses.Post;
+import com.example.ForumProject.models.persistentClasses.User;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ public interface PostRepository {
     List<Post> get10MostCommentedPosts();
 
     List<Post> get10MostRecentlyAddedPosts();
+    void checkIfPostWithTitleExistsForUser(Post post, User user);
 
     Post getPostById(int id);
 

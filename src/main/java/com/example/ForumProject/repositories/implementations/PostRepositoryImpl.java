@@ -1,7 +1,9 @@
 package com.example.ForumProject.repositories.implementations;
 
+import com.example.ForumProject.exceptions.EntityDuplicateException;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.persistentClasses.Like;
+import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
@@ -140,6 +142,20 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public void checkIfPostWithTitleExistsForUser(Post post, User user) {
+        try (Session session = sessionFactory.openSession()) {
+            String title = post.getTitle();
+            Query<Post> query = session.createQuery("From Post p where p.title=:title and p.user.id=:userId", Post.class);
+            query.setParameter("title", title);
+            query.setParameter("userId", user.getId());
+            if (!query.list()
+                      .isEmpty()) {
+                throw new EntityDuplicateException("Post with title {%s} already exists for this user".formatted(title));
+            }
+        }
+    }
+
+    @Override
     public Post getPostById(int id) {
         try (Session session = sessionFactory.openSession()) {
             Query<Post> query = session.createQuery("from Post where id = :id", Post.class);
@@ -152,6 +168,7 @@ public class PostRepositoryImpl implements PostRepository {
                         .get(0);
         }
     }
+
 
     @Override
     public Post updatePost(Post post) {
