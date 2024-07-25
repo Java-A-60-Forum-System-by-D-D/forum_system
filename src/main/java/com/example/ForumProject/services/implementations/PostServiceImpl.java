@@ -143,13 +143,25 @@ public class PostServiceImpl implements PostService {
     public Tag createTag(Tag tag, Post post, User user) {
         ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(
                 UserRoleEnum.ADMIN), post, "The user is not admin or author.");
+
+
         if (!post.getTags()
                  .contains(tag)) {
-            tagRepository.createTag(tag);
+            Tag existingTag = tagRepository.findByName(tag.getName())
+                                           .get();
+
+            if (existingTag != null) {
+                tag = existingTag; // Use the existing tag instead of creating a new one
+            } else {
+                tag = tagRepository.createTag(tag); // Ensure the tag is persisted
+            }
+
+            post.getTags()
+                .add(tag);
+            postRepository.updatePost(post);
         }
-        return tag;
 
-
+        return tagRepository.findByName(tag.getName()).get();
     }
 
     @Override
