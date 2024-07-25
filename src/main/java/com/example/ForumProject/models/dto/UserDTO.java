@@ -47,6 +47,7 @@ public class UserDTO {
     @UniqueEmail
     private String email;
 
+
     @Schema(description = "URL of the user's profile photo. Optional field.",
             example = "https://example.com/profile.jpg")
     private Optional<String> photoURL;

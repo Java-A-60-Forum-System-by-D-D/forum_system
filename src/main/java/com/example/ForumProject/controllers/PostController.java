@@ -67,11 +67,8 @@ public class PostController {
                                                              .getAuthentication();
         String username = authentication.getName();
         User loggedUser = userService.getUserByUsername(username);
-        try {
-            return postService.getPosts(loggedUser, filterOptionsPosts);
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+        return postService.getPosts(loggedUser, filterOptionsPosts);
+
     }
 
     @GetMapping("/{id}")
@@ -81,15 +78,11 @@ public class PostController {
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true)))
     })
     public Post getPostById(@Parameter(description = "ID of the post to retrieve") @PathVariable int id) {
-        try {
-            return postService.getPostById(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        }
+
+        return postService.getPostById(id);
+
     }
+
     @Operation(summary = "Get tags for a post", description = "Retrieve all tags associated with a specific post by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the tags"),
@@ -97,17 +90,14 @@ public class PostController {
     })
     @GetMapping("/{id}/tags")
     public List<Tag> getPostTags(@Parameter(description = "ID of the post to retrieve tags for") @PathVariable int id) {
-        try {
-            Post post = postService.getPostById(id);
-            List<Tag> tags = tagService.findTagsByPostId(post.getId());
-            return tags;
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        }
+
+        Post post = postService.getPostById(id);
+        List<Tag> tags = tagService.findTagsByPostId(post.getId());
+        return tags;
+
     }
+
+
     @PostMapping
     @Operation(summary = "Create a new post", description = "Create a new post with the given details")
     @ApiResponses(value = {
@@ -121,9 +111,10 @@ public class PostController {
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
         Post post = postMapper.createFromDto(postDTO, user);
-        return postService.createPost(post,user);
+        return postService.createPost(post, user);
 
     }
+
     @Operation(summary = "Add a tag to a post", description = "Create a new tag and associate it with a specific post by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Tag created and associated with the post"),
@@ -132,25 +123,13 @@ public class PostController {
     })
     @PostMapping("/{id}/tags")
     public Tag createTag(@PathVariable int id, @Valid @RequestBody TagDTO tagDTO) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                                                                 .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            Post post = postService.getPostById(id);
-            Tag tag = tagMapper.tagFromDTO(tagDTO);
-            return postService.createTag(tag, post, user);
-        } catch (EntityDuplicateException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    e.getMessage()
-            );
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        }
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        Post post = postService.getPostById(id);
+        Tag tag = tagMapper.tagFromDTO(tagDTO);
+        return postService.createTag(tag, post, user);
     }
 
 
@@ -162,21 +141,14 @@ public class PostController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
     })
     public Post updatePost(@Parameter(description = "ID of the post to update") @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                                                                 .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            Post existingPost = postService.getPostById(id);
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        Post existingPost = postService.getPostById(id);
 
-            Post post = postMapper.fromDto(id, postDTO);
-            return postService.updatePost(post, user, existingPost);
-
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+        Post post = postMapper.fromDto(id, postDTO);
+        return postService.updatePost(post, user, existingPost);
     }
 
     @Operation(summary = "Update a tag for a post", description = "Update an existing tag associated with a post")
@@ -187,22 +159,18 @@ public class PostController {
     })
     @PutMapping("/{postId}/tags/{tagId}")
     public Tag updatePostTag(@PathVariable int postId, @PathVariable int tagId, @Valid @RequestBody TagDTO tagDTO) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                                                                 .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            Tag tag = tagService.findById(tagId);
-            Tag newTag = tagMapper.tagFromDTO(tagDTO);
-            Post post = postService.getPostById(postId);
-            postService.updatePostTag(tag, post, user, newTag);
-            return tag;
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        Tag tag = tagService.findById(tagId);
+        Tag newTag = tagMapper.tagFromDTO(tagDTO);
+        Post post = postService.getPostById(postId);
+        postService.updatePostTag(tag, post, user, newTag);
+        return tag;
+
     }
+
     @Operation(summary = "Delete a tag from a post", description = "Remove a tag from a specific post")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Successfully removed the tag"),
@@ -211,19 +179,13 @@ public class PostController {
     })
     @DeleteMapping("{postId}/tags/{tagId}")
     public void deleteTagFromPost(@PathVariable int postId, @PathVariable int tagId) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                                                                 .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            Post post = postService.getPostById(postId);
-            Tag tag = tagService.findById(tagId);
-            postService.deleteTagFromPost(tag, post);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        Post post = postService.getPostById(postId);
+        Tag tag = tagService.findById(tagId);
+        postService.deleteTagFromPost(tag, post, user);
     }
 
     @DeleteMapping("/{id}")
@@ -234,23 +196,14 @@ public class PostController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
     })
     public void deletePost(@Parameter(description = "ID of the post to delete") @PathVariable int id) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                                                                 .getAuthentication();
-            String username = authentication.getName();
 
-            User user = userService.getUserByUsername(username);
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
 
-            postService.deletePost(id, user);
+        User user = userService.getUserByUsername(username);
 
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+        postService.deletePost(id, user);
 
     }
 

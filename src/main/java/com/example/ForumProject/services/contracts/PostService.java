@@ -36,7 +36,7 @@ public interface PostService {
 
     List<Post> findPostsByTagId(int id);
 
-    void deleteTagFromPost(Tag tag, Post post);
+    void deleteTagFromPost(Tag tag, Post post,User user);
 
     Tag addTagToPost(Tag tag, Post post);
 }

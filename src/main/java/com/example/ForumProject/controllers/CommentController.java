@@ -65,15 +65,9 @@ public class CommentController {
     })
     public Comment getCommentById(@Parameter(description = "ID of the post") @PathVariable int postId,
                                   @Parameter(description = "ID of the comment") @PathVariable int id) {
-        try {
-            Post post = postService.getPostById(postId);
-            return commentService.getCommentById(id, post);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        }
+
+        Post post = postService.getPostById(postId);
+        return commentService.getCommentById(id, post);
     }
 
     @PostMapping
@@ -85,19 +79,13 @@ public class CommentController {
     })
     public Comment createComment(@Parameter(description = "ID of the post to add a comment to") @PathVariable int postId,
                                  @Valid @RequestBody CommentDTO commentDTO) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            Post post = postService.getPostById(postId);
-            Comment comment = commentMapper.createFromDto(post, commentDTO, user);
-            return commentService.createComment(comment);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        Post post = postService.getPostById(postId);
+        Comment comment = commentMapper.createFromDto(post, commentDTO, user);
+        return commentService.createComment(comment);
     }
 
     @PutMapping("/{id}")
@@ -110,28 +98,17 @@ public class CommentController {
     public Comment updateComment(@Parameter(description = "ID of the post") @PathVariable int postId,
                                  @Valid @RequestBody CommentDTO commentDto,
                                  @Parameter(description = "ID of the comment to update") @PathVariable int id) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            Post post = postService.getPostById(postId);
-            Comment existingComment = commentService.getCommentById(id, post);
+
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        Post post = postService.getPostById(postId);
+        Comment existingComment = commentService.getCommentById(id, post);
 
 
-            Comment updateComment = commentMapper.updateFromDto(existingComment, commentDto, user);
-            return commentService.updateComment(updateComment, user);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        } catch (AuthorizationException ex) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED,
-                    ex.getMessage()
-            );
-        }
+        Comment updateComment = commentMapper.updateFromDto(existingComment, commentDto, user);
+        return commentService.updateComment(updateComment, user);
     }
 
     @DeleteMapping("/{id}")
@@ -143,21 +120,15 @@ public class CommentController {
     })
     public void deleteComment(@Parameter(description = "ID of the post") @PathVariable int postId,
                               @Parameter(description = "ID of the comment to delete") @PathVariable int id) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                    .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            Post post = postService.getPostById(postId);
-            Comment comment = commentService.getCommentById(id, post);
 
-            commentService.deleteComment(id, user);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        }
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        Post post = postService.getPostById(postId);
+        Comment comment = commentService.getCommentById(id, post);
+
+        commentService.deleteComment(id, user);
 
     }
 }

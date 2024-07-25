@@ -44,13 +44,7 @@ public class AdminController {
     })
     public User grantAdminRights(@Parameter(description = "ID of the user to grant admin rights") @PathVariable int user_id) {
 
-        try {
-            return adminService.grantAdminRights(user_id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
+        return adminService.grantAdminRights(user_id);
 
     }
 
@@ -62,13 +56,7 @@ public class AdminController {
             @ApiResponse(responseCode = "409", description = "Conflict in granting moderator rights", content = @Content(schema = @Schema(hidden = true)))
     })
     public User grantModeratorRights(@Parameter(description = "ID of the user to grant moderator rights") @PathVariable int user_id) {
-        try {
-            return adminService.grantModeratorRights(user_id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
+        return adminService.grantModeratorRights(user_id);
 
     }
 
@@ -80,13 +68,7 @@ public class AdminController {
             @ApiResponse(responseCode = "409", description = "Conflict in revoking admin rights", content = @Content(schema = @Schema(hidden = true)))
     })
     public User revokeAdminRights(@Parameter(description = "ID of the user to revoke admin rights") @PathVariable int user_id) {
-        try {
-            return adminService.revokeAdminRights(user_id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
+        return adminService.revokeAdminRights(user_id);
 
     }
 
@@ -98,13 +80,7 @@ public class AdminController {
             @ApiResponse(responseCode = "409", description = "Conflict in revoking moderator rights", content = @Content(schema = @Schema(hidden = true)))
     })
     public User revokeModeratorRights(@Parameter(description = "ID of the user to revoke moderator rights") @PathVariable int user_id) {
-        try {
-            return adminService.revokeModeratorRights(user_id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
+        return adminService.revokeModeratorRights(user_id);
 
     }
 
@@ -116,14 +92,7 @@ public class AdminController {
             @ApiResponse(responseCode = "409", description = "Conflict in blocking the user", content = @Content(schema = @Schema(hidden = true)))
     })
     public User blockUser(@Parameter(description = "ID of the user to block") @PathVariable int user_id) {
-        try {
-            return adminService.blockUser(user_id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
-
+        return adminService.blockUser(user_id);
 
     }
 
@@ -135,14 +104,8 @@ public class AdminController {
             @ApiResponse(responseCode = "409", description = "Conflict in unblocking the user", content = @Content(schema = @Schema(hidden = true)))
     })
     public User unblockUser(@Parameter(description = "ID of the user to unblock") @PathVariable int user_id) {
-        try {
-            return adminService.unblockUser(user_id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
 
+        return adminService.unblockUser(user_id);
 
     }
 
@@ -161,11 +124,7 @@ public class AdminController {
     })
     @GetMapping("/id/{id}")
     public User getById(@Parameter(description = "ID of the user to be retrieved", required = true) @PathVariable int id) {
-        try {
-            return userService.getUserById(id);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return userService.getUserById(id);
     }
 
     @Operation(summary = "Get user by username", description = "Retrieve a user by their username")
@@ -175,11 +134,7 @@ public class AdminController {
     })
     @GetMapping("/username/{username}")
     public User getByUsername(@Parameter(description = "Username of the user to be retrieved", required = true) @PathVariable String username) {
-        try {
-            return userService.getUserByUsername(username);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return userService.getUserByUsername(username);
     }
 
     @Operation(summary = "Get user by first name", description = "Retrieve a user by their first name")
@@ -189,11 +144,7 @@ public class AdminController {
     })
     @GetMapping("/first_name/{firstName}")
     public User getByFirstName(@Parameter(description = "First name of the user to be retrieved", required = true) @PathVariable String firstName) {
-        try {
-            return userService.getUserByFirstName(firstName);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return userService.getUserByFirstName(firstName);
 
     }
 
@@ -204,11 +155,7 @@ public class AdminController {
     })
     @GetMapping("/email/{userEmail}")
     public User getByEmail(@Parameter(description = "Email of the user to be retrieved", required = true) @PathVariable String userEmail) {
-        try {
-            return userService.getUserByEmail(userEmail);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        return userService.getUserByEmail(userEmail);
 
     }
 

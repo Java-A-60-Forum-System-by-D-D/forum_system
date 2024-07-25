@@ -52,15 +52,11 @@ public class HomeController {
 
         Map<String, List<Post>> result = new HashMap<>();
 
-        try {
-            List<Post> mostCommentedPosts = postService.get10MostCommentedPosts();
-            result.put("MostCommented", mostCommentedPosts);
-            List<Post> mostRecentlyCreatedPosts = postService.get10MostRecentlyAddedPosts();
-            result.put("MostRecent", mostRecentlyCreatedPosts);
-            return result;
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        List<Post> mostCommentedPosts = postService.get10MostCommentedPosts();
+        result.put("MostCommented", mostCommentedPosts);
+        List<Post> mostRecentlyCreatedPosts = postService.get10MostRecentlyAddedPosts();
+        result.put("MostRecent", mostRecentlyCreatedPosts);
+        return result;
 
     }
 

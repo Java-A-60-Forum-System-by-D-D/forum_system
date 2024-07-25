@@ -162,18 +162,13 @@ public class TagController {
     })
     @DeleteMapping("/{tagId}")
     public void deleteTag(@PathVariable int tagId) {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext()
-                                                                 .getAuthentication();
-            String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            Tag tag = tagService.findById(tagId);
-            tagService.deleteTag(tag,user);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    e.getMessage()
-            );
-        }
+
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        Tag tag = tagService.findById(tagId);
+        tagService.deleteTag(tag,user);
+
     }
 }

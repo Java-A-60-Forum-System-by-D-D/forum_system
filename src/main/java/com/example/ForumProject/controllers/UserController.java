@@ -38,17 +38,13 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
-    private final PostService postService;
-    private final PostMapper postMapper;
     private final CommentService commentService;
 
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper, PostService postService, PostMapper postMapper, CommentService commentService) {
+    public UserController(UserService userService, UserMapper userMapper, CommentService commentService) {
         this.userService = userService;
         this.userMapper = userMapper;
-        this.postService = postService;
-        this.postMapper = postMapper;
         this.commentService = commentService;
     }
 
@@ -70,11 +66,7 @@ public class UserController {
                 .getAuthentication();
         String username = authentication.getName();
         User userPosts = userService.getUserById(user_id);
-        try {
-            return userService.getPostsByUser(userPosts, filterOptionsUsersPosts);
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+        return userService.getPostsByUser(userPosts, filterOptionsUsersPosts);
     }
 
 
@@ -93,11 +85,7 @@ public class UserController {
                 .getAuthentication();
         String username = authentication.getName();
         User userPosts = userService.getUserById(user_id);
-        try {
-            return commentService.getCommentsByUser(userPosts, filterOptionsComments);
-        } catch (AuthorizationException e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
+        return commentService.getCommentsByUser(userPosts, filterOptionsComments);
 
     }
 
@@ -109,12 +97,8 @@ public class UserController {
     @PutMapping("/id/{id}")
     public User updateUser(@Valid @RequestBody UserDTO userDTO, @Valid @PathVariable int id) {
 
-        try {
-            User user = userMapper.createUserFromDto(id, userDTO);
-            return userService.updateUser(user);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        User user = userMapper.createUserFromDto(id, userDTO);
+        return userService.updateUser(user);
     }
 
 
