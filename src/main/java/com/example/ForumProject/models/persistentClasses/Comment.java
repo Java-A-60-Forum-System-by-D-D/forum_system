@@ -23,11 +23,13 @@ public class Comment extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     @JoinColumn(name = "post_id")
     private Post post;
 
     @JsonIgnore
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "user_id")
     private User user;
 
