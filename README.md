@@ -34,6 +34,7 @@ It is a RESTful API for a social media platform that allows users to create and 
 - To begin with, your local settings for the Database should be added to EnvironmentVariables as they are set in application.properties
 - Example:
 -> mySQLuser=root; mySQLpassword=12345;
+- dbURL=jdbc:mariadb://localhost:3306/forum_system?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC&sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
  The next step is Cloudinary variables:
  API_KEY=794954315984349;API_SECRET=-CeCea1-2ZoUs8KmT_4BKIVRW2s;CLOUD_NAME=dtwfzrl2v
 2. Database
