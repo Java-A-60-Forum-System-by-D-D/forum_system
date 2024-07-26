@@ -18,13 +18,11 @@ public class CommentServiceImpl implements CommentService {
     public static final String INVALID_DELETE_COMMAND = "You dont have rights to delete this comment";
     public static final String INVALID_UPDATE_COMMAND = "You dont have rights to update this comment";
     private final CommentRepository commentRepository;
-    private final PostService postService;
 
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostService postService) {
+    public CommentServiceImpl(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
 
-        this.postService = postService;
     }
 
     @Override
