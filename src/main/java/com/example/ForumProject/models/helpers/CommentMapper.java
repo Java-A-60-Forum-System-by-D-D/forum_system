@@ -4,35 +4,36 @@ import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.CommentDTO;
-import com.example.ForumProject.services.contracts.CommentService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
 public class CommentMapper {
-    private ModelMapper modelMapper;
-    private final CommentService commentService;
+    private final ModelMapper modelMapper;
 
-    public CommentMapper(ModelMapper modelMapper, CommentService commentService) {
+
+    @Autowired
+    public CommentMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-        this.commentService = commentService;
+
     }
 
 
     public Comment createFromDto(Post post, CommentDTO commentDTO, User user) {
         Comment comment = modelMapper.map(commentDTO, Comment.class);
-        comment.setCreatedAt(LocalDateTime.now());
-        comment.setUpdatedAt(LocalDateTime.now());
+
         comment.setUser(user);
         comment.setPost(post);
+        comment.setParentCommentId(null);
 
-        if (commentDTO.getParentCommentId() != null) {
-            Comment parentComment = commentService.getCommentById(commentDTO.getParentCommentId(), post);
-            comment.setParentComment(parentComment);
 
+        if(commentDTO.getCommentParent()>0){
+            comment.setParentCommentId(commentDTO.getCommentParent());
         }
+
         return comment;
     }
 

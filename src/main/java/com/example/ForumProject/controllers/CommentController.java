@@ -52,9 +52,10 @@ public class CommentController {
     public List<Comment> getAllComments(@Parameter(description = "ID of the post to get comments for") @PathVariable int postId) {
 
         return postService.getPostById(postId)
-                .getComments()
-                .stream()
-                .toList();
+                          .getComments()
+                          .stream()
+                          .filter(comment -> comment.getParentCommentId() == null)
+                          .toList();
     }
 
     @GetMapping("/{id}")
@@ -85,7 +86,7 @@ public class CommentController {
         User user = userService.getUserByUsername(username);
         Post post = postService.getPostById(postId);
         Comment comment = commentMapper.createFromDto(post, commentDTO, user);
-        return commentService.createComment(comment);
+        return commentService.createComment(comment,post);
     }
 
     @PutMapping("/{id}")

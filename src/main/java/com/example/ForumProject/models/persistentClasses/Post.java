@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
@@ -19,15 +20,18 @@ public class Post extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "title")
     @NotNull(message = "Field cannot be null")
+    @Size(min = 16, max = 64, message = "Title must be between 16 and 64")
     private String title;
 
     @Column(name = "content")
     @NotNull(message = "Field cannot be null")
+    @Size(min = 32, max = 8192, message = "Content must be between 32 and 8192")
     private String content;
 
 

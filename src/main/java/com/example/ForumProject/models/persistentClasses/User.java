@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,12 +28,12 @@ public class User extends BaseEntity implements UserDetails {
         this.userRole = userRoles;
     }
 
-    @Column(name = "username")
+    @Column(name = "username",unique = true)
     @NotNull(message = "Field cannot be null")
     @Schema(description = "Username")
     private String username;
 
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     @NotNull(message = "Field cannot be null")
     private String email;
 
@@ -46,10 +47,12 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(name = "first_name")
     @NotNull(message = "Field cannot be null")
+    @Size(min = 4, max = 32, message = "First name must be between 4 and 32 symbols")
     private String firstName;
 
     @Column(name = "last_name")
     @NotNull(message = "Field cannot be null")
+    @Size(min = 4, max = 32, message = "Last name must be between 4 and 32 symbols")
     private String lastName;
 
     @JsonIgnore

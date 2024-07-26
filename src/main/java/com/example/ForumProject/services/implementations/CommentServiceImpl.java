@@ -1,11 +1,14 @@
 package com.example.ForumProject.services.implementations;
 
+import com.example.ForumProject.models.dto.CommentDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsComments;
 import com.example.ForumProject.services.contracts.CommentService;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.persistentClasses.*;
 import com.example.ForumProject.repositories.contracts.CommentRepository;
+import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.utility.ValidatorHelpers;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,11 +18,13 @@ public class CommentServiceImpl implements CommentService {
     public static final String INVALID_DELETE_COMMAND = "You dont have rights to delete this comment";
     public static final String INVALID_UPDATE_COMMAND = "You dont have rights to update this comment";
     private final CommentRepository commentRepository;
+    private final PostService postService;
 
 
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostService postService) {
         this.commentRepository = commentRepository;
 
+        this.postService = postService;
     }
 
     @Override
@@ -47,7 +52,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment createComment(Comment comment) {
+    public Comment createComment(Comment comment,Post post) {
+
+        if(comment.getParentCommentId()!=null){
+            getCommentById(comment.getParentCommentId(),post);
+        }
+
         return commentRepository.createComment(comment);
     }
 

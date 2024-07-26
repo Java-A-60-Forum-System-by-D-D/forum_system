@@ -23,11 +23,13 @@ public class Comment extends BaseEntity {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
     @JoinColumn(name = "post_id")
     private Post post;
 
     @JsonIgnore
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -35,10 +37,8 @@ public class Comment extends BaseEntity {
     @NotNull(message = "Field cannot be null")
     private String content;
 
-    @ManyToOne
-    @JsonManagedReference
-    @JoinColumn(name = "parent_comment_id")
-    private Comment parentComment;
+    @Column(name = "parent_comment_id")
+    private Integer parentCommentId;
 
     @Column(name = "created_At")
     private LocalDateTime createdAt;
@@ -46,9 +46,12 @@ public class Comment extends BaseEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-   @JsonBackReference
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> childComments = new ArrayList<>();
+
+//    @JsonIgnore
+//    @JsonBackReference
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_comment_id")
+    private List<Comment> childComments;
 
     @Override
     public boolean equals(Object o) {

@@ -1,5 +1,6 @@
 package com.example.ForumProject.services.contracts;
 
+import com.example.ForumProject.models.dto.CommentDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsComments;
 import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.models.persistentClasses.Post;
@@ -11,7 +12,7 @@ public interface CommentService {
     List<Comment> getComments();
     List<Comment> getCommentsByUser(User user, FilterOptionsComments filterOptionsComments);
     Comment getCommentById(int id, Post post);
-    Comment createComment(Comment comment);
+    Comment createComment(Comment comment,Post post);
     Comment updateComment(Comment comment, User user);
     void deleteComment(int id, User user);
 }

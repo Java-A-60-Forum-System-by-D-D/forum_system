@@ -1,5 +1,6 @@
 package com.example.ForumProject.repositories.contracts;
 
+import com.example.ForumProject.models.dto.CommentDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsComments;
 import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.models.persistentClasses.User;
