@@ -52,9 +52,10 @@ public class CommentController {
     public List<Comment> getAllComments(@Parameter(description = "ID of the post to get comments for") @PathVariable int postId) {
 
         return postService.getPostById(postId)
-                .getComments()
-                .stream()
-                .toList();
+                          .getComments()
+                          .stream()
+                          .filter(comment -> comment.getParentCommentId() == null)
+                          .toList();
     }
 
     @GetMapping("/{id}")

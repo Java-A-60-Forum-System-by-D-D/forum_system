@@ -1,6 +1,7 @@
 package com.example.ForumProject.repositories.implementations;
 
 import com.example.ForumProject.exceptions.EntityNotFoundException;
+import com.example.ForumProject.models.dto.CommentDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsComments;
 import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.models.persistentClasses.User;
@@ -9,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;

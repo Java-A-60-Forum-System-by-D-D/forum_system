@@ -138,9 +138,14 @@ class PostServiceImplTest {
     }
 
     @Test
-    void updatePost() {
+    void updatePost_should_return_updatedPost() {
+        Post post = Helpers.createMockPost();
+        Mockito.when(postRepository.updatePost(post)).thenReturn(post);
 
+        Post result = postService.updatePost(post);
 
+        Assertions.assertEquals(post, result);
+        Mockito.verify(postRepository).updatePost(post);
     }
 
     @Test
