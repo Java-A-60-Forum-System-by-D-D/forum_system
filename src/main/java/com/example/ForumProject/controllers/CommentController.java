@@ -86,7 +86,7 @@ public class CommentController {
         User user = userService.getUserByUsername(username);
         Post post = postService.getPostById(postId);
         Comment comment = commentMapper.createFromDto(post, commentDTO, user);
-        return commentService.createComment(comment);
+        return commentService.createComment(comment,post);
     }
 
     @PutMapping("/{id}")

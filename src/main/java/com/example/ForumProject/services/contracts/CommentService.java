@@ -12,7 +12,7 @@ public interface CommentService {
     List<Comment> getComments();
     List<Comment> getCommentsByUser(User user, FilterOptionsComments filterOptionsComments);
     Comment getCommentById(int id, Post post);
-    Comment createComment(Comment comment);
+    Comment createComment(Comment comment,Post post);
     Comment updateComment(Comment comment, User user);
     void deleteComment(int id, User user);
 }

@@ -52,7 +52,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment createComment(Comment comment) {
+    public Comment createComment(Comment comment,Post post) {
+
+        if(comment.getParentCommentId()!=null){
+            getCommentById(comment.getParentCommentId(),post);
+        }
 
         return commentRepository.createComment(comment);
     }
