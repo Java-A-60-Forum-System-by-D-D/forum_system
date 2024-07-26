@@ -10,6 +10,7 @@ import com.example.ForumProject.utility.ValidatorHelpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,12 +49,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> get10MostCommentedPosts() {
-        return postRepository.get10MostCommentedPosts();
+        return new ArrayList<>(postRepository.get10MostCommentedPosts());
     }
 
     @Override
     public List<Post> get10MostRecentlyAddedPosts() {
-        return postRepository.get10MostRecentlyAddedPosts();
+        return new ArrayList<>(postRepository.get10MostRecentlyAddedPosts());
     }
 
 
