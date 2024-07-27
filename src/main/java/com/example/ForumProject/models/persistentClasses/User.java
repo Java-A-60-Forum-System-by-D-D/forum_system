@@ -2,10 +2,12 @@ package com.example.ForumProject.models.persistentClasses;
 
 
 
+import com.example.ForumProject.utility.validation.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,6 +44,8 @@ public class User extends BaseEntity implements UserDetails {
 
     @JsonIgnore
     @Column(name = "password_hash")
+    @Size(min =8, max = 20,message = "Password needs to be between 8 and 20 symbols")
+    @ValidPassword(message = "Password must contain at lease 1 lowercase, 1 uppercase and 1 digit")
     @NotNull(message = "Field cannot be null")
     private String password;
 

@@ -48,15 +48,17 @@ public class SecurityConfig {
                     auth.requestMatchers("/api").permitAll();
                     auth.requestMatchers("/api/users/**").hasAnyRole("User","Admin");
                     auth.requestMatchers("/api/admin/**").hasAnyRole("Admin");
-//                    auth.requestMatchers("/api/posts/**").hasAnyRole("Admin","User,","ADMIN","USER");
+                 auth.requestMatchers("/api/posts/**").hasAnyRole("Admin","User,","ADMIN","USER");
                     auth.anyRequest().permitAll();
                 });
+
 
         http.oauth2ResourceServer()
             .jwt()
             .jwtAuthenticationConverter(jwtAuthenticationConverter());
         http.sessionManagement(
                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
         );
 
         return http.build();

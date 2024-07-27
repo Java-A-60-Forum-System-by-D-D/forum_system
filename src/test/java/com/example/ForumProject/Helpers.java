@@ -30,21 +30,6 @@ public class Helpers {
         return mockUser;
     }
 
-//    public static Beer createMockBeer() {
-//        var mockBeer = new Beer();
-//        mockBeer.setId(1);
-//        mockBeer.setName("MockBeer");
-//        mockBeer.setCreatedBy(createMockUser());
-//        mockBeer.setStyle(createMockStyle());
-//        return mockBeer;
-//    }
-//
-//    public static Style createMockStyle() {
-//        var mockStyle = new Style();
-//        mockStyle.setId(1);
-//        mockStyle.setName("MockStyle");
-//        return mockStyle;
-//    }
 
     public static Post createMockPost() {
         Post mockPost = new Post();
@@ -52,14 +37,17 @@ public class Helpers {
         mockPost.setId(1);
         mockPost.setContent("x".repeat(42));
         mockPost.setTitle("x".repeat(20));
+        mockPost.setLikes(new HashSet<>());
+        mockPost.setTags(new HashSet<>());
         return mockPost;
     }
 
-//    public static Comment createMockComment(){
-//        Comment mockComment = new Comment();
-//        mockComment.setUser(createMockUser());
-//        mockComment.setPost(createMockPost());
-//    }
+    public static Tag createMockTag() {
+        Tag mockTag = new Tag();
+        mockTag.setName("X".repeat(5));
+        return mockTag;
+    }
+
 
     public static FilterOptionsPosts createMockFilterOptions() {
         return new FilterOptionsPosts(
@@ -71,13 +59,6 @@ public class Helpers {
                 "asc");
     }
 
-//    public static BeerDto createBeerDto() {
-//        BeerDto dto = new BeerDto();
-//        dto.setStyleId(1);
-//        dto.setName("MockBeer");
-//        dto.setAbv(4.5);
-//        return dto;
-//    }
 
     /**
      * Accepts an object and returns the stringified object.
