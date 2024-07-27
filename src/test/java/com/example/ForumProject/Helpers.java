@@ -41,6 +41,14 @@ public class Helpers {
         mockPost.setTags(new HashSet<>());
         return mockPost;
     }
+    public static Comment createMockComment() {
+        Comment mockComment = new Comment();
+        mockComment.setUser(createMockUser());
+        mockComment.setId(1);
+        mockComment.setContent("x".repeat(42));
+        mockComment.setPost(createMockPost());
+        return mockComment;
+    }
 
     public static Tag createMockTag() {
         Tag mockTag = new Tag();
