@@ -2,8 +2,12 @@ package com.example.ForumProject.controllers;
 
 
 import com.example.ForumProject.exceptions.EntityNotFoundException;
+import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.persistentClasses.Post;
+import com.example.ForumProject.repositories.contracts.PostRepository;
+import com.example.ForumProject.repositories.implementations.PostRepositoryImpl;
 import com.example.ForumProject.services.contracts.PostService;
+import com.example.ForumProject.services.implementations.PostServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,11 +31,14 @@ import java.util.Map;
 public class HomeController {
 
     private final PostService postService;
+    private final PostServiceImpl postServiceTest;
 
 
     @Autowired
-    public HomeController(PostService postService) {
+    public HomeController(PostService postService, PostServiceImpl postServiceTest) {
         this.postService = postService;
+
+        this.postServiceTest = postServiceTest;
     }
 
     /**
@@ -48,17 +55,19 @@ public class HomeController {
             @ApiResponse(responseCode = "404", description = "Posts not found",
                     content = @Content) })
     @GetMapping
-    public Map<String,List<Post>> get10MostCommentedPosts() {
+    public Map<String,List<PostSummaryDTO>> get10MostCommentedPosts() {
 
-        Map<String, List<Post>> result = new HashMap<>();
+        Map<String, List<PostSummaryDTO>> result = new HashMap<>();
 
-        List<Post> mostCommentedPosts = postService.get10MostCommentedPosts();
+        List<PostSummaryDTO> mostCommentedPosts = postService.get10MostCommentedPosts();
         result.put("MostCommented", mostCommentedPosts);
-        List<Post> mostRecentlyCreatedPosts = postService.get10MostRecentlyAddedPosts();
+        List<PostSummaryDTO> mostRecentlyCreatedPosts = postService.get10MostRecentlyAddedPosts();
         result.put("MostRecent", mostRecentlyCreatedPosts);
         return result;
 
     }
+
+
 
 
 }

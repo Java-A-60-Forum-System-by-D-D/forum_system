@@ -1,5 +1,6 @@
 package com.example.ForumProject.services.contracts;
 
+import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.persistentClasses.Like;
 import com.example.ForumProject.models.persistentClasses.Post;
@@ -13,8 +14,8 @@ public interface PostService {
 
     Post getPostById(int id);
 
-    List<Post> get10MostCommentedPosts();
-    List<Post >get10MostRecentlyAddedPosts();
+    List<PostSummaryDTO> get10MostCommentedPosts();
+    List<PostSummaryDTO>get10MostRecentlyAddedPosts();
 
     Post updatePost(Post post);
 

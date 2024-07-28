@@ -1,6 +1,7 @@
 package com.example.ForumProject.repositories.implementations;
 
 import com.example.ForumProject.exceptions.EntityDuplicateException;
+import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.persistentClasses.Like;
 import com.example.ForumProject.models.persistentClasses.User;
@@ -8,6 +9,7 @@ import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.persistentClasses.Post;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -120,7 +122,15 @@ public class PostRepositoryImpl implements PostRepository {
             Query<Post> query = session.createQuery(hql, Post.class);
             query.setMaxResults(10);
 
-            return query.getResultList();
+            List<Post> posts = query.list();
+            for (Post post : posts) {
+                Hibernate.initialize(post.getComments());
+                Hibernate.initialize(post.getTags());
+                Hibernate.initialize(post.getUser());
+            }
+
+            return posts;
+
         }
     }
 
@@ -140,6 +150,26 @@ public class PostRepositoryImpl implements PostRepository {
             return query.getResultList();
         }
     }
+
+
+
+
+//    public List<PostSummaryDTO> testMethod() {
+//        try (Session session = sessionFactory.openSession()) {
+//            String hql = "SELECT new com.example.ForumProject.models.dto.PostSummaryDTO(" +
+//                    "p.id, p.title, p.content, p.likesCount, p.createdAt, p.updatedAt, " +
+//                    "SIZE(p.comments), p.user.username) " +
+//                    "FROM Post p " +
+//                    "LEFT JOIN p.user " +
+//                    "GROUP BY p.id, p.title, p.content, p.likesCount, p.createdAt, p.updatedAt, p.user.username " +
+//                    "ORDER BY SIZE(p.comments) DESC";
+//
+//            Query<PostSummaryDTO> query = session.createQuery(hql, PostSummaryDTO.class);
+//            query.setMaxResults(10);
+//
+//            return query.list();
+//        }
+//    }
 
     @Override
     public void checkIfPostWithTitleExistsForUser(Post post, User user) {

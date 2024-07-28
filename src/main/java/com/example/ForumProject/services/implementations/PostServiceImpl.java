@@ -1,5 +1,6 @@
 package com.example.ForumProject.services.implementations;
 
+import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.persistentClasses.*;
 import com.example.ForumProject.repositories.contracts.TagRepository;
@@ -7,11 +8,13 @@ import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.utility.ValidatorHelpers;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -23,13 +26,15 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, TagRepository tagRepository, UserService userService) {
+    public PostServiceImpl(PostRepository postRepository, TagRepository tagRepository, UserService userService, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.tagRepository = tagRepository;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
 
@@ -48,19 +53,26 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> get10MostCommentedPosts() {
-        return new ArrayList<>(postRepository.get10MostCommentedPosts());
+    public List<PostSummaryDTO> get10MostCommentedPosts() {
+        return postRepository.get10MostCommentedPosts()
+                             .stream()
+                             .map(this::postMapper)
+                             .collect(Collectors.toList());
     }
 
+
     @Override
-    public List<Post> get10MostRecentlyAddedPosts() {
-        return new ArrayList<>(postRepository.get10MostRecentlyAddedPosts());
+    public List<PostSummaryDTO> get10MostRecentlyAddedPosts() {
+        return postRepository.get10MostRecentlyAddedPosts()
+                             .stream()
+                             .map(this::postMapper)
+                             .collect(Collectors.toList());
     }
 
 
     @Override
     public Post createPost(Post post, User user) {
-        postRepository.checkIfPostWithTitleExistsForUser(post,user);
+        postRepository.checkIfPostWithTitleExistsForUser(post, user);
 
         user.getPosts()
             .add(post);
@@ -80,15 +92,13 @@ public class PostServiceImpl implements PostService {
 
 
         ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), existingPost, INVALID_UPDATE_COMMAND);
-        postRepository.checkIfPostWithTitleExistsForUser(post,user);
+        postRepository.checkIfPostWithTitleExistsForUser(post, user);
 
         existingPost.setTitle(post.getTitle());
         existingPost.setContent(post.getContent());
 
         return postRepository.updatePost(existingPost);
     }
-
-
 
 
     @Override
@@ -167,12 +177,13 @@ public class PostServiceImpl implements PostService {
             postRepository.updatePost(post);
         }
 
-        return tagRepository.findByName(tag.getName()).get();
+        return tagRepository.findByName(tag.getName())
+                            .get();
     }
 
     @Override
-    public void deleteTagFromPost(Tag tag, Post post,User user) {
-        ValidatorHelpers.roleAuthenticationValidator(user,new UserRole(UserRoleEnum.ADMIN),post, USER_IS_NOT_AUTHOR_OF_THE_POST_OR_ADMIN);
+    public void deleteTagFromPost(Tag tag, Post post, User user) {
+        ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), post, USER_IS_NOT_AUTHOR_OF_THE_POST_OR_ADMIN);
 
         post.getTags()
             .remove(tag);
@@ -192,6 +203,18 @@ public class PostServiceImpl implements PostService {
         updatePost(post);
         return newTag;
 
+    }
+
+
+    private PostSummaryDTO postMapper(Post post) {
+        PostSummaryDTO postSummaryDTO = modelMapper.map(post, PostSummaryDTO.class);
+        User user = post.getUser();
+
+        postSummaryDTO.setUsername(user.getUsername());
+        postSummaryDTO.setComments(post.getComments());
+        postSummaryDTO.setTags(post.getTags());
+
+        return postSummaryDTO;
     }
 
 
