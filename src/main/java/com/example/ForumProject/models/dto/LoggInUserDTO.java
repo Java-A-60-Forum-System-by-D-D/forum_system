@@ -16,9 +16,10 @@ public class LoggInUserDTO {
     private String username;
     @Schema(description = "Password of the user. Used for authentication.", example = "password123")
     @Size(min =8, max = 20,message = "Password needs to be between 8 and 20 symbols")
-//    @Pattern(regexp = "^(?=.[A-Z])(?=.\\d)(?=.*[a-z])[A-Za-z\\d]+$",message = "Password must contain at least 1 uppercase letter, 1 lowercase letter and 1 digit")
+
     private String password;
-//    @Schema(description = "JWT token received upon successful authentication. This token is used to authorize further requests.")
+
+    @Schema(description = "JWT token received upon successful authentication. This token is used to authorize further requests.")
     private String token;
 
     public LoggInUserDTO() {

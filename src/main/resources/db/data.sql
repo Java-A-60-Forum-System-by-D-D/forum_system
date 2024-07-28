@@ -1,4 +1,4 @@
-use forum_system;
+use FORUM_TEST;
 -- Insert data into roles table
 INSERT INTO roles (role) VALUES ('ADMIN');
 INSERT INTO roles (role) VALUES ('MODERATOR');
@@ -42,67 +42,73 @@ INSERT INTO tags (name) VALUES ('Enterprise Architecture');
 INSERT INTO tags (name) VALUES ('IT Management');
 
 -- Insert data into users table
+-- Insert data into users table
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username)
-VALUES (0, NOW(), NOW(), 'admin@example.com', 'Admin', 'User', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'adminuser');
-
-INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username)
-VALUES (0, NOW(), NOW(), 'mod@example.com', 'Moderator', 'User', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'moduser');
+VALUES (0, NOW(), NOW(), 'admin@example.com', 'Admin', 'User', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'adminuser');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username)
-VALUES (0, NOW(), NOW(), 'user@example.com', 'Regular', 'User', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser');
+VALUES (0, NOW(), NOW(), 'mod@example.com', 'Moderator', 'User', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'moduser');
+
+INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username)
+VALUES (0, NOW(), NOW(), 'user@example.com', 'Regular', 'User', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user2@example.com', 'Regular2', 'User2', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser2', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
-INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user3@example.com', 'Regular3', 'User3', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser3','https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
-INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user4@example.com', 'Regular4', 'User4', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser4', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
-INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user5@example.com', 'Regular5', 'User5', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser5','https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
-INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user6@example.com', 'Regular6', 'User6', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser6', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user2@example.com', 'Regular2', 'User2', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser2', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (1, NOW(), NOW(), 'user7@example.com', 'Regular7', 'User7', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser7', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user3@example.com', 'Regular3', 'User3', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser3','https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user8@example.com', 'Regular8', 'User8', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser8', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user4@example.com', 'Regular4', 'User4', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser4', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (1, NOW(), NOW(), 'user9@example.com', 'Regular9', 'User9', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser9', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user5@example.com', 'Regular5', 'User5', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser5','https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user10@example.com', 'Regular10', 'User10', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser10', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user6@example.com', 'Regular6', 'User6', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser6', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (1, NOW(), NOW(), 'user11@example.com', 'Regular11', 'User11', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser11', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (1, NOW(), NOW(), 'user7@example.com', 'Regular7', 'User7', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser7', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user12@example.com', 'Regular12', 'User12', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser12', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user8@example.com', 'Regular8', 'User8', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser8', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user13@example.com', 'Regular13', 'User13', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser13', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (1, NOW(), NOW(), 'user9@example.com', 'Regular9', 'User9', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser9', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user14@example.com', 'Regular14', 'User14', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser14', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user10@example.com', 'Regular10', 'User10', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser10', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user15@example.com', 'Regular15', 'User15', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser15', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (1, NOW(), NOW(), 'user11@example.com', 'Regular11', 'User11', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser11', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (1, NOW(), NOW(), 'user16@example.com', 'Regular16', 'User16', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser16', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user12@example.com', 'Regular12', 'User12', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser12', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user17@example.com', 'Regular17', 'User17', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser17', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user13@example.com', 'Regular13', 'User13', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser13', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user18@example.com', 'Regular18', 'User18', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser18', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user14@example.com', 'Regular14', 'User14', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser14', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (1, NOW(), NOW(), 'user19@example.com', 'Regular19', 'User19', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser19', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (0, NOW(), NOW(), 'user15@example.com', 'Regular15', 'User15', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser15', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
 
 INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
-VALUES (0, NOW(), NOW(), 'user20@example.com', 'Regular20', 'User20', '$2a$10$sdpmlDKxUGC73gaFsP2rH.QIzONcOwVxqxaVHF5Q47Vyi9ci/IlLW', '1234567890', 'regularuser20', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+VALUES (1, NOW(), NOW(), 'user16@example.com', 'Regular16', 'User16', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser16', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+
+INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
+VALUES (0, NOW(), NOW(), 'user17@example.com', 'Regular17', 'User17', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser17', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+
+INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
+VALUES (0, NOW(), NOW(), 'user18@example.com', 'Regular18', 'User18', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser18', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+
+INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
+VALUES (1, NOW(), NOW(), 'user19@example.com', 'Regular19', 'User19', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser19', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+
+INSERT INTO users (is_blocked, created_at, updated_at, email, first_name, last_name, password_hash, phone_number, username, photo_url)
+VALUES (0, NOW(), NOW(), 'user20@example.com', 'Regular20', 'User20', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', '1234567890', 'regularuser20', 'https://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png');
+
 -- Insert data into posts table
 INSERT INTO posts (likes_count, user_id, created_at, updated_at, content, title)
 VALUES (10, 1, NOW(), NOW(), 'This is a detailed post about Java programming. Java is a versatile language used in various applications including web, mobile, and enterprise systems. Its robust ecosystem and strong community support make it a popular choice for developers.', 'Introduction to Java Programming');

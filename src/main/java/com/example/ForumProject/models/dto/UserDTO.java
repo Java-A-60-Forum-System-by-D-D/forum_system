@@ -38,6 +38,7 @@ public class UserDTO {
     @Schema(description = "Password for the user account. It is recommended to have a strong password.",
             example = "P@ssw0rd123")
     @NotNull(message = "Field cannot be null")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[a-z])[A-Za-z\\d]+$",message = "Password must contain at least 1 uppercase letter, 1 lowercase letter and 1 digit")
     private String password;
 
     @Schema(description = "Email address of the user. Must be unique and a valid email format.",
