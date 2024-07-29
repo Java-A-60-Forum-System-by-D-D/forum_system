@@ -45,7 +45,6 @@ public class User extends BaseEntity implements UserDetails {
     @JsonIgnore
     @Column(name = "password_hash")
     @Size(min =8, max = 100,message = "Password needs to be between 8 and 20 symbols")
-    @ValidPassword(message = "Password must contain at lease 1 lowercase, 1 uppercase and 1 digit")
     @NotNull(message = "Field cannot be null")
     private String password;
 

@@ -154,22 +154,6 @@ public class PostRepositoryImpl implements PostRepository {
 
 
 
-//    public List<PostSummaryDTO> testMethod() {
-//        try (Session session = sessionFactory.openSession()) {
-//            String hql = "SELECT new com.example.ForumProject.models.dto.PostSummaryDTO(" +
-//                    "p.id, p.title, p.content, p.likesCount, p.createdAt, p.updatedAt, " +
-//                    "SIZE(p.comments), p.user.username) " +
-//                    "FROM Post p " +
-//                    "LEFT JOIN p.user " +
-//                    "GROUP BY p.id, p.title, p.content, p.likesCount, p.createdAt, p.updatedAt, p.user.username " +
-//                    "ORDER BY SIZE(p.comments) DESC";
-//
-//            Query<PostSummaryDTO> query = session.createQuery(hql, PostSummaryDTO.class);
-//            query.setMaxResults(10);
-//
-//            return query.list();
-//        }
-//    }
 
     @Override
     public void checkIfPostWithTitleExistsForUser(Post post, User user) {
