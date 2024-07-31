@@ -1,5 +1,6 @@
 package com.example.ForumProject.services.contracts;
 
+import com.example.ForumProject.models.dto.UserSummaryDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
 import com.example.ForumProject.models.persistentClasses.Post;
@@ -11,7 +12,6 @@ import java.util.List;
 
 public interface UserService {
     List<User> getUsers();
-
     User getUserById(int id);
 
     User getUserByUsername(String username);

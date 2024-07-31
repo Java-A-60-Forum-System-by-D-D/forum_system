@@ -1,5 +1,7 @@
 package com.example.ForumProject.controllers;
 
+import com.example.ForumProject.models.dto.UserSummaryDTO;
+import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.services.contracts.AdminService;
 import com.example.ForumProject.exceptions.AuthorizationException;
 import com.example.ForumProject.exceptions.EntityNotFoundException;
@@ -12,12 +14,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -26,13 +32,15 @@ public class AdminController {
 
     private final AdminService adminService;
     private final UserService userService;
+    private final ModelMapper modelMapper;
 
 
     @Autowired
-    public AdminController(AdminService adminService, UserService userService) {
+    public AdminController(AdminService adminService, UserService userService, ModelMapper modelMapper) {
 
         this.adminService = adminService;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/admin-privileges/{user_id}")
@@ -113,8 +121,17 @@ public class AdminController {
     @Operation(summary = "Get all users", description = "Retrieve a list of all users")
     @ApiResponse(responseCode = "200", description = "List of users", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)))
     @GetMapping
-    public List<User> getAll() {
-        return userService.getUsers();
+    public List<UserSummaryDTO> getAll() {
+
+        List<UserSummaryDTO> userSummaryDTO = userService.getUsers()
+                                                         .stream()
+                                                         .map(user -> {
+                                                             UserSummaryDTO userSummaryDTO1 = userMapper(user);
+                                                             return userSummaryDTO1;
+                                                         })
+                                                         .toList();
+
+        return userSummaryDTO;
     }
 
     @Operation(summary = "Get user by ID", description = "Retrieve a user by their ID")
@@ -123,8 +140,10 @@ public class AdminController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @GetMapping("/id/{id}")
-    public User getById(@Parameter(description = "ID of the user to be retrieved", required = true) @PathVariable int id) {
-        return userService.getUserById(id);
+    public UserSummaryDTO getById(@Parameter(description = "ID of the user to be retrieved", required = true) @PathVariable int id) {
+        UserSummaryDTO userSummaryDTO = userMapper(userService.getUserById(id));
+
+        return userSummaryDTO;
     }
 
     @Operation(summary = "Get user by username", description = "Retrieve a user by their username")
@@ -133,8 +152,10 @@ public class AdminController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @GetMapping("/username/{username}")
-    public User getByUsername(@Parameter(description = "Username of the user to be retrieved", required = true) @PathVariable String username) {
-        return userService.getUserByUsername(username);
+    public UserSummaryDTO getByUsername(@Parameter(description = "Username of the user to be retrieved", required = true) @PathVariable String username) {
+        UserSummaryDTO userSummaryDTO = userMapper(userService.getUserByUsername(username));
+
+        return userSummaryDTO;
     }
 
     @Operation(summary = "Get user by first name", description = "Retrieve a user by their first name")
@@ -143,8 +164,10 @@ public class AdminController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @GetMapping("/first_name/{firstName}")
-    public User getByFirstName(@Parameter(description = "First name of the user to be retrieved", required = true) @PathVariable String firstName) {
-        return userService.getUserByFirstName(firstName);
+    public UserSummaryDTO getByFirstName(@Parameter(description = "First name of the user to be retrieved", required = true) @PathVariable String firstName) {
+        UserSummaryDTO userSummaryDTO = userMapper(userService.getUserByFirstName(firstName));
+
+        return userSummaryDTO;
 
     }
 
@@ -154,9 +177,17 @@ public class AdminController {
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
     })
     @GetMapping("/email/{userEmail}")
-    public User getByEmail(@Parameter(description = "Email of the user to be retrieved", required = true) @PathVariable String userEmail) {
-        return userService.getUserByEmail(userEmail);
+    public UserSummaryDTO getByEmail(@Parameter(description = "Email of the user to be retrieved", required = true) @PathVariable String userEmail) {
+        UserSummaryDTO userSummaryDTO = userMapper(userService.getUserByEmail(userEmail));
 
+        return userSummaryDTO;
+    }
+
+
+    private UserSummaryDTO userMapper(User user) {
+        UserSummaryDTO userSummaryDTO = modelMapper.map(user, UserSummaryDTO.class);
+
+        return userSummaryDTO;
     }
 
 

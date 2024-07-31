@@ -40,7 +40,7 @@ class UserServiceImplTest {
         List<User> users = Arrays.asList(user, adminUser);
 
         when(userRepository.getUsers()).thenReturn(users);
-        
+
         List<User> result = userService.getUsers();
 
         assertEquals(users, result);

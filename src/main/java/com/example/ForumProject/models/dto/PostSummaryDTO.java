@@ -1,16 +1,10 @@
 package com.example.ForumProject.models.dto;
 
 import com.example.ForumProject.models.persistentClasses.Comment;
-import com.example.ForumProject.models.persistentClasses.Like;
 import com.example.ForumProject.models.persistentClasses.Tag;
-import com.example.ForumProject.models.persistentClasses.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.PrimitiveIterator;
 import java.util.Set;
 
 

@@ -93,7 +93,7 @@ public class User extends BaseEntity implements UserDetails {
     private Set<Comment> comments;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Like> likes;
 
 

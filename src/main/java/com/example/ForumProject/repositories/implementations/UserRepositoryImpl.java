@@ -92,7 +92,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getUsers() {
         try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("FROM User", User.class);
+            Query<User> query = session.createQuery("FROM User u left join fetch u.posts left join fetch u.userRole", User.class);
             return query.list();
         }
     }
