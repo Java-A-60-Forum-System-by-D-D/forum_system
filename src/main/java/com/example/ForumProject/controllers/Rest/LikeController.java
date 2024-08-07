@@ -1,7 +1,5 @@
-package com.example.ForumProject.controllers;
+package com.example.ForumProject.controllers.Rest;
 
-import com.example.ForumProject.exceptions.EntityDuplicateException;
-import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.persistentClasses.Like;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.services.contracts.LikeService;
@@ -11,11 +9,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/posts")

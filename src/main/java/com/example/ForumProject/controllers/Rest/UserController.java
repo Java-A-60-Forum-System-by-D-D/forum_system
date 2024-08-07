@@ -1,15 +1,11 @@
-package com.example.ForumProject.controllers;
+package com.example.ForumProject.controllers.Rest;
 
 
 import com.example.ForumProject.models.filterOptions.FilterOptionsComments;
 import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
 import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.services.contracts.CommentService;
-import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
-import com.example.ForumProject.exceptions.AuthorizationException;
-import com.example.ForumProject.exceptions.EntityNotFoundException;
-import com.example.ForumProject.models.helpers.PostMapper;
 import com.example.ForumProject.models.helpers.UserMapper;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
@@ -23,11 +19,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 

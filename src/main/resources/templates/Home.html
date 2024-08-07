@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link href="../static/css/Style.css" th:href="@{/Style.css}" rel="stylesheet">
+</head>
+<body>
+
+
+<!--<div class="homeContainer">-->
+
+
+<!--    <div class="mostCommentedPostsContainer1">-->
+<!--        <ul th:each="post: ${Top10MostCommented}" th:object="${post}">-->
+<!--            <li th:text="*{title}"></li>-->
+<!--            <li th:text="*{content}"></li>-->
+<!--            <li th:text="*{username}"></li>-->
+<!--            <li th:text="*{likesCount}"></li>-->
+<!--        </ul>-->
+
+
+<!--    </div>-->
+
+
+<!--    <div class="mostRecentPostsContainer2">-->
+<!--        <ul th:each="post: ${Top10MostRecent}" th:object="${post}">-->
+<!--            <li th:text="*{title}"></li>-->
+<!--            <li th:text="*{content}"></li>-->
+<!--            <li th:text="*{username}"></li>-->
+<!--            <li th:text="*{likesCount}"></li>-->
+<!--        </ul>-->
+
+
+<!--    </div>-->
+
+<!--</div>-->
+
+
+
+<header class="header">
+    <div class="logo">Forum</div>
+    <nav class="nav">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button>
+    <aside class="sidebar" id="sidebar">
+        <div class="profile">
+            <img src="avatar.png" alt="User Avatar" class="avatar">
+            <h3>Username</h3>
+            <a href="#">View Profile</a>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Categories</a></li>
+                <li><a href="#">Popular Topics</a></li>
+                <li><a href="#">New Posts</a></li>
+                <li><a href="#">Notifications</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <div class="homeContainer">
+            <section class="mostCommentedPostsContainer">
+                <h2>Most Commented Posts</h2>
+                <ul th:each="post: ${Top10MostCommented}" th:object="${post}">
+                    <li>
+                        <h3 th:text="*{title}"></h3>
+                        <p th:text="*{content}"></p>
+                        <p><strong>User:</strong> <span th:text="*{username}"></span></p>
+                        <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="mostRecentPostsContainer">
+                <h2>Most Recent Posts</h2>
+                <ul th:each="post: ${Top10MostRecent}" th:object="${post}">
+                    <li>
+                        <h3 th:text="*{title}"></h3>
+                        <p th:text="*{content}"></p>
+                        <p><strong>User:</strong> <span th:text="*{username}"></span></p>
+                        <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2024 Forum. All rights reserved.</p>
+</footer>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+</script>
+
+
+</body>
+</html>

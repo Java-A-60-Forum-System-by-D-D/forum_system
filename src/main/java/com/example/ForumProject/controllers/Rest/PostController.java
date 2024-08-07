@@ -1,6 +1,5 @@
-package com.example.ForumProject.controllers;
+package com.example.ForumProject.controllers.Rest;
 
-import com.example.ForumProject.exceptions.EntityDuplicateException;
 import com.example.ForumProject.models.dto.TagDTO;
 import com.example.ForumProject.models.helpers.TagMapper;
 import com.example.ForumProject.models.persistentClasses.Tag;
@@ -8,8 +7,6 @@ import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.TagService;
 import com.example.ForumProject.services.contracts.UserService;
-import com.example.ForumProject.exceptions.AuthorizationException;
-import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.helpers.PostMapper;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
@@ -21,12 +18,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 

@@ -1,10 +1,7 @@
-package com.example.ForumProject.controllers;
+package com.example.ForumProject.controllers.Rest;
 
 import com.example.ForumProject.models.dto.UserSummaryDTO;
-import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.services.contracts.AdminService;
-import com.example.ForumProject.exceptions.AuthorizationException;
-import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.services.contracts.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,14 +13,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")

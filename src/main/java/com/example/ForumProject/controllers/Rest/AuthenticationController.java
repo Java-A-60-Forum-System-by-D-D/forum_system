@@ -1,4 +1,4 @@
-package com.example.ForumProject.controllers;
+package com.example.ForumProject.controllers.Rest;
 
 import com.example.ForumProject.services.contracts.AuthenticationService;
 import com.example.ForumProject.models.helpers.UserMapper;

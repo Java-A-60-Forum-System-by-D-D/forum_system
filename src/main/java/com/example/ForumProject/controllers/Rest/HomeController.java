@@ -1,11 +1,7 @@
-package com.example.ForumProject.controllers;
+package com.example.ForumProject.controllers.Rest;
 
 
-import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.dto.PostSummaryDTO;
-import com.example.ForumProject.models.persistentClasses.Post;
-import com.example.ForumProject.repositories.contracts.PostRepository;
-import com.example.ForumProject.repositories.implementations.PostRepositoryImpl;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.implementations.PostServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,11 +11,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@Tag(name = "HomeController", description = "Home page retrieve 10 most commented posts and 10 recently created posts.")
+@Tag(name = "HomeMVCController", description = "Home page retrieve 10 most commented posts and 10 recently created posts.")
 public class HomeController {
 
     private final PostService postService;
