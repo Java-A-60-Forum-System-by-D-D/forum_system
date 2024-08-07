@@ -1,5 +1,6 @@
 package com.example.ForumProject.controllers.Rest;
 
+import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.dto.TagDTO;
 import com.example.ForumProject.models.helpers.TagMapper;
 import com.example.ForumProject.models.persistentClasses.Post;
@@ -66,10 +67,10 @@ public class TagController {
             @ApiResponse(responseCode = "404", description = "Tag not found", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("{id}/posts")
-    public List<Post> getPostsByTagId(@Parameter(description = "ID of the tag to retrieve posts for") @PathVariable int id) {
+    public List<PostSummaryDTO> getPostsByTagId(@Parameter(description = "ID of the tag to retrieve posts for") @PathVariable int id) {
 
             Tag tag = tagService.findById(id);
-            List<Post> posts = postService.findPostsByTagId(tag.getId());
+            List<PostSummaryDTO> posts = postService.findPostsByTagId(tag.getId());
             return posts;
     }
     @Operation(summary = "Get posts by tag name", description = "Retrieve posts associated with a tag by its name")
@@ -78,10 +79,10 @@ public class TagController {
             @ApiResponse(responseCode = "404", description = "Tag not found", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("/name/posts")
-    public List<Post> getPostsByTagName(@Parameter(description = "Name of the tag to retrieve posts for") @RequestParam String name) {
+    public List<PostSummaryDTO> getPostsByTagName(@Parameter(description = "Name of the tag to retrieve posts for") @RequestParam String name) {
 
             Optional<Tag> tag = tagService.findByName(name);
-            List<Post> posts = postService.findPostsByTagId(tag.get().getId());
+            List<PostSummaryDTO> posts = postService.findPostsByTagId(tag.get().getId());
             return posts;
 
     }

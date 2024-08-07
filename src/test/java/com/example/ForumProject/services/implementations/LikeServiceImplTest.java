@@ -55,7 +55,7 @@ class LikeServiceImplTest {
         Like like = new Like(post, user);
 
         when(likeRepository.findByPostIdAndUserId(postId, userId)).thenReturn(Optional.empty());
-        when(postService.getPostById(postId)).thenReturn(post);
+        when(postService.getPostSummaryByPostId(postId)).thenReturn(post);
         when(userService.getUserById(userId)).thenReturn(user);
         when(likeRepository.save(any(Like.class))).thenReturn(like);
 
@@ -87,7 +87,7 @@ class LikeServiceImplTest {
         User user = new User();
         Like like = new Like(post, user);
         when(likeRepository.findByPostIdAndUserId(postId, userId)).thenReturn(Optional.of(like));
-        when(postService.getPostById(postId)).thenReturn(post);
+        when(postService.getPostSummaryByPostId(postId)).thenReturn(post);
 
         likeService.unlikePost(userId, postId);
 

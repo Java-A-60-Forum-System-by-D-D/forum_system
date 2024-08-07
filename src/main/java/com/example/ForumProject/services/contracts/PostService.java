@@ -10,22 +10,23 @@ import com.example.ForumProject.models.persistentClasses.User;
 import java.util.List;
 
 public interface PostService {
-    List<Post> getPosts(User user, FilterOptionsPosts filterOptionsPosts);
+    List<PostSummaryDTO> getPosts(User user, FilterOptionsPosts filterOptionsPosts);
 
-    Post getPostById(int id);
+    PostSummaryDTO getPostSummaryByPostId(int id);
+    Post getPostByPostId(int id);
 
     List<PostSummaryDTO> get10MostCommentedPosts();
     List<PostSummaryDTO>get10MostRecentlyAddedPosts();
 
-    Post updatePost(Post post);
+    PostSummaryDTO updatePost(Post post);
 
-    Post updatePost(Post post, User user, Post existingPost);
+    PostSummaryDTO updatePost(Post post, User user, Post existingPost);
 
-    Post createPost(Post post, User user);
+    PostSummaryDTO createPost(Post post, User user);
 
     void deletePost(int id, User user);
 
-    List<Post> getPostsByUser(int id);
+    List<PostSummaryDTO> getPostsByUser(int id);
 
     Tag createTag(Tag tag, Post post, User user);
 
@@ -35,7 +36,7 @@ public interface PostService {
 
     Tag updatePostTag(Tag tag, Post post, User user, Tag newTag);
 
-    List<Post> findPostsByTagId(int id);
+    List<PostSummaryDTO> findPostsByTagId(int id);
 
     void deleteTagFromPost(Tag tag, Post post,User user);
 

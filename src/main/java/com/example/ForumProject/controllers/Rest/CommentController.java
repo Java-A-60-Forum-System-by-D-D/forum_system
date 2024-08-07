@@ -47,7 +47,7 @@ public class CommentController {
     })
     public List<Comment> getAllComments(@Parameter(description = "ID of the post to get comments for") @PathVariable int postId) {
 
-        return postService.getPostById(postId)
+        return postService.getPostSummaryByPostId(postId)
                           .getComments()
                           .stream()
                           .filter(comment -> comment.getParentCommentId() == null)
@@ -63,7 +63,7 @@ public class CommentController {
     public Comment getCommentById(@Parameter(description = "ID of the post") @PathVariable int postId,
                                   @Parameter(description = "ID of the comment") @PathVariable int id) {
 
-        Post post = postService.getPostById(postId);
+        Post post = postService.getPostByPostId(postId);
         return commentService.getCommentById(id, post);
     }
 
@@ -80,9 +80,9 @@ public class CommentController {
                                                              .getAuthentication();
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
-        Post post = postService.getPostById(postId);
+        Post post = postService.getPostByPostId(postId);
         Comment comment = commentMapper.createFromDto(post, commentDTO, user);
-        return commentService.createComment(comment,post);
+        return commentService.createComment(comment, post);
     }
 
     @PutMapping("/{id}")
@@ -100,7 +100,7 @@ public class CommentController {
                                                              .getAuthentication();
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
-        Post post = postService.getPostById(postId);
+        Post post = postService.getPostByPostId(postId);
         Comment existingComment = commentService.getCommentById(id, post);
 
 
@@ -122,7 +122,7 @@ public class CommentController {
                                                              .getAuthentication();
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
-        Post post = postService.getPostById(postId);
+        Post post = postService.getPostByPostId(postId);
         Comment comment = commentService.getCommentById(id, post);
 
         commentService.deleteComment(id, user);

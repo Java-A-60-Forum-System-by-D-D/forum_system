@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,18 +38,29 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<Post> getPosts(User user, FilterOptionsPosts filterOptionsPosts) {
+    public List<PostSummaryDTO> getPosts(User user, FilterOptionsPosts filterOptionsPosts) {
 
         ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), INVALID_GET_ALL_POSTS_COMMAND);
 
 
-        return postRepository.getPosts(filterOptionsPosts);
+        return postRepository.getPosts(filterOptionsPosts)
+                             .stream()
+                             .map(this::postMapper)
+                             .collect(Collectors.toList());
     }
 
     @Override
-    public Post getPostById(int id) {
+    public PostSummaryDTO getPostSummaryByPostId(int id) {
+
+        PostSummaryDTO postSummaryDTO = postMapper(postRepository.getPostById(id));
+        return postSummaryDTO;
+    }
+
+    @Override
+    public Post getPostByPostId(int id) {
         return postRepository.getPostById(id);
     }
+
 
     @Override
     public List<PostSummaryDTO> get10MostCommentedPosts() {
@@ -71,7 +81,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public Post createPost(Post post, User user) {
+    public PostSummaryDTO createPost(Post post, User user) {
         postRepository.checkIfPostWithTitleExistsForUser(post, user);
 
         user.getPosts()
@@ -79,16 +89,19 @@ public class PostServiceImpl implements PostService {
 
         userService.updateUser(user);
 
-        return postRepository.createPost(post);
+        PostSummaryDTO postSummaryDTO = postMapper(postRepository.createPost(post));
+        return postSummaryDTO;
     }
 
     @Override
-    public Post updatePost(Post post) {
-        return postRepository.updatePost(post);
+    public PostSummaryDTO updatePost(Post post) {
+
+        PostSummaryDTO postSummaryDTO = postMapper(postRepository.updatePost(post));
+        return postSummaryDTO;
     }
 
     @Override
-    public Post updatePost(Post post, User user, Post existingPost) {
+    public PostSummaryDTO updatePost(Post post, User user, Post existingPost) {
 
 
         ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), existingPost, INVALID_UPDATE_COMMAND);
@@ -97,7 +110,8 @@ public class PostServiceImpl implements PostService {
         existingPost.setTitle(post.getTitle());
         existingPost.setContent(post.getContent());
 
-        return postRepository.updatePost(existingPost);
+        PostSummaryDTO postSummaryDTO = postMapper(postRepository.updatePost(existingPost));
+        return postSummaryDTO;
     }
 
 
@@ -105,17 +119,21 @@ public class PostServiceImpl implements PostService {
     public void deletePost(int id, User user) {
 
 
-        ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), getPostById(id), INVALID_DELETE_COMMAND);
+        ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), this.getPostSummaryByPostId(id), INVALID_DELETE_COMMAND);
         user.getPosts()
-            .remove(getPostById(id));
+            .remove(this.getPostSummaryByPostId(id));
         userService.updateUser(user);
 
         postRepository.deletePost(id);
     }
 
     @Override
-    public List<Post> getPostsByUser(int id) {
-        return postRepository.getPostsByUser(id);
+    public List<PostSummaryDTO> getPostsByUser(int id) {
+
+        return postRepository.getPostsByUser(id)
+                             .stream()
+                             .map(this::postMapper)
+                             .collect(Collectors.toList());
     }
 
     @Override
@@ -143,8 +161,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> findPostsByTagId(int id) {
-        return postRepository.getPostsByTagId(id);
+    public List<PostSummaryDTO> findPostsByTagId(int id) {
+        return postRepository.getPostsByTagId(id)
+                             .stream()
+                             .map(this::postMapper)
+                             .collect(Collectors.toList());
+
     }
 
     @Override
@@ -213,7 +235,8 @@ public class PostServiceImpl implements PostService {
         postSummaryDTO.setUsername(user.getUsername());
         postSummaryDTO.setComments(post.getComments());
         postSummaryDTO.setTags(post.getTags());
-        postSummaryDTO.setCategoryName(post.getCategory().getCategoryName());
+        postSummaryDTO.setCategory(post.getCategory()
+                                       .getCategoryName());
 
         return postSummaryDTO;
     }

@@ -8,10 +8,8 @@ import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.persistentClasses.*;
 import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.repositories.contracts.TagRepository;
-import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
 import com.example.ForumProject.utility.ValidatorHelpers;
-import com.sun.jdi.request.DuplicateRequestException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,14 +18,8 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceImplTest {
@@ -67,13 +59,13 @@ class PostServiceImplTest {
     }
 
     @Test
-    void getPostById_should_return_entity_when_parametersAreCorrect() {
+    void getPostSummaryByPostId_should_return_entity_when_parametersAreCorrect() {
 
         Post mockPost = Helpers.createMockPost();
         Mockito.when(postRepository.getPostById(1))
                .thenReturn(mockPost);
 
-        Post result = postService.getPostById(1);
+        Post result = postService.getPostSummaryByPostId(1);
 
         Assertions.assertEquals(result.getId(), 1);
         Assertions.assertEquals(postRepository.getPostById(1)
@@ -82,13 +74,13 @@ class PostServiceImplTest {
     }
 
     @Test
-    void getPostById_should_throw_when_idDoesntExist() {
+    void getPostSummaryById_should_throw_when_Post_idDoesntExist() {
 
         Post mockPost = Helpers.createMockPost();
         Mockito.when(postRepository.getPostById(2))
                .thenThrow(EntityNotFoundException.class);
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> postService.getPostById(2));
+        Assertions.assertThrows(EntityNotFoundException.class, () -> postService.getPostSummaryByPostId(2));
 
     }
 
@@ -221,7 +213,7 @@ class PostServiceImplTest {
         User adminUser = Helpers.createMockAdmin();
         Post post = Helpers.createMockPost();
 
-        Mockito.when(postService.getPostById(postId))
+        Mockito.when(postService.getPostSummaryByPostId(postId))
                .thenReturn(post);
 
         postService.deletePost(postId, adminUser);

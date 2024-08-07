@@ -1,8 +1,8 @@
 package com.example.ForumProject.controllers.Rest;
 
+import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.dto.TagDTO;
 import com.example.ForumProject.models.helpers.TagMapper;
-import com.example.ForumProject.models.persistentClasses.Category;
 import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.services.contracts.PostService;
@@ -51,12 +51,12 @@ public class PostController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping
-    public List<Post> getAllPosts(@Parameter(description = "Filter posts by title") @RequestParam(required = false) String title,
-                                  @Parameter(description = "Filter posts by content") @RequestParam(required = false) String content,
-                                  @Parameter(description = "Filter posts by user") @RequestParam(required = false) Integer userId,
-                                  @Parameter(description = "Filter posts by tag") @RequestParam(required = false) Integer tagId,
-                                  @RequestParam(required = false) String sortBy,
-                                  @RequestParam(required = false) String sortOrder
+    public List<PostSummaryDTO> getAllPosts(@Parameter(description = "Filter posts by title") @RequestParam(required = false) String title,
+                                            @Parameter(description = "Filter posts by content") @RequestParam(required = false) String content,
+                                            @Parameter(description = "Filter posts by user") @RequestParam(required = false) Integer userId,
+                                            @Parameter(description = "Filter posts by tag") @RequestParam(required = false) Integer tagId,
+                                            @RequestParam(required = false) String sortBy,
+                                            @RequestParam(required = false) String sortOrder
     ) {
         FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(title, content, userId, tagId, sortBy, sortOrder);
         Authentication authentication = SecurityContextHolder.getContext()
@@ -73,9 +73,9 @@ public class PostController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved the post"),
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true)))
     })
-    public Post getPostById(@Parameter(description = "ID of the post to retrieve") @PathVariable int id) {
+    public PostSummaryDTO getPostById(@Parameter(description = "ID of the post to retrieve") @PathVariable int id) {
 
-        return postService.getPostById(id);
+        return postService.getPostSummaryByPostId(id);
 
     }
 
@@ -87,7 +87,7 @@ public class PostController {
     @GetMapping("/{id}/tags")
     public List<Tag> getPostTags(@Parameter(description = "ID of the post to retrieve tags for") @PathVariable int id) {
 
-        Post post = postService.getPostById(id);
+        PostSummaryDTO post = postService.getPostSummaryByPostId(id);
         List<Tag> tags = tagService.findTagsByPostId(post.getId());
         return tags;
 
@@ -101,7 +101,7 @@ public class PostController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(hidden = true)))
     })
-    public Post createPost(@Valid @RequestBody PostDTO postDTO) {
+    public PostSummaryDTO createPost(@Valid @RequestBody PostDTO postDTO) {
         Authentication authentication = SecurityContextHolder.getContext()
                                                              .getAuthentication();
         String username = authentication.getName();
@@ -123,7 +123,7 @@ public class PostController {
                                                              .getAuthentication();
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
-        Post post = postService.getPostById(id);
+        Post post = postService.getPostByPostId(id);
         Tag tag = tagMapper.tagFromDTO(tagDTO);
         return postService.createTag(tag, post, user);
     }
@@ -136,12 +136,12 @@ public class PostController {
             @ApiResponse(responseCode = "404", description = "Post not found", content = @Content(schema = @Schema(hidden = true))),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(hidden = true)))
     })
-    public Post updatePost(@Parameter(description = "ID of the post to update") @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
+    public PostSummaryDTO updatePost(@Parameter(description = "ID of the post to update") @PathVariable int id, @Valid @RequestBody PostDTO postDTO) {
         Authentication authentication = SecurityContextHolder.getContext()
                                                              .getAuthentication();
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
-        Post existingPost = postService.getPostById(id);
+        Post existingPost = postService.getPostByPostId(id);
 
         Post post = postMapper.fromDto(id, postDTO);
         return postService.updatePost(post, user, existingPost);
@@ -161,7 +161,7 @@ public class PostController {
         User user = userService.getUserByUsername(username);
         Tag tag = tagService.findById(tagId);
         Tag newTag = tagMapper.tagFromDTO(tagDTO);
-        Post post = postService.getPostById(postId);
+        Post post = postService.getPostByPostId(postId);
         postService.updatePostTag(tag, post, user, newTag);
         return tag;
 
@@ -179,7 +179,7 @@ public class PostController {
                                                              .getAuthentication();
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
-        Post post = postService.getPostById(postId);
+        Post post = postService.getPostByPostId(postId);
         Tag tag = tagService.findById(tagId);
         postService.deleteTagFromPost(tag, post, user);
     }

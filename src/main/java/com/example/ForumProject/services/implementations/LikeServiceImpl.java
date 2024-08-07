@@ -31,7 +31,7 @@ public class LikeServiceImpl implements LikeService {
             throw new EntityDuplicateException("User", String.valueOf(userId));
         }
 
-        Post post = postService.getPostById(postId);
+        Post post = postService.getPostByPostId(postId);
         User user = userService.getUserById(userId);
 
         Like like = new Like(post, user);
@@ -47,7 +47,7 @@ public class LikeServiceImpl implements LikeService {
         }
 
         likeRepository.delete(like.get());
-        postService.deleteLike(like.get(),postService.getPostById(postId));
+        postService.deleteLike(like.get(),postService.getPostByPostId(postId));
     }
 
     public Integer getLikesCount(int postId) {
