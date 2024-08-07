@@ -213,6 +213,7 @@ public class PostServiceImpl implements PostService {
         postSummaryDTO.setUsername(user.getUsername());
         postSummaryDTO.setComments(post.getComments());
         postSummaryDTO.setTags(post.getTags());
+        postSummaryDTO.setCategoryName(post.getCategory().getCategoryName());
 
         return postSummaryDTO;
     }

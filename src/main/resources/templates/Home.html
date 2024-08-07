@@ -7,37 +7,6 @@
 </head>
 <body>
 
-
-<!--<div class="homeContainer">-->
-
-
-<!--    <div class="mostCommentedPostsContainer1">-->
-<!--        <ul th:each="post: ${Top10MostCommented}" th:object="${post}">-->
-<!--            <li th:text="*{title}"></li>-->
-<!--            <li th:text="*{content}"></li>-->
-<!--            <li th:text="*{username}"></li>-->
-<!--            <li th:text="*{likesCount}"></li>-->
-<!--        </ul>-->
-
-
-<!--    </div>-->
-
-
-<!--    <div class="mostRecentPostsContainer2">-->
-<!--        <ul th:each="post: ${Top10MostRecent}" th:object="${post}">-->
-<!--            <li th:text="*{title}"></li>-->
-<!--            <li th:text="*{content}"></li>-->
-<!--            <li th:text="*{username}"></li>-->
-<!--            <li th:text="*{likesCount}"></li>-->
-<!--        </ul>-->
-
-
-<!--    </div>-->
-
-<!--</div>-->
-
-
-
 <header class="header">
     <div class="logo">Forum</div>
     <nav class="nav">
@@ -81,6 +50,8 @@
                         <h3 th:text="*{title}"></h3>
                         <p th:text="*{content}"></p>
                         <p><strong>User:</strong> <span th:text="*{username}"></span></p>
+                        <p><strong>Category:</strong> <span th:text="*{categoryName}"></span></p>
+
                         <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
                     </li>
                 </ul>
@@ -93,6 +64,7 @@
                         <h3 th:text="*{title}"></h3>
                         <p th:text="*{content}"></p>
                         <p><strong>User:</strong> <span th:text="*{username}"></span></p>
+                        <p><strong>Category:</strong> <span th:text="*{categoryName}"></span></p>
                         <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
                     </li>
                 </ul>

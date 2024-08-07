@@ -2,6 +2,7 @@ package com.example.ForumProject.controllers.Rest;
 
 import com.example.ForumProject.models.dto.TagDTO;
 import com.example.ForumProject.models.helpers.TagMapper;
+import com.example.ForumProject.models.persistentClasses.Category;
 import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.services.contracts.PostService;

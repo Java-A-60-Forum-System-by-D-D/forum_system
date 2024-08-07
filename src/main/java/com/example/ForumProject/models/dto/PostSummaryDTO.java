@@ -1,5 +1,6 @@
 package com.example.ForumProject.models.dto;
 
+import com.example.ForumProject.models.persistentClasses.Category;
 import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.models.persistentClasses.Tag;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class PostSummaryDTO {
     private LocalDateTime updatedAt;
     private Set<Comment> comments;
     private Set<Tag> tags;
+    private String categoryName;
 
 
 
