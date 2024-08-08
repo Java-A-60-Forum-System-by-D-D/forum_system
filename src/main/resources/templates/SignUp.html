@@ -8,7 +8,7 @@
 <div class="cont">
     <div class="form sign-in">
         <h2>Welcome</h2>
-        <form th:action="@{/login}" th:object="${user}" th:method="post">
+        <form th:action="@{/login}" th:object="${LoginUser}" th:method="post">
             <label>
                 <span>Username</span>
                 <input type="text" name="username" th:field="*{username}" required />

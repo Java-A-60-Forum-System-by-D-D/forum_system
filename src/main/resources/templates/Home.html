@@ -18,9 +18,9 @@
 <!--    </div>-->
 
     <aside class="sidebar" id="sidebar">
-        <div class="profile">
-            <img src="" alt="User Avatar" class="avatar">
-            <h3 th:text="${user}">Username</h3>
+        <div class="profile" sec:authorize="isAuthenticated()" th:object="${user}">
+            <img th:src="*{photoURL}" alt="User Avatar" class="avatar">
+            <h3 th:text="*{username}">Username</h3>
             <a href="#">View Profile</a>
         </div>
         <div class="search-bar">

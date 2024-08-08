@@ -18,16 +18,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
+
 @Controller
 
 public class AuthenticationMVCController {
 
     private final AuthenticationService authenticationService;
     private final UserMapper userMapper;
+    private final UserService userService;
 
-    public AuthenticationMVCController(AuthenticationService authenticationService, UserMapper userMapper) {
+    public AuthenticationMVCController(AuthenticationService authenticationService, UserMapper userMapper, UserService userService) {
         this.authenticationService = authenticationService;
         this.userMapper = userMapper;
+        this.userService = userService;
     }
 
 
@@ -36,17 +40,18 @@ public class AuthenticationMVCController {
         if (!model.containsAttribute("registerUser")) {
             model.addAttribute("registerUser", new UserDTO());
         }
-        model.addAttribute("user", new LoggInUserDTO());
+        model.addAttribute("LoginUser", new LoggInUserDTO());
         return "SignUp";
     }
 
 
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("user") LoggInUserDTO loggInUserDTO, BindingResult bindingResult, Model model) {
+    public String login(@Valid @ModelAttribute("LoginUser") LoggInUserDTO loggInUserDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "SignUp";
         }
+
         authenticationService.loginUser(loggInUserDTO.getUsername(), loggInUserDTO.getPassword());
         Authentication authentication = SecurityContextHolder.getContext()
                                                              .getAuthentication();
@@ -66,7 +71,7 @@ public class AuthenticationMVCController {
         }
         User user = userMapper.createUserFromDto(userDTO);
         authenticationService.createUser(user);
-        model.addAttribute("user", user);
+        model.addAttribute("LoginUser", user);
         return "redirect:/login";
     }
 }
