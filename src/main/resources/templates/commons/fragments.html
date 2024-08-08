@@ -19,7 +19,10 @@
             <li><a href="#">About</a></li>
             <li><a href="#">Contact</a></li>
             <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">SignUp</a></li>
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">LogOut</a></li>
+            <li sec:authorize="isAuthenticated()"><form th:method="post"
+                                                        th:action="@{/logout}">
+                <input type="submit" class="btn nav-link" value="Logout">
+            </form></li>
         </ul>
     </nav>
 </header>

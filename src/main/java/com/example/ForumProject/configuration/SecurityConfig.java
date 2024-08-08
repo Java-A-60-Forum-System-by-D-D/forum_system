@@ -64,18 +64,18 @@ public class SecurityConfig {
                     auth.anyRequest()
                         .authenticated();
                 })
-//                .formLogin(formLogin -> formLogin
-//                        .loginPage("/auth/login")
-//                        .usernameParameter("username")
-//                        .passwordParameter("password")// Specify the custom login page URL
-//                        .permitAll() // Allow everyone to access the login page
-//                )
-//                .logout(
-//                        logout -> {
-//                            logout.logoutUrl("/logout")
-//                                  .logoutSuccessUrl("/")
-//                                  .invalidateHttpSession(true);
-//                        })
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
+                        .permitAll()
+                )
+                .logout(
+                        logout -> {
+                            logout.logoutUrl("/logout")
+                                  .logoutSuccessUrl("/")
+                                  .invalidateHttpSession(true);
+                        })
 
 
                 .sessionManagement(session -> session

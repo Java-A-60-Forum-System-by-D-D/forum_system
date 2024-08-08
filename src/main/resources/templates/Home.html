@@ -13,14 +13,14 @@
 </header>
 
 <div class="container">
-    <div class="logged-user nav-item nav-link" sec:authorize="isAuthenticated()">
-        Welcome, <th:block sec:authentication="name"></th:block>!
-    </div>
+<!--    <div class="logged-user nav-item nav-link" sec:authorize="isAuthenticated()">-->
+<!--&lt;!&ndash;        Welcome, <th:block sec:authentication="principal.username"></th:block>!&ndash;&gt;-->
+<!--    </div>-->
 
     <aside class="sidebar" id="sidebar">
         <div class="profile">
-            <img src="avatar.png" alt="User Avatar" class="avatar">
-            <h3>Username</h3>
+            <img src="" alt="User Avatar" class="avatar">
+            <h3 th:text="${user}">Username</h3>
             <a href="#">View Profile</a>
         </div>
         <div class="search-bar">

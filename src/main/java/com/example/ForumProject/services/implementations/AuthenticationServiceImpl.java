@@ -23,13 +23,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
+    private final ForumServiceDetails forumServiceDetails;
 
     @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, UserRepository userRepository1, PasswordEncoder passwordEncoder, TokenService tokenService, AuthenticationManager authenticationManager) {
+    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, UserRepository userRepository1, PasswordEncoder passwordEncoder, TokenService tokenService, AuthenticationManager authenticationManager, ForumServiceDetails forumServiceDetails) {
         this.userRepository = userRepository1;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
+        this.forumServiceDetails = forumServiceDetails;
     }
 
 
@@ -47,6 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         LoggInUserDTO loggedUser = new LoggInUserDTO(username, passwordEncoder.encode(password), token);
 
+        forumServiceDetails.loadUserByUsername(loggedUser.getUsername());
         return loggedUser;
 
     }

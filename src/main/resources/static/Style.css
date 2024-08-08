@@ -39,6 +39,14 @@
 .nav a:hover {
     text-decoration: underline;
 }
+.nav form input .btn nav-link{
+    margin-top: 0;
+    color: white;
+    text-decoration: none;
+}
+.nav form input .btn nav-link:hover{
+    text-decoration: underline;
+}
 
 /* Container Styles */
 .container {
@@ -145,16 +153,19 @@ p {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
-
 .sidebar-nav ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.sidebar-nav li {
+.sidebar-item {
     margin-bottom: 10px;
 }
 
-.sidebar-nav a {
+.sidebar-item a,
+.sidebar-item form,
+.sidebar-item input {
     color: #333;
     text-decoration: none;
     display: block;
@@ -162,8 +173,17 @@ p {
     border-radius: 5px;
 }
 
-.sidebar-nav a:hover {
+.sidebar-item a:hover,
+.sidebar-item input:hover {
     background-color: #ddd;
+}
+
+.sidebar-item .btn {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 /* Toggle Button Styles */
@@ -301,7 +321,7 @@ button {
     top: 0;
     width: 900px;
     height: 100%;
-    background-image: url("ext.jpg");
+    /*background-image: url("");*/
     opacity: .8;
     background-size: cover;
     -webkit-transition: -webkit-transform 1.2s ease-in-out;

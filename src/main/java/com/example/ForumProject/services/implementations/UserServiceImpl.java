@@ -11,6 +11,7 @@ import com.example.ForumProject.repositories.contracts.UserRepository;
 import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,21 +22,21 @@ import java.util.List;
 
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService{
 
 
     private UserRepository userRepository;
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.getUserByUsername(username)
-                                  .stream()
-                                  .findFirst()
-                                  .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
-
-        return user;
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        User user = userRepository.getUserByUsername(username)
+//                                  .stream()
+//                                  .findFirst()
+//                                  .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+//
+//        return user;
+//    }
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
