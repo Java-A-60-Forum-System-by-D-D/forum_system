@@ -519,4 +519,33 @@ input {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }
+
+.categories-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.categories-container h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+}
+.categories-list {
+    list-style: none;
+    padding: 0;
+}
+.categories-list li {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+.categories-list li:hover {
+    background-color: #f1f1f1;
+}
+
+
 /* END SignUp Form Styles*/
