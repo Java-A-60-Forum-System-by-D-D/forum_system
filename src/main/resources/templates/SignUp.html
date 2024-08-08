@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/Style.css" />
+</head>
+<body>
+<div class="cont">
+    <div class="form sign-in">
+        <h2>Welcome</h2>
+        <form th:action="@{/login}" th:object="${user}" method="post">
+            <label>
+                <span>Username</span>
+                <input type="text" name="username" th:field="*{username}" required />
+            </label>
+            <label>
+                <span>Password</span>
+                <input type="password" name="password" th:field="*{password}" required />
+            </label>
+            <p class="forgot-pass"><a href="/forgot-password">Forgot password?</a></p>
+            <button type="submit" class="submit">Sign In</button>
+        </form>
+    </div>
+    <div class="sub-cont">
+        <div class="img">
+            <div class="img__text m--up">
+                <h3>Don't have an account? Please Sign up!</h3>
+            </div>
+            <div class="img__text m--in">
+                <h3>If you already have an account, just sign in.</h3>
+            </div>
+            <div class="img__btn">
+                <span class="m--up">Sign Up</span>
+                <span class="m--in">Sign In</span>
+            </div>
+        </div>
+        <div class="form sign-up">
+            <h2>Create your Account</h2>
+            <form th:action="@{/register}" th:object="${registerUser}" method="post">
+                <label>
+                    <span>Username</span>
+                    <input type="text" th:field="*{username}" required />
+                </label>
+                <label>
+                    <span>First Name</span>
+                    <input type="text" th:field="*{firstName}" required />
+                </label>
+                <label>
+                    <span>Last Name</span>
+                    <input type="text"  th:field="*{lastName}" required />
+                </label>
+                <label>
+                    <span>Email</span>
+                    <input type="email" th:field="*{email}" required />
+                </label>
+                <label>
+                    <span>Password</span>
+                    <input type="password" th:field="*{password}" required />
+                </label>
+                <label>
+                    <span>Photo URL</span>
+                    <input type="text" th:field="*{photoURL}"/>
+                </label>
+<!--                <label class="text-white font-weight-bold" for="imageUrl">-->
+<!--                    <input id="imageUrl"-->
+<!--                           th:field="*{photoURL}"-->
+<!--                           th:errorclass="is-invalid"-->
+<!--                           type="file" class="form-control"-->
+<!--                           placeholder="Put vehicle image here" , accept="image/png, image/jpeg">-->
+<!--                </label>-->
+
+<!--                <p class="invalid-feedback errors alert alert-danger">-->
+<!--                    Image is optional.-->
+<!--                </p>-->
+<!--                </br>-->
+<!--                <img id="thumbnail" alt="Image Preview"/>-->
+
+                <button type="submit" class="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelector('.img__btn').addEventListener('click', function() {
+        document.querySelector('.cont').classList.toggle('s--signup');
+    });
+</script>
+</body>
+</html>

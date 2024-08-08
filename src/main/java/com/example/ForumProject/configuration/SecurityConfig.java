@@ -46,11 +46,23 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**").permitAll();
                     auth.requestMatchers("/api").permitAll();
+                    auth.requestMatchers("/login", "/register").permitAll();
                     auth.requestMatchers("/api/users/**").hasAnyRole("User","Admin");
                     auth.requestMatchers("/api/admin/**").hasAnyRole("Admin");
                  auth.requestMatchers("/api/posts/**").hasAnyRole("Admin","User,","ADMIN","USER");
                     auth.anyRequest().permitAll();
-                });
+                }).formLogin(formLogin -> formLogin
+                .loginPage("/login")
+                        .usernameParameter("username")
+                        .passwordParameter("password")// Specify the custom login page URL
+                .permitAll() // Allow everyone to access the login page
+        )
+                .logout(logout -> logout
+                        .permitAll() // Allow everyone to access the logout endpoint
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create sessions if required
+                );
 
 
         http.oauth2ResourceServer()

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link href="../static/css/Style.css" th:href="@{/Style.css}" rel="stylesheet">
+</head>
+
+<body>
+<header th:fragment="nav" class="header">
+    <div class="logo">Forum</div>
+    <nav class="nav">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Categories</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">SignUp</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">LogOut</a></li>
+        </ul>
+    </nav>
+</header>
+
+</body>
+</html>

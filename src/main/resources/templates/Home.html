@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
@@ -7,20 +8,15 @@
 </head>
 <body>
 
-<header class="header">
-    <div class="logo">Forum</div>
-    <nav class="nav">
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Categories</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
+<header th:replace="~{commons/fragments::nav}">
+
 </header>
 
 <div class="container">
-    <button class="toggle-sidebar" onclick="toggleSidebar()">☰</button>
+    <div class="logged-user nav-item nav-link" sec:authorize="isAuthenticated()">
+        Welcome, <th:block sec:authentication="name"></th:block>!
+    </div>
+
     <aside class="sidebar" id="sidebar">
         <div class="profile">
             <img src="avatar.png" alt="User Avatar" class="avatar">
