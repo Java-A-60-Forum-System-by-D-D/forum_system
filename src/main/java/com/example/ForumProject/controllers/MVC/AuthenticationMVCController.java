@@ -7,6 +7,8 @@ import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.services.contracts.AuthenticationService;
 import com.example.ForumProject.services.contracts.UserService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,12 +30,6 @@ public class AuthenticationMVCController {
         this.userMapper = userMapper;
     }
 
-//    @GetMapping("/login")
-//    public String login(Model model) {
-//        model.addAttribute("user", new LoggInUserDTO());
-//        model.addAttribute("registerUser", new UserDTO());
-//        return "SignUp";
-//    }
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -46,34 +42,17 @@ public class AuthenticationMVCController {
 
 
 
-
     @PostMapping("/login")
     public String login(@Valid @ModelAttribute("user") LoggInUserDTO loggInUserDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "SignUp";
         }
         authenticationService.loginUser(loggInUserDTO.getUsername(), loggInUserDTO.getPassword());
+        Authentication authentication = SecurityContextHolder.getContext()
+                                                             .getAuthentication();
+        System.out.println(authentication);
         return "redirect:/";
     }
-//    @GetMapping("/register")
-//    public String register(Model model) {
-//        model.addAttribute("registerUser", new UserDTO());
-//        return "SignUp";
-//    }
-
-//    @PostMapping("/register")
-//    public String register(@Valid @ModelAttribute("registerUser") UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
-//        User user = userMapper.createUserFromDto(userDTO);
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("errors", bindingResult.getAllErrors());
-//            redirectAttributes.addAttribute("userDto",userDTO);
-//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userDto", bindingResult);
-//            return "redirect:/login";
-//        }
-//        authenticationService.createUser(user);
-//        model.addAttribute("user", user);
-//        return "redirect:/login";
-//    }
 
 
 

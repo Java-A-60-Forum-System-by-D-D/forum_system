@@ -9,6 +9,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -44,22 +45,39 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/**").permitAll();
-                    auth.requestMatchers("/api").permitAll();
-                    auth.requestMatchers("/login", "/register").permitAll();
-                    auth.requestMatchers("/api/users/**").hasAnyRole("User","Admin");
-                    auth.requestMatchers("/api/admin/**").hasAnyRole("Admin");
-                 auth.requestMatchers("/api/posts/**").hasAnyRole("Admin","User,","ADMIN","USER");
-                    auth.anyRequest().permitAll();
-                }).formLogin(formLogin -> formLogin
-                .loginPage("/login")
-                        .usernameParameter("username")
-                        .passwordParameter("password")// Specify the custom login page URL
-                .permitAll() // Allow everyone to access the login page
-        )
-                .logout(logout -> logout
-                        .permitAll() // Allow everyone to access the logout endpoint
-                )
+                    auth.requestMatchers("/api/auth/**")
+                        .permitAll();
+                    auth.requestMatchers("/api")
+                        .permitAll();
+                    auth.requestMatchers("/login", "/register")
+                        .permitAll();
+                    auth.requestMatchers("/home", "/")
+                        .permitAll();
+                    auth.requestMatchers("/api/users/**")
+                        .hasAnyRole("User", "Admin");
+                    auth.requestMatchers("/api/admin/**")
+                        .hasAnyRole("Admin");
+                    auth.requestMatchers("/api/posts/**")
+                        .hasAnyRole("Admin", "User,", "ADMIN", "USER");
+                    auth.requestMatchers("/Style.css")
+                        .permitAll();
+                    auth.anyRequest()
+                        .authenticated();
+                })
+//                .formLogin(formLogin -> formLogin
+//                        .loginPage("/auth/login")
+//                        .usernameParameter("username")
+//                        .passwordParameter("password")// Specify the custom login page URL
+//                        .permitAll() // Allow everyone to access the login page
+//                )
+//                .logout(
+//                        logout -> {
+//                            logout.logoutUrl("/logout")
+//                                  .logoutSuccessUrl("/")
+//                                  .invalidateHttpSession(true);
+//                        })
+
+
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create sessions if required
                 );
@@ -70,10 +88,12 @@ public class SecurityConfig {
 //            .jwtAuthenticationConverter(jwtAuthenticationConverter());
 //        http.sessionManagement(
 //                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
+//
 //        );
 
         return http.build();
+
+
     }
 
     @Bean
@@ -104,7 +124,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter(){
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
