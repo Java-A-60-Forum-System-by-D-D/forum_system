@@ -65,13 +65,13 @@ public class SecurityConfig {
                 );
 
 
-        http.oauth2ResourceServer()
-            .jwt()
-            .jwtAuthenticationConverter(jwtAuthenticationConverter());
-        http.sessionManagement(
-                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//        http.oauth2ResourceServer()
+//            .jwt()
+//            .jwtAuthenticationConverter(jwtAuthenticationConverter());
+//        http.sessionManagement(
+//                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-        );
+//        );
 
         return http.build();
     }

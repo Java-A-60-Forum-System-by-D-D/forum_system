@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 
@@ -27,15 +28,28 @@ public class AuthenticationMVCController {
         this.userMapper = userMapper;
     }
 
+//    @GetMapping("/login")
+//    public String login(Model model) {
+//        model.addAttribute("user", new LoggInUserDTO());
+//        model.addAttribute("registerUser", new UserDTO());
+//        return "SignUp";
+//    }
+
     @GetMapping("/login")
     public String login(Model model) {
+        if (!model.containsAttribute("registerUser")) {
+            model.addAttribute("registerUser", new UserDTO());
+        }
         model.addAttribute("user", new LoggInUserDTO());
-        model.addAttribute("registerUser", new UserDTO());
         return "SignUp";
     }
+
+
+
+
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute ("user") LoggInUserDTO loggInUserDTO, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()){
+    public String login(@Valid @ModelAttribute("user") LoggInUserDTO loggInUserDTO, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             return "SignUp";
         }
         authenticationService.loginUser(loggInUserDTO.getUsername(), loggInUserDTO.getPassword());
@@ -47,12 +61,31 @@ public class AuthenticationMVCController {
 //        return "SignUp";
 //    }
 
+//    @PostMapping("/register")
+//    public String register(@Valid @ModelAttribute("registerUser") UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+//        User user = userMapper.createUserFromDto(userDTO);
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("errors", bindingResult.getAllErrors());
+//            redirectAttributes.addAttribute("userDto",userDTO);
+//            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userDto", bindingResult);
+//            return "redirect:/login";
+//        }
+//        authenticationService.createUser(user);
+//        model.addAttribute("user", user);
+//        return "redirect:/login";
+//    }
+
+
+
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("registerUser") UserDTO userDTO, BindingResult bindingResult, Model model) {
-        User user = userMapper.createUserFromDto(userDTO);
+    public String register(@Valid @ModelAttribute("registerUser") UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("registerUser", userDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerUser", bindingResult);
+            return "redirect:/login";
         }
+        User user = userMapper.createUserFromDto(userDTO);
         authenticationService.createUser(user);
         model.addAttribute("user", user);
         return "redirect:/login";
