@@ -62,11 +62,14 @@ public class AuthenticationMVCController {
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("registerUser") UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
+
             model.addAttribute("hasErrors", true);
             model.addAttribute("errors", bindingResult.getAllErrors());
+            model.addAttribute("LoginUser", new LoggInUserDTO());
+            model.addAttribute("showSignUp", true);
             redirectAttributes.addFlashAttribute("registerUser", userDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerUser", bindingResult);
-            return "redirect:/login#SignUpForm";
+            return "SignUp";
         }
         User user = userMapper.createUserFromDto(userDTO);
         authenticationService.createUser(user);
