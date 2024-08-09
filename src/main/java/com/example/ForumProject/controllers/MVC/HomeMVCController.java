@@ -7,6 +7,7 @@ import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
+import com.sun.jna.WString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -66,6 +67,11 @@ public class HomeMVCController {
     @GetMapping("/about")
     public String getAboutPage() {
         return "About";
+    }
+
+    @GetMapping("/contact")
+    public String getContactPage(){
+        return "Contact";
     }
 
 

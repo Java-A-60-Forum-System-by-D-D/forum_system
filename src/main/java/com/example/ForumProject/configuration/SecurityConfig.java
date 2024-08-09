@@ -55,7 +55,7 @@ public class SecurityConfig {
                         .permitAll();
                     auth.requestMatchers("/categories")
                         .permitAll();
-                    auth.requestMatchers("/home/about")
+                    auth.requestMatchers("/home/**")
                         .permitAll();
                     auth.requestMatchers("/api/users/**")
                         .hasAnyRole("User", "Admin");

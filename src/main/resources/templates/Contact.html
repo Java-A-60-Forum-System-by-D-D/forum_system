@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <link href="../static/css/Style.css" th:href="@{/Style.css}" rel="stylesheet">
+</head>
+<body>
+<header th:replace="~{commons/fragments::nav}"></header>
+<div class="about-container">
+    <h1>About Us</h1>
+    <p>Welcome to our forum! This platform is dedicated to sharing interesting facts about the world. Whether you're curious about history, science, culture, or any other topic, you'll find fascinating information here.</p>
+
+    <div class="about-person">
+        <h2>Dimitar</h2>
+        <p>Dimitar is passionate about history and science. He loves exploring new topics and sharing his knowledge with others. His favorite subjects include ancient civilizations and modern technological advancements.</p>
+        <div class="social-links">
+            <a href="https://github.com/hadzhiev96" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/finance-analysis-sql/" target="_blank">LinkedIn</a>
+            <a href="mailto:hadzhiev96@gmail.com">Gmail</a>
+        </div>
+    </div>
+
+    <div class="about-person">
+        <h2>Desislava</h2>
+        <p>Desislava has a keen interest in culture and the arts. She enjoys learning about different cultures and their traditions. Desislava also has a background in literature and enjoys writing about various topics.</p>
+        <div class="social-links">
+            <a href="https://github.com/DesZafirova" target="_blank">GitHub</a>
+            <a href="https://www.linkedin.com/in/desislava-zafirova-a4943124b/" target="_blank">LinkedIn</a>
+            <a href="mailto:desislava@example.com">Gmail</a>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <p>&copy; 2024 Forum. All rights reserved.</p>
+</footer>
+</body>
+</html>

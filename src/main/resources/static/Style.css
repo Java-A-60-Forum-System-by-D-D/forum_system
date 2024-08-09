@@ -640,4 +640,58 @@ input {
 }
 
 
+about-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.about-container h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.about-container p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.about-person {
+    margin-bottom: 30px;
+}
+
+.about-person h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.about-person p {
+    font-size: 1.1em;
+    line-height: 1.5;
+    color: #666;
+}
+
+.social-links {
+    margin-top: 10px;
+}
+
+.social-links a {
+    margin-right: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    text-decoration: underline;
+}
+
+
 /* END SignUp Form Styles*/
