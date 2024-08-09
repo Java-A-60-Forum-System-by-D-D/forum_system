@@ -39,12 +39,11 @@ public class HomeMVCController {
 
 
     @GetMapping
-    public String getHomePage( Model model, Principal principal) {
+    public String getHomePage(Model model, Principal principal) {
         if (principal != null) {
             User user = userService.getUserByUsername(principal.getName());
             model.addAttribute("user", user);
         }
-
 
 
         List<PostSummaryDTO> mostCommented = postService.get10MostCommentedPosts()
@@ -61,6 +60,12 @@ public class HomeMVCController {
         model.addAttribute("Top10MostRecent", mostRecent);
 
         return "Home";
+    }
+
+
+    @GetMapping("/about")
+    public String getAboutPage() {
+        return "About";
     }
 
 
