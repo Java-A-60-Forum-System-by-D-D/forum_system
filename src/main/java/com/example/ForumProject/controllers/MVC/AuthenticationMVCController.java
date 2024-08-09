@@ -26,12 +26,12 @@ public class AuthenticationMVCController {
 
     private final AuthenticationService authenticationService;
     private final UserMapper userMapper;
-    private final UserService userService;
 
-    public AuthenticationMVCController(AuthenticationService authenticationService, UserMapper userMapper, UserService userService) {
+
+    public AuthenticationMVCController(AuthenticationService authenticationService, UserMapper userMapper) {
         this.authenticationService = authenticationService;
         this.userMapper = userMapper;
-        this.userService = userService;
+
     }
 
 
@@ -43,7 +43,6 @@ public class AuthenticationMVCController {
         model.addAttribute("LoginUser", new LoggInUserDTO());
         return "SignUp";
     }
-
 
 
     @PostMapping("/login")
@@ -60,18 +59,20 @@ public class AuthenticationMVCController {
     }
 
 
-
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("registerUser") UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("hasErrors", true);
             model.addAttribute("errors", bindingResult.getAllErrors());
             redirectAttributes.addFlashAttribute("registerUser", userDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerUser", bindingResult);
-            return "redirect:/login";
+            return "redirect:/login#SignUpForm";
         }
         User user = userMapper.createUserFromDto(userDTO);
         authenticationService.createUser(user);
         model.addAttribute("LoginUser", user);
         return "redirect:/login";
     }
+
+
 }

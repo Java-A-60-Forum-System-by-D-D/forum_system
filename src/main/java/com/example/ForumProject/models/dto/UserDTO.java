@@ -21,6 +21,7 @@ public class UserDTO {
             example = "john_doe")
     @NotNull(message = "Field cannot be null")
     @UniqueUsername
+    @Size(min = 4, max = 32, message = "Username must be between 4 and 32 symbols")
     private String username;
 
     @Schema(description = "First name of the user. Must be between 4 and 32 characters.",

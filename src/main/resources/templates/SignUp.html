@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="/Style.css" />
 </head>
 <body>
+
+
+
 <div class="cont">
     <div class="form sign-in">
         <h2>Welcome</h2>
@@ -34,28 +37,33 @@
                 <span class="m--in">Sign In</span>
             </div>
         </div>
-        <div class="form sign-up">
+        <div class="form sign-up" id = "SignUpForm">
             <h2>Create your Account</h2>
             <form th:action="@{/register}" th:object="${registerUser}" method="post">
                 <label>
                     <span>Username</span>
                     <input type="text" th:field="*{username}" required />
+                    <small class="error" th:errors="*{username}" />
                 </label>
                 <label>
                     <span>First Name</span>
                     <input type="text" th:field="*{firstName}" required />
+                    <small class="error" th:errors="*{firstName}" />
                 </label>
                 <label>
                     <span>Last Name</span>
                     <input type="text"  th:field="*{lastName}" required />
+                    <small class="error" th:errors="*{lastName}" />
                 </label>
                 <label>
                     <span>Email</span>
                     <input type="email" th:field="*{email}" required />
+                    <small class="error" th:errors="*{email}" />
                 </label>
                 <label>
                     <span>Password</span>
-                    <input type="password" th:field="*{password}" required />
+                    <input type="password" th:field="*{password}" id="password" required />
+                    <small class="error" th:errors="*{password}" />
                 </label>
                 <label>
                     <span>Photo URL</span>
@@ -80,10 +88,20 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
 <script>
     document.querySelector('.img__btn').addEventListener('click', function() {
         document.querySelector('.cont').classList.toggle('s--signup');
     });
+
+
 </script>
+
+
 </body>
 </html>
