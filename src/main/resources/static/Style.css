@@ -255,7 +255,7 @@ button {
     overflow: hidden;
     position: relative;
     width: 900px;
-    height: 800px;
+    height: 600px;
     margin: 0 auto 100px;
     background: #fff;
     box-shadow: -10px -10px 15px rgba(255, 255, 255, 0.3), 10px 10px 15px rgba(70, 70, 70, 0.15), inset -10px -10px 15px rgba(255, 255, 255, 0.3), inset 10px 10px 15px rgba(70, 70, 70, 0.15);
@@ -281,10 +281,50 @@ button {
     height: 100%;
     padding-left: 260px;
     background: #fff;
+    overflow-y: auto;
     -webkit-transition: -webkit-transform 1.2s ease-in-out;
     transition: -webkit-transform 1.2s ease-in-out;
     transition: transform 1.2s ease-in-out;
     transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
+}
+.img::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.img::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track background color */
+}
+
+.img::-webkit-scrollbar-thumb {
+    background: #888; /* Scrollbar color */
+    border-radius: 10px;
+}
+
+.img::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Scrollbar color on hover */
+}
+
+/* Additional styling */
+.img, .form, .additional-content {
+    margin-bottom: 20px; /* Add margin between elements */
+}
+
+/* Style the scrollbar for WebKit browsers (optional) */
+.sub-cont::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.sub-cont::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track background color */
+}
+
+.sub-cont::-webkit-scrollbar-thumb {
+    background: #888; /* Scrollbar color */
+    border-radius: 10px;
+}
+
+.sub-cont::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Scrollbar color on hover */
 }
 
 .cont.s--signup .sub-cont {
@@ -487,7 +527,24 @@ input {
     width: auto; /* Set width to auto */
     height: auto; /* Set height to auto */
     padding: 10px 20px; /* Add padding for better visibility */
-    display: inline-block; /* Ensure the button is inline-block */
+
+}
+.scroll-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.scroll-btn:hover {
+    background-color: #0056b3;
 }
 
 

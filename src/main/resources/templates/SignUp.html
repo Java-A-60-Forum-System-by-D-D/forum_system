@@ -67,21 +67,21 @@
                 </label>
                 <label>
                     <span>Photo URL</span>
-                    <input type="text" th:field="*{photoURL}"/>
+<!--                    <input type="text" th:field="*{photoURL}" value="photo URL"/>-->
                 </label>
-<!--                <label class="text-white font-weight-bold" for="imageUrl">-->
-<!--                    <input id="imageUrl"-->
-<!--                           th:field="*{photoURL}"-->
-<!--                           th:errorclass="is-invalid"-->
-<!--                           type="file" class="form-control"-->
-<!--                           placeholder="Put vehicle image here" , accept="image/png, image/jpeg">-->
-<!--                </label>-->
+                <label class="text-white font-weight-bold" for="imageUrl">
+                    <input id="imageUrl"
+                           th:field="*{photoURL}"
+                           th:errorclass="is-invalid"
+                           type="file" class="form-control"
+                           placeholder="Put vehicle image here"  accept="image/png, image/jpeg">
+                </label>
 
-<!--                <p class="invalid-feedback errors alert alert-danger">-->
-<!--                    Image is optional.-->
-<!--                </p>-->
-<!--                </br>-->
-<!--                <img id="thumbnail" alt="Image Preview"/>-->
+                <p class="invalid-feedback errors alert alert-danger">
+                    Image is optional.
+                </p>
+                </br>
+                <img id="thumbnail" alt="Image Preview"/>
 
                 <button type="submit" class="submit">Sign Up</button>
             </form>
