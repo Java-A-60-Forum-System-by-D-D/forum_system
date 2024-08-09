@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="/Style.css" />
+</head>
+<body>
+<div class="post-creation-container">
+    <h1>Create a New Post</h1>
+    <form th:action="@{/posts/create}" method="post">
+        <label>
+            <span>Title</span>
+            <input type="text" name="title" required minlength="16" maxlength="64"/>
+        </label>
+        <label>
+            <span>Content</span>
+            <textarea name="content" required minlength="32" maxlength="8192"></textarea>
+        </label>
+        <label>
+            <span>Category</span>
+            <select name="categoryId" required>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+            </select>
+        </label>
+        <button type="submit">Create Post</button>
+    </form>
+</div>
+</body>
+</html>

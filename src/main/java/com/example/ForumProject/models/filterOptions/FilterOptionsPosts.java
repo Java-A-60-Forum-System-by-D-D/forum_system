@@ -8,12 +8,12 @@ import java.util.Optional;
 public class FilterOptionsPosts {
 
 
-    private final Optional<String> title;
-    private final Optional<String> content;
-    private final Optional<Integer> userId;
-    private final Optional<Integer> tagId;
-    private final Optional<String> sortBy;
-    private final Optional<String> sortOrder;
+    private Optional<String> title;
+    private Optional<String> content;
+    private Optional<Integer> userId;
+    private Optional<Integer> tagId;
+    private Optional<String> sortBy;
+    private Optional<String> sortOrder;
 
     public FilterOptionsPosts(String title, String content, Integer userId, Integer tagId, String sortBy, String sortOrder) {
         this.title = Optional.ofNullable(title);
@@ -22,5 +22,8 @@ public class FilterOptionsPosts {
         this.tagId = Optional.ofNullable(tagId);
         this.sortBy = Optional.ofNullable(sortBy);
         this.sortOrder = Optional.ofNullable(sortOrder);
+    }
+
+    public FilterOptionsPosts() {
     }
 }
