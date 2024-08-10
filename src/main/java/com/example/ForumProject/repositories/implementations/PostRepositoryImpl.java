@@ -232,7 +232,7 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> getPostsByUser(int id) {
         try (Session session = sessionFactory.openSession()) {
-            Query<Post> query = session.createQuery("from Post where user.id = :id", Post.class);
+            Query<Post> query = session.createQuery("from Post where user.id = :id order by createdAt desc ", Post.class);
             query.setParameter("id", id);
             return query.list();
         }
