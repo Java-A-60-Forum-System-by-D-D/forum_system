@@ -25,5 +25,11 @@ public class FilterOptionsPosts {
     }
 
     public FilterOptionsPosts() {
+        this.title = Optional.empty();
+        this.content = Optional.empty();
+        this.userId = Optional.empty();
+        this.tagId = Optional.empty();
+        this.sortBy = Optional.empty();
+        this.sortOrder = Optional.empty();
     }
 }

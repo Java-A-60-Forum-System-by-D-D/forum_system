@@ -89,14 +89,15 @@ public class PostServiceImpl implements PostService {
 
         userService.updateUser(user);
 
-        PostSummaryDTO postSummaryDTO = postMapper(postRepository.createPost(post));
-        return postSummaryDTO;
+        Post createdPost = postRepository.createPost(post);
+        return postMapper(createdPost);
     }
 
     @Override
     public PostSummaryDTO updatePost(Post post) {
 
         PostSummaryDTO postSummaryDTO = postMapper(postRepository.updatePost(post));
+        postRepository.updatePost(post);
         return postSummaryDTO;
     }
 
@@ -111,6 +112,7 @@ public class PostServiceImpl implements PostService {
         existingPost.setContent(post.getContent());
 
         PostSummaryDTO postSummaryDTO = postMapper(postRepository.updatePost(existingPost));
+        postRepository.updatePost(post);
         return postSummaryDTO;
     }
 

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/Style.css" />
 </head>
 <body>
+<header th:replace="~{commons/fragments::nav}"></header>
 <div class="posts-container">
     <h1>All Posts</h1>
     <ul th:each="post: ${posts}" th:object="${post}">

@@ -24,8 +24,8 @@ public class PostDTO {
     private String content;
 
 
-    @NotNull
-    private Integer categoryId;
+    @NotNull(message = "Category id cannot be null")
+    private Integer categoryNumber;
 
     public PostDTO() {
     }

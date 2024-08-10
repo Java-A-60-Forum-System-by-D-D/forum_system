@@ -6,22 +6,26 @@
     <link rel="stylesheet" href="/Style.css" />
 </head>
 <body>
+<header th:replace="~{commons/fragments::nav}"></header>
 <div class="post-creation-container">
     <h1>Create a New Post</h1>
-    <form th:action="@{/posts/create}" method="post">
+    <form th:action="@{/posts/create}" method="post" th:object="${postDTO}">
         <label>
             <span>Title</span>
-            <input type="text" name="title" required minlength="16" maxlength="64"/>
+            <input type="text" th:field="*{title}" required minlength="16" maxlength="64"/>
+            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
         </label>
         <label>
             <span>Content</span>
-            <textarea name="content" required minlength="32" maxlength="8192"></textarea>
+            <textarea th:field="*{content}" required minlength="32" maxlength="8192"></textarea>
+            <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
         </label>
         <label>
             <span>Category</span>
-            <select name="categoryId" required>
+            <select th:field="*{categoryNumber}" required>
                 <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
             </select>
+<!--            <div th:if="${#fields.hasErrors('categoryNumber')}" th:errors="*{categoryNumber}"></div>-->
         </label>
         <button type="submit">Create Post</button>
     </form>

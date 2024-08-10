@@ -5,6 +5,7 @@ import com.example.ForumProject.models.dto.TagDTO;
 import com.example.ForumProject.models.helpers.TagMapper;
 import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
+import com.example.ForumProject.repositories.contracts.PostRepository;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.TagService;
 import com.example.ForumProject.services.contracts.UserService;
@@ -35,14 +36,17 @@ public class PostController {
     private final UserService userService;
     private final TagService tagService;
     private final TagMapper tagMapper;
+    //to be deleted
+    private final PostRepository postRepository;
 
 
-    public PostController(PostService postService, PostMapper postMapper, UserService userService, TagService tagService, TagMapper tagMapper) {
+    public PostController(PostService postService, PostMapper postMapper, UserService userService, TagService tagService, TagMapper tagMapper, PostRepository postRepository) {
         this.postService = postService;
         this.postMapper = postMapper;
         this.userService = userService;
         this.tagService = tagService;
         this.tagMapper = tagMapper;
+        this.postRepository = postRepository;
     }
 
     @Operation(summary = "Get all posts", description = "Get a list of all posts, optionally filtered by title, content, user, or tag")
@@ -108,6 +112,7 @@ public class PostController {
         User user = userService.getUserByUsername(username);
         Post post = postMapper.createFromDto(postDTO, user);
         return postService.createPost(post, user);
+
 
     }
 

@@ -14,47 +14,43 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
+
 @Service
 @Qualifier
 public class ForumServiceDetails implements UserDetailsService {
     @Autowired
-    private  UserRepository userRepository;
-
-
+    private UserRepository userRepository;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.getUserByUsername(username)
-                             .stream()
-                             .filter(u -> u.getUsername()
-                                           .equalsIgnoreCase(username))
-                             .map(ForumServiceDetails::map)
-                             .findFirst()
-                             .orElseThrow(() -> new EntityNotFoundException("User", username));
+        User user = userRepository.getUserByUsername(username)
+                                  .stream()
+                                  .findFirst()
+                                  .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-
+        return user;
     }
 
+//
+//    private static UserDetails map(User forumDetailSerivce) {
+//
+//        return org.springframework.security.core.userdetails.User
+//                .withUsername(forumDetailSerivce.getUsername())
+//                .password(forumDetailSerivce.getPassword())
+//                .authorities(forumDetailSerivce.getUserRole()
+//                                               .stream()
+//                                               .map(ForumServiceDetails::map)
+//                                               .toList())
+//                .build();
+//    }
 
-    private static UserDetails map(User forumDetailSerivce) {
-
-        return org.springframework.security.core.userdetails.User
-                .withUsername(forumDetailSerivce.getUsername())
-                .password(forumDetailSerivce.getPassword())
-                .authorities(forumDetailSerivce.getUserRole()
-                                               .stream()
-                                               .map(ForumServiceDetails::map)
-                                               .toList())
-                .build();
-    }
-
-    private static GrantedAuthority map(UserRole userRoleEntity) {
-        return new SimpleGrantedAuthority(
-                "ROLE_" + userRoleEntity.getRole()
-                                        .name()
-        );
-    }
+//    private static GrantedAuthority map(UserRole userRoleEntity) {
+//        return new SimpleGrantedAuthority(
+//                "ROLE_" + userRoleEntity.getRole()
+//                                        .name()
+//        );
+//    }
 
 
 }

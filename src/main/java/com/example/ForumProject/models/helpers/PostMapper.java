@@ -24,7 +24,7 @@ public class PostMapper {
     public Post createFromDto(PostDTO postDTO, User user) {
         Post post = modelMapper.map(postDTO, Post.class);
         post.setUser(user);
-        Category category = categoriesService.getCategoryById(postDTO.getCategoryId());
+        Category category = categoriesService.getCategoryById(postDTO.getCategoryNumber());
         post.setCategory(category);
         post.setLikes(new HashSet<>());
         return post;
@@ -33,7 +33,7 @@ public class PostMapper {
 
     public Post updatePostFromDto(PostDTO postDTO, User user) {
         Post post = modelMapper.map(postDTO, Post.class);
-        Category category = categoriesService.getCategoryById(postDTO.getCategoryId());
+        Category category = categoriesService.getCategoryById(postDTO.getCategoryNumber());
         post.setCategory(category);
         post.setUser(user);
         return post;
