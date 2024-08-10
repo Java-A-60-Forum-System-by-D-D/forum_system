@@ -1,10 +1,8 @@
 package com.example.ForumProject.controllers.MVC;
 
 
-import com.example.ForumProject.models.dto.LoggInUserDTO;
 import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.models.dto.PostSummaryDTO;
-import com.example.ForumProject.models.dto.UserDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.helpers.PostMapper;
 import com.example.ForumProject.models.persistentClasses.Post;
@@ -43,11 +41,11 @@ public class PostMVCController {
     }
 
     @GetMapping
-    public String getAllPosts(Principal principal, Model model) {
+    public String getUsersPosts(Principal principal, Model model) {
         User user = userService.getUserByUsername(principal.getName());
-        List<PostSummaryDTO> posts = postService.getPosts(user, new FilterOptionsPosts());
+        List<PostSummaryDTO> posts = postService.getPostsByUser(user.getId());
         model.addAttribute("posts", posts);
-
+        model.addAttribute("username", user.getUsername());
         return "Posts";
     }
 
