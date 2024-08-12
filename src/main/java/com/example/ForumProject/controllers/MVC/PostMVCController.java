@@ -1,6 +1,7 @@
 package com.example.ForumProject.controllers.MVC;
 
 
+import com.example.ForumProject.models.dto.CommentDTO;
 import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
@@ -9,6 +10,7 @@ import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.services.contracts.CategoriesService;
+import com.example.ForumProject.services.contracts.LikeService;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
 import jakarta.validation.Valid;
@@ -30,13 +32,14 @@ public class PostMVCController {
     private final PostMapper postMapper;
     private final UserService userService;
     private final CategoriesService categoriesService;
+    private final LikeService likeService;
 
-
-    public PostMVCController(PostService postService, PostMapper postMapper, UserService userService, CategoriesService categoriesService) {
+    public PostMVCController(PostService postService, PostMapper postMapper, UserService userService, CategoriesService categoriesService, LikeService likeService) {
         this.postService = postService;
         this.postMapper = postMapper;
         this.userService = userService;
         this.categoriesService = categoriesService;
+        this.likeService = likeService;
     }
 
 
@@ -70,12 +73,19 @@ public class PostMVCController {
 
         return "redirect:/posts";
     }
+
     @GetMapping("/{id}")
-    public String showPostDetails(@PathVariable int id, Model model) {
+    public String showPostDetails(@PathVariable int id, Model model, Principal principal) {
         Post post = postService.getPostByPostId(id);
-        model.addAttribute("post", post);
+        User user = userService.getUserByUsername(principal.getName());
+        boolean isLiked = likeService.isPostLikedByUser(post.getId(), user.getId());
         Set<Comment> comments = post.getComments();
+
+
+        model.addAttribute("post", post);
+        model.addAttribute("isLiked", isLiked);
         model.addAttribute("comments", comments);
+        model.addAttribute("commentDTO", new CommentDTO());
 
         return "PostDetails";
     }

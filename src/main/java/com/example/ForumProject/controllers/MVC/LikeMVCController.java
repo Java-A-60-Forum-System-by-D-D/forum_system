@@ -31,19 +31,22 @@ public class LikeMVCController {
 
     @PostMapping("/likes")
     public String like(@PathVariable int postId, Model model, Principal principal) {
-
         Post post = postService.getPostByPostId(postId);
         User user = userService.getUserByUsername(principal.getName());
+        boolean isLiked;
         try {
-            Like like = likeService.likePost(user.getId(), post.getId());
+            likeService.likePost(user.getId(), post.getId());
+            isLiked = true;
         } catch (EntityDuplicateException e) {
             likeService.unlikePost(user.getId(), postId);
+            isLiked = false;
         }
 
         post = postService.getPostByPostId(postId);
         model.addAttribute("post", post);
+        model.addAttribute("isLiked", isLiked);
 
-        return "PostDetails";
+        return "redirect:/posts/{postId}";
     }
 
 

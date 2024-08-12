@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <title>All Posts</title>
     <link rel="stylesheet" href="/Style.css"/>
+    <script>
+        function toggleForm(formId, actionUrl, placeholderText) {
+            var formContainer = document.getElementById(formId);
+            if (formContainer.style.display === "none") {
+                formContainer.style.display = "block";
+                var form = formContainer.querySelector("form");
+                form.action = actionUrl;
+                var input = form.querySelector("input[name='content']");
+                input.placeholder = placeholderText;
+            } else {
+                formContainer.style.display = "none";
+            }
+        }
+    </script>
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
@@ -17,18 +31,36 @@
             <p><strong>Category:</strong> <span th:text="*{category.getCategoryName()}"></span></p>
             <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
             <br/>
-            <form th:if="${isLike} == null" class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
-                <button class="like_btn" type="submit">Like</button>
+            <form class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
+                <button class="like_btn" type="submit" th:text="${isLiked != null and isLiked ? 'Unlike' : 'Like'}"></button>
             </form>
-            <form th:unless="${isLike} == null" class="form-like" th:action="@{/posts/{postId}/dislikes(postId=${post.id})}" method="post">
-                <button class="like_btn" type="submit">Like</button>
-            </form>
+            <!-- Comment Button -->
+            <button class="comment_toggle_btn" th:onclick="'toggleForm(\'comment-form\', \'/posts/' + ${post.id} + '/comments\', \'Add a comment...\')'">Add Comment</button>
+
+            <!-- Comment Form -->
+            <div id="comment-form" class="form-container" style="display: none;">
+                <form class="form-like" id="dynamic-form" method="post" th:action="@{/posts/{postId}/comments(postId=${post.id})}" th:object="${commentDTO}">
+                    <input type="text" id="dynamic-input" name="content" placeholder="Add a comment..." th:field="*{content}" required/>
+                    <button class="submit_btn" type="submit">Submit</button>
+                </form>
+            </div>
+
             <p><strong>Comments:</strong><span th:text="'(' + ${post.getComments().size()} + ')'"></span></p>
 
             <ul th:each="comment : ${post.getComments()}" th:object="${comment}">
                 <li th:text="*{content}"></li>
                 <li th:text="*{user.getUsername}"></li>
                 <li th:text="*{createdAt}"></li>
+                <!-- Reply Button -->
+                <button class="reply_toggle_btn" th:onclick="'toggleForm(\'reply-form-' + ${comment.id} + '\', \'/posts/' + ${post.id} + '/comments/' + ${comment.id} + '\', \'Write your reply...\')'">Reply</button>
+
+                <!-- Reply Form -->
+                <div th:id="'reply-form-' + ${comment.id}" class="form-container" style="display: none;">
+                    <form th:id="'dynamic-form-' + ${comment.id}" method="post" th:action="@{/posts/{postId}/comments/{commentId} (postId=${post.id}, commentId=${comment.id})}">
+                        <input type="text" th:id="'dynamic-input-' + ${comment.id}" name="content" placeholder="Write your reply..." required/>
+                        <button class="submit_btn" type="submit">Submit</button>
+                    </form>
+                </div>
             </ul>
         </li>
     </ul>

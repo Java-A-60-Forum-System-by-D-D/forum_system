@@ -36,7 +36,7 @@ public class LikeServiceImpl implements LikeService {
 
         Like like = new Like(post, user);
 
-        postService.addLike(like,post);
+        postService.addLike(like, post);
         return likeRepository.save(like);
     }
 
@@ -47,10 +47,19 @@ public class LikeServiceImpl implements LikeService {
         }
 
         likeRepository.delete(like.get());
-        postService.deleteLike(like.get(),postService.getPostByPostId(postId));
+        postService.deleteLike(like.get(), postService.getPostByPostId(postId));
     }
 
     public Integer getLikesCount(int postId) {
         return likeRepository.countByPostId(postId);
     }
+
+
+    public boolean isPostLikedByUser(int postId, int userId) {
+        Optional<Like> existingLike = likeRepository.findByPostIdAndUserId(postId, userId);
+        return existingLike.isPresent();
+
+    }
 }
+
+

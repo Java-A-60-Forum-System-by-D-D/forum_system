@@ -8,4 +8,5 @@ public interface LikeService {
     void unlikePost(int userId, int postId);
 
     Integer getLikesCount(int postId);
+    boolean isPostLikedByUser(int postId,int userId);
 }
