@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Posts</title>
+    <link rel="stylesheet" href="/Style.css"/>
+</head>
+<body>
+<header th:replace="~{commons/fragments::nav}"></header>
+<div class="posts-container">
+    <h1>Post</h1>
+    <ul th:object="${post}">
+        <li>
+            <h2 th:text="*{title}"></h2>
+            <p th:text="*{content}"></p>
+            <p><strong>User:</strong> <span th:text="*{user.username}"></span></p>
+            <p><strong>Category:</strong> <span th:text="*{category.getCategoryName()}"></span></p>
+            <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
+            <br/>
+            <form th:if="${isLike} == null" class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
+                <button class="like_btn" type="submit">Like</button>
+            </form>
+            <form th:unless="${isLike} == null" class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
+                <button class="like_btn" type="submit">Like</button>
+            </form>
+            <p><strong>Comments:</strong><span th:text="'(' + ${post.getComments().size()} + ')'"></span></p>
+
+            <ul th:each="comment : ${post.getComments()}" th:object="${comment}">
+                <li th:text="*{content}"></li>
+                <li th:text="*{user.getUsername}"></li>
+                <li th:text="*{createdAt}"></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

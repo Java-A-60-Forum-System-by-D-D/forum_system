@@ -243,6 +243,38 @@ button {
     background: none;
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
+/*button {*/
+/*    cursor: pointer;*/
+/*    border: none;*/
+/*    outline: none;*/
+/*    padding: 10px 20px;*/
+/*    font-size: 16px;*/
+/*    font-weight: bold;*/
+/*    text-align: center;*/
+/*    border-radius: 5px;*/
+/*    transition: background-color 0.3s, color 0.3s;*/
+/*}*/
+
+/* Specific styles for .like_btn class */
+.like_btn {
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    border: 2px solid #007bff; /* Blue border */
+}
+
+.like_btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #0056b3; /* Match border color on hover */
+}
+
+.like_btn:active {
+    background-color: #004085; /* Even darker blue when clicked */
+    border-color: #004085; /* Match border color on active */
+}
+
+.like_btn:focus {
+    box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.5); /* Light blue shadow for focus */
+}
 
 .tip {
     font-size: 20px;
@@ -353,6 +385,7 @@ button {
     height: 100%;
     padding-top: 360px;
 }
+
 
 .img:before {
     content: '';

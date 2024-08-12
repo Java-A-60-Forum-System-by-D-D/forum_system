@@ -45,7 +45,7 @@
                 <h2>Most Commented Posts</h2>
                 <ul th:each="post: ${Top10MostCommented}" th:object="${post}">
                     <li>
-                        <h3 th:text="*{title}"></h3>
+                        <a th:href="@{/posts/{id}(id=${post.id})}" th:text="*{title}"></a>
                         <p th:text="*{content}"></p>
                         <p><strong>User:</strong> <span th:text="*{username}"></span></p>
                         <p><strong>Category:</strong> <span th:text="*{category}"></span></p>
@@ -59,7 +59,7 @@
                 <h2>Most Recent Posts</h2>
                 <ul th:each="post: ${Top10MostRecent}" th:object="${post}">
                     <li>
-                        <h3 th:text="*{title}"></h3>
+                        <a th:href="@{/posts/{id}(id=${post.id})}" th:text="*{title}"></a>
                         <p th:text="*{content}"></p>
                         <p><strong>User:</strong> <span th:text="*{username}"></span></p>
                         <p><strong>Category:</strong> <span th:text="*{category}"></span></p>
