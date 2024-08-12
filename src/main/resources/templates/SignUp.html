@@ -21,7 +21,12 @@
                 <input type="password" name="password" th:field="*{password}" required />
             </label>
             <p class="forgot-pass"><a href="/forgot-password">Forgot password?</a></p>
+            <div>
+                <label for="rememberme">Remember me</label>
+                <input type="checkbox" id="rememberme" name="rememberme">
+            </div>
             <button type="submit" class="submit">Sign In</button>
+
         </form>
     </div>
     <div class="sub-cont">
