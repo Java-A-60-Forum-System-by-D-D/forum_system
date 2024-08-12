@@ -1,5 +1,6 @@
 package com.example.ForumProject.controllers.MVC;
 
+import com.example.ForumProject.exceptions.EntityDuplicateException;
 import com.example.ForumProject.models.persistentClasses.Like;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
@@ -30,26 +31,20 @@ public class LikeMVCController {
 
     @PostMapping("/likes")
     public String like(@PathVariable int postId, Model model, Principal principal) {
-        if(model.getAttribute("isLike")!= null) {
-            Post post = postService.getPostByPostId(postId);
-            User user = userService.getUserByUsername(principal.getName());
+
+        Post post = postService.getPostByPostId(postId);
+        User user = userService.getUserByUsername(principal.getName());
+        try {
             Like like = likeService.likePost(user.getId(), post.getId());
-            post = postService.getPostByPostId(postId);
-            model.addAttribute("post", post);
-            model.addAttribute("isLike", like);
+        } catch (EntityDuplicateException e) {
+            likeService.unlikePost(user.getId(), postId);
         }
+
+        post = postService.getPostByPostId(postId);
+        model.addAttribute("post", post);
 
         return "PostDetails";
     }
-    @DeleteMapping("/likes")
-    public String unlike(@PathVariable int postId, Model model, Principal principal) {
-        Post post = postService.getPostByPostId(postId);
-        User user = userService.getUserByUsername(principal.getName());
-        likeService.unlikePost(user.getId(), post.getId());
-        post = postService.getPostByPostId(postId);
-        model.addAttribute("post", post);
-        model.addAttribute("isLike", null);
-        return "PostDetails";
-    }
+
 
 }

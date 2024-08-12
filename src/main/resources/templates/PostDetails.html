@@ -20,7 +20,7 @@
             <form th:if="${isLike} == null" class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
                 <button class="like_btn" type="submit">Like</button>
             </form>
-            <form th:unless="${isLike} == null" class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
+            <form th:unless="${isLike} == null" class="form-like" th:action="@{/posts/{postId}/dislikes(postId=${post.id})}" method="post">
                 <button class="like_btn" type="submit">Like</button>
             </form>
             <p><strong>Comments:</strong><span th:text="'(' + ${post.getComments().size()} + ')'"></span></p>
