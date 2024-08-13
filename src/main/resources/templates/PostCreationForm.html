@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Post</title>
-    <link rel="stylesheet" href="/Style.css" />
+    <link rel="stylesheet" href="/Style.css"/>
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
@@ -23,9 +23,15 @@
         <label>
             <span>Category</span>
             <select th:field="*{categoryNumber}" required>
-                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.categoryName}"></option>
+                <option th:each="category : ${categories}" th:value="${category.id}"
+                        th:text="${category.categoryName}"></option>
             </select>
-<!--            <div th:if="${#fields.hasErrors('categoryNumber')}" th:errors="*{categoryNumber}"></div>-->
+            <label>
+                <span>Tags</span>
+                <input type="text" th:field="*{tags}" placeholder="Enter tags separated by commas"/>
+            </label>
+
+            <!--            <div th:if="${#fields.hasErrors('categoryNumber')}" th:errors="*{categoryNumber}"></div>-->
         </label>
         <button type="submit">Create Post</button>
     </form>

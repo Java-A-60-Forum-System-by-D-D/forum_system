@@ -27,6 +27,7 @@ public class PostMapper {
         Category category = categoriesService.getCategoryById(postDTO.getCategoryNumber());
         post.setCategory(category);
         post.setLikes(new HashSet<>());
+        post.setTags(new HashSet<>());
         return post;
     }
 

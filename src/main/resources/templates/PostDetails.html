@@ -30,6 +30,7 @@
             <p><strong>User:</strong> <span th:text="*{user.username}"></span></p>
             <p><strong>Category:</strong> <span th:text="*{category.getCategoryName()}"></span></p>
             <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
+            <p><strong>Tags:</strong> <span th:each="tag : ${post.tags}" th:text="${tag.name} + ' '"></span></p>
             <br/>
             <form class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
                 <button class="like_btn" type="submit" th:text="${isLiked != null and isLiked ? 'Unlike' : 'Like'}"></button>

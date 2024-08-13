@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
+import java.util.Set;
+
 @Data
 
 public class PostDTO {
@@ -26,6 +29,9 @@ public class PostDTO {
 
     @NotNull(message = "Category id cannot be null")
     private Integer categoryNumber;
+
+    @Schema(description = "Tags for the post", example = "Technology, Java, Spring")
+    private Set<String> tags;
 
     public PostDTO() {
     }

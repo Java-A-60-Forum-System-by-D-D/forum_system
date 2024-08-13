@@ -31,12 +31,13 @@ public class TagServiceImpl implements TagService {
 
 
     @Override
-    public void deleteTag(Tag tag,User user) {
-        ValidatorHelpers.roleAuthenticationValidator(user,new UserRole(UserRoleEnum.ADMIN), ONLY_ADMINS_CAN_DELETE_TAGS_FROM_THE_SYSTEM);
+    public void deleteTag(Tag tag, User user) {
+        ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.ADMIN), ONLY_ADMINS_CAN_DELETE_TAGS_FROM_THE_SYSTEM);
 
         List<Post> posts = postRepository.getPostsByTagId(tag.getId());
         for (Post post : posts) {
-            post.getTags().remove(tag);
+            post.getTags()
+                .remove(tag);
             postRepository.updatePost(post);
         }
         tagRepository.deleteTag(tag);
@@ -68,9 +69,11 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag createTag(Tag tag, User user) {
-        if (tagRepository.findByName(tag.getName()).isEmpty()) {
+        Optional<Tag> existingTag = tagRepository.findByName(tag.getName());
+        if (existingTag.isPresent()) {
+            return existingTag.get();
+        } else {
             return tagRepository.createTag(tag);
         }
-        throw new EntityDuplicateException("Tag", "name", tag.getName());
     }
 }

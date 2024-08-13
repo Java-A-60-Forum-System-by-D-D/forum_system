@@ -12,8 +12,16 @@ public class TagMapper {
     public TagMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
+
     public Tag tagFromDTO(TagDTO tagDTO) {
         return modelMapper.map(tagDTO, Tag.class);
 
+    }
+
+    public Tag tagFromString(String tagDTO) {
+
+        Tag tag = new Tag();
+        tag.setName(tagDTO);
+        return tag;
     }
 }

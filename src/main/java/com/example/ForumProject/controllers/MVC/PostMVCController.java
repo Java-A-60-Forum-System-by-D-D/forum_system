@@ -4,25 +4,24 @@ package com.example.ForumProject.controllers.MVC;
 import com.example.ForumProject.models.dto.CommentDTO;
 import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.models.dto.PostSummaryDTO;
-import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
+import com.example.ForumProject.models.dto.TagDTO;
 import com.example.ForumProject.models.helpers.PostMapper;
+import com.example.ForumProject.models.helpers.TagMapper;
 import com.example.ForumProject.models.persistentClasses.Comment;
 import com.example.ForumProject.models.persistentClasses.Post;
+import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.models.persistentClasses.User;
-import com.example.ForumProject.services.contracts.CategoriesService;
-import com.example.ForumProject.services.contracts.LikeService;
-import com.example.ForumProject.services.contracts.PostService;
-import com.example.ForumProject.services.contracts.UserService;
+import com.example.ForumProject.services.contracts.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/posts")
@@ -33,13 +32,17 @@ public class PostMVCController {
     private final UserService userService;
     private final CategoriesService categoriesService;
     private final LikeService likeService;
+    private final TagMapper tagMapper;
+    private final TagService tagService;
 
-    public PostMVCController(PostService postService, PostMapper postMapper, UserService userService, CategoriesService categoriesService, LikeService likeService) {
+    public PostMVCController(PostService postService, PostMapper postMapper, UserService userService, CategoriesService categoriesService, LikeService likeService, TagMapper tagMapper, TagService tagService) {
         this.postService = postService;
         this.postMapper = postMapper;
         this.userService = userService;
         this.categoriesService = categoriesService;
         this.likeService = likeService;
+        this.tagMapper = tagMapper;
+        this.tagService = tagService;
     }
 
 
@@ -47,8 +50,11 @@ public class PostMVCController {
     public String getUsersPosts(Principal principal, Model model) {
         User user = userService.getUserByUsername(principal.getName());
         List<PostSummaryDTO> posts = postService.getPostsByUser(user.getId());
+
+
         model.addAttribute("posts", posts);
         model.addAttribute("username", user.getUsername());
+
         return "Posts";
     }
 
@@ -62,17 +68,34 @@ public class PostMVCController {
 
 
     @PostMapping("/create")
-    public String createPost(@Valid @ModelAttribute("postDTO") PostDTO postDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Principal principal) {
+    public String createPost(@Valid @ModelAttribute("postDTO") PostDTO postDTO,
+                             BindingResult bindingResult,
+                             Principal principal) {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult);
             return "PostCreationForm";
         }
         User author = userService.getUserByUsername(principal.getName());
         Post post = postMapper.createFromDto(postDTO, author);
+
         postService.createPost(post, author);
+
+        // Handle tags
+
+        Set<Tag> tags = postDTO.getTags()
+                               .stream()
+                               .map(tagMapper::tagFromString)
+                               .map(tag -> tagService.createTag(tag, author))
+                               .collect(Collectors.toSet());
+
+
+
+        post.setTags(tags);
+        postService.updatePost(post);
 
         return "redirect:/posts";
     }
+
 
     @GetMapping("/{id}")
     public String showPostDetails(@PathVariable int id, Model model, Principal principal) {
@@ -86,6 +109,7 @@ public class PostMVCController {
         model.addAttribute("isLiked", isLiked);
         model.addAttribute("comments", comments);
         model.addAttribute("commentDTO", new CommentDTO());
+
 
         return "PostDetails";
     }
