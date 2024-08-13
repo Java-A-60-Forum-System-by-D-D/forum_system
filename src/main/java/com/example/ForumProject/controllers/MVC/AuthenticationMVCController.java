@@ -2,6 +2,7 @@ package com.example.ForumProject.controllers.MVC;
 
 import com.example.ForumProject.models.dto.LoggInUserDTO;
 import com.example.ForumProject.models.dto.UserDTO;
+import com.example.ForumProject.models.dto.UserMVCDTO;
 import com.example.ForumProject.models.helpers.UserMapper;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.services.contracts.AuthenticationService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.security.Principal;
 
 @Controller
@@ -38,7 +40,7 @@ public class AuthenticationMVCController {
     @GetMapping("/login")
     public String login(Model model) {
         if (!model.containsAttribute("registerUser")) {
-            model.addAttribute("registerUser", new UserDTO());
+            model.addAttribute("registerUser", new UserMVCDTO());
         }
         model.addAttribute("LoginUser", new LoggInUserDTO());
         return "SignUp";
@@ -60,7 +62,7 @@ public class AuthenticationMVCController {
 
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("registerUser") UserDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    public String register(@Valid @ModelAttribute("registerUser") UserMVCDTO  userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("hasErrors", true);
@@ -71,7 +73,7 @@ public class AuthenticationMVCController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerUser", bindingResult);
             return "SignUp";
         }
-        User user = userMapper.createUserFromDto(userDTO);
+        User user = userMapper.createUserMVCFromDto(userDTO);
         authenticationService.createUser(user);
         model.addAttribute("LoginUser", user);
         return "redirect:/login";

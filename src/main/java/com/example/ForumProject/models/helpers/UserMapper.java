@@ -2,6 +2,7 @@ package com.example.ForumProject.models.helpers;
 
 
 import com.example.ForumProject.exceptions.EntityNotFoundException;
+import com.example.ForumProject.models.dto.UserMVCDTO;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.persistentClasses.UserRole;
 import com.example.ForumProject.models.dto.UserDTO;
@@ -11,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.IOException;
@@ -56,13 +58,36 @@ public class UserMapper {
             } catch (IOException e) {
                 throw new EntityNotFoundException();
             }
-        }else{
+        } else {
             user.setPhotoURL("http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png");
         }
 
         user.setUserRole(userRoles);
 
 
+        return user;
+    }
+
+    public User createUserMVCFromDto(UserMVCDTO userMVCDTO) {
+
+        User user = modelMapper.map(userMVCDTO, User.class);
+        user.setPassword(passwordEncoder.encode(userMVCDTO.getPassword()));
+        Set<UserRole> userRoles = new HashSet<>();
+        userRoles.add(userRoleRepository.getUserRole());
+        MultipartFile photoURL = userMVCDTO.getPhotoURL();
+        String uploadedUrl = null;
+
+        if (photoURL == null || photoURL.isEmpty()) {
+            user.setPhotoURL("http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png");
+        } else {
+            try {
+                uploadedUrl = cloudinaryImageService.uploadImage(photoURL);
+                user.setPhotoURL(uploadedUrl);
+            } catch (IOException e) {
+                user.setPhotoURL("http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png");
+            }
+        }
+        user.setUserRole(userRoles);
         return user;
     }
 

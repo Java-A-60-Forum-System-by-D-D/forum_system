@@ -44,7 +44,7 @@
         </div>
         <div class="form sign-up" id = "SignUpForm">
             <h2>Create your Account</h2>
-            <form th:action="@{/register}" th:object="${registerUser}" method="post">
+            <form th:action="@{/register}" th:object="${registerUser}" method="post" enctype="multipart/form-data">
                 <label>
                     <span>Username</span>
                     <input type="text" th:field="*{username}" required />
@@ -79,7 +79,7 @@
                            th:field="*{photoURL}"
                            th:errorclass="is-invalid"
                            type="file" class="form-control"
-                           placeholder="Put vehicle image here"  accept="image/png, image/jpeg">
+                           placeholder="Put profile image here"  accept="image/png, image/jpeg">
                 </label>
 
                 <p class="invalid-feedback errors alert alert-danger">
