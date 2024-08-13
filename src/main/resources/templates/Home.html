@@ -21,7 +21,7 @@
         <div class="profile" sec:authorize="isAuthenticated()" th:object="${user}">
             <img th:src="*{photoURL}" alt="User Avatar" class="avatar">
             <h3 th:text="*{username}">Username</h3>
-            <a href="#">View Profile</a>
+            <a href="#" th:href="@{/profile}">View Profile</a>
         </div>
         <div class="search-bar">
             <input type="text" placeholder="Search...">

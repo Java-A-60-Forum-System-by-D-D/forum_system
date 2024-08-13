@@ -67,6 +67,14 @@ public class UserMapper {
     }
 
 
+    public User mapUserDTOToUser(UserDTO userDTO, User user) {
+        user = modelMapper.map(userDTO, User.class);
 
+        return user;
+    }
 
+    public UserDTO mapUserToUserDTO(User user) {
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        return userDTO;
+    }
 }
