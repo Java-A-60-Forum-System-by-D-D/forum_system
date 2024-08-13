@@ -2,9 +2,10 @@ package com.example.ForumProject.controllers.MVC;
 
 
 import com.example.ForumProject.models.dto.CommentDTO;
+import com.example.ForumProject.models.dto.FilterPostsDTO;
 import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.models.dto.PostSummaryDTO;
-import com.example.ForumProject.models.dto.TagDTO;
+import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
 import com.example.ForumProject.models.helpers.PostMapper;
 import com.example.ForumProject.models.helpers.TagMapper;
 import com.example.ForumProject.models.persistentClasses.Comment;
@@ -47,6 +48,27 @@ public class PostMVCController {
 
 
     @GetMapping
+    public String getAllPosts(@ModelAttribute("filterOptions") FilterPostsDTO filterPostsDTO, Principal principal, Model model) {
+
+        User user = userService.getUserByUsername(principal.getName());
+        FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(filterPostsDTO.getTitle(),
+                filterPostsDTO.getContent(),
+                filterPostsDTO.getUserId(),
+                filterPostsDTO.getTagId(),
+                filterPostsDTO.getSortBy(),
+                filterPostsDTO.getSortOrder());
+
+
+        List<PostSummaryDTO> allPosts = postService.getPosts(user, filterOptionsPosts);
+        model.addAttribute("allPosts", allPosts);
+        model.addAttribute("filterOptions", filterOptionsPosts);
+
+        return "AllPosts";
+
+    }
+
+
+    @GetMapping("/myPosts")
     public String getUsersPosts(Principal principal, Model model) {
         User user = userService.getUserByUsername(principal.getName());
         List<PostSummaryDTO> posts = postService.getPostsByUser(user.getId());
@@ -55,7 +77,7 @@ public class PostMVCController {
         model.addAttribute("posts", posts);
         model.addAttribute("username", user.getUsername());
 
-        return "Posts";
+        return "UserPosts";
     }
 
 
@@ -87,7 +109,6 @@ public class PostMVCController {
                                .map(tagMapper::tagFromString)
                                .map(tag -> tagService.createTag(tag, author))
                                .collect(Collectors.toSet());
-
 
 
         post.setTags(tags);

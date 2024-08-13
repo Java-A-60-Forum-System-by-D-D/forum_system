@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Posts</title>
+    <link rel="stylesheet" href="/Style.css" />
+</head>
+<body>
+<header th:replace="~{commons/fragments::nav}"></header>
+<div class="posts-container">
+    <h1>All posts by <span th:text="${username}"></span></h1>
+    <ul th:each="post: ${posts}" th:object="${post}">
+        <li>
+            <h2 th:text="*{title}"></h2>
+            <p th:text="*{content}"></p>
+            <p><strong>User:</strong> <span th:text="*{username}"></span></p>
+            <p><strong>Category:</strong> <span th:text="*{category}"></span></p>
+            <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
+            <p><strong>Tags:</strong>
+                <span th:if="${post.tags != null and !post.tags.isEmpty()}" th:each="tag : ${post.tags}" th:text="${tag.getName()} + ' '"></span>
+                <span th:if="${post.tags == null or post.tags.isEmpty()}">No tags</span>
+            </p>
+        </li>
+    </ul>
+</div>
+
+<script>
+    function toggleForm(formId, actionUrl, placeholderText) {
+        var formContainer = document.getElementById(formId);
+        if (formContainer.style.display === "none") {
+            formContainer.style.display = "block";
+            var form = formContainer.querySelector("form");
+            form.action = actionUrl;
+            var input = form.querySelector("input[name='content']");
+            input.placeholder = placeholderText;
+        } else {
+            formContainer.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

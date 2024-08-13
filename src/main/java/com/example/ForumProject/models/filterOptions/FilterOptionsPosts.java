@@ -15,6 +15,10 @@ public class FilterOptionsPosts {
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
+    public FilterOptionsPosts() {
+        this(null, null, null, null, null, null);
+    }
+
     public FilterOptionsPosts(String title, String content, Integer userId, Integer tagId, String sortBy, String sortOrder) {
         this.title = Optional.ofNullable(title);
         this.content = Optional.ofNullable(content);
@@ -24,12 +28,5 @@ public class FilterOptionsPosts {
         this.sortOrder = Optional.ofNullable(sortOrder);
     }
 
-    public FilterOptionsPosts() {
-        this.title = Optional.empty();
-        this.content = Optional.empty();
-        this.userId = Optional.empty();
-        this.tagId = Optional.empty();
-        this.sortBy = Optional.empty();
-        this.sortOrder = Optional.empty();
-    }
+
 }

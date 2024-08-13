@@ -30,7 +30,8 @@
             <ul>
 <!--                <li><a href="#">Home</a></li>-->
                 <li> <a sec:authorize="isAuthenticated()" th:href="@{/posts/createForm}">Create New Post</a></li>
-                <li> <a sec:authorize="isAuthenticated()" th:href="@{/posts}">My Posts</a></li>
+                <li> <a sec:authorize="isAuthenticated()" th:href="@{/posts/myPosts}">My Posts</a></li>
+                <li> <a sec:authorize="isAuthenticated()" th:href="@{/posts}">All Posts</a></li>
                 <li><a th:href="@{/categories}">Categories</a></li>
                 <li><a href="#">Popular Topics</a></li>
                 <li><a href="#">New Posts</a></li>

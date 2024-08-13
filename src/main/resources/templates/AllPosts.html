@@ -8,16 +8,40 @@
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
 <div class="posts-container">
-    <h1>All posts by <span th:text="${username}"></span></h1>
-    <ul th:each="post: ${posts}" th:object="${post}">
+    <h1>All posts</h1>
+
+
+    <form action="#" th:action="@{/posts}" method="get" th:object="${filterOptions}">
+        <label>Filter Options</label>
+        <br/><br/>
+        <input type="text" placeholder="Title" th:field="*{title}"/>
+        <input type="text" placeholder="Content" th:field="*{content}"/>
+        <input type="number" placeholder="User ID" th:field="*{userId}"/>
+        <input type="number" placeholder="Tag ID" th:field="*{tagId}"/>
+        <select th:field="*{sortBy}">
+            <option value="">Sort By</option>
+            <option value="title">Title</option>
+            <option value="likes">Likes</option>
+            <option value="category">Category</option>
+        </select>
+        <select th:field="*{sortOrder}">
+            <option value="">Sort Order</option>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+        <br/><br/>
+        <input type="submit" value="Search"/>
+    </form>
+
+    <ul th:each="post: ${allPosts}" th:object="${post}">
         <li>
-            <h2 th:text="*{title}"></h2>
+            <h2><a th:text="*{title}" th:href="@{/posts/{id}(id=${post.id})}"></a></h2>
             <p th:text="*{content}"></p>
             <p><strong>User:</strong> <span th:text="*{username}"></span></p>
             <p><strong>Category:</strong> <span th:text="*{category}"></span></p>
             <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
             <p><strong>Tags:</strong>
-                <span th:if="${post.tags != null and !post.tags.isEmpty()}" th:each="tag : ${post.tags}" th:text="${tag.getName()} + ' '"></span>
+                <span th:if="${post.tags != null and !post.tags.isEmpty()}" th:each="tag : ${post.tags}" th:text="${tag.name} + ' '"></span>
                 <span th:if="${post.tags == null or post.tags.isEmpty()}">No tags</span>
             </p>
         </li>
