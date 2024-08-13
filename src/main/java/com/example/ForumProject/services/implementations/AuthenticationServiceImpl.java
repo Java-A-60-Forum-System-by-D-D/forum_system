@@ -24,19 +24,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final ForumServiceDetails forumServiceDetails;
+    private final EmailService emailService;
 
     @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, UserRepository userRepository1, PasswordEncoder passwordEncoder, TokenService tokenService, AuthenticationManager authenticationManager, ForumServiceDetails forumServiceDetails) {
+    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, UserRepository userRepository1, PasswordEncoder passwordEncoder, TokenService tokenService, AuthenticationManager authenticationManager, ForumServiceDetails forumServiceDetails, EmailService emailService) {
         this.userRepository = userRepository1;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
         this.forumServiceDetails = forumServiceDetails;
+        this.emailService = emailService;
     }
 
 
     @Override
     public User createUser(User user) {
+        emailService.sendRegistrationEmail(user.getEmail());
         return userRepository.createUser(user);
     }
 

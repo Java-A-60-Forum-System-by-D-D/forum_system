@@ -888,3 +888,86 @@ about-container {
     display: none;
     margin-top: 10px;
 }
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+.user-container, .post-container {
+    background-color: #fff;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 15px;
+}
+
+.hidden-form {
+    display: none;
+    margin-top: 10px;
+}
+
+.hidden-form input, .hidden-form button {
+    display: block;
+    margin: 5px 0;
+}
+
+.btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+img {
+    border-radius: 50%;
+    margin-top: 10px;
+}
+
+a.btn {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+}
+
+a.btn:hover {
+    text-decoration: none;
+}

@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Categories</title>
-  <link href="../static/css/Style.css" th:href="@{/Style.css}" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Categories</title>
+    <link href="../static/css/Style.css" th:href="@{/Style.css}" rel="stylesheet">
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
 <div class="container">
-  <div class="main-content">
-    <div class="categories-container">
-      <h1>Categories</h1>
-      <ul class="categories-list">
-        <li th:each="category : ${categories}" th:text="${category.categoryName}"></li>
-      </ul>
+    <div class="main-content">
+        <div class="categories-container">
+            <h1>Categories</h1>
+            <ul class="categories-list" th:each="category : ${categories}">
+                <li>
+                    <a th:text="${category.categoryName}"
+                       th:href="@{/categories/{id}(id=${category.id})}"></a>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </div>
 <footer class="footer">
-  <p>&copy; 2024 Forum. All rights reserved.</p>
+    <p>&copy; 2024 Forum. All rights reserved.</p>
 </footer>
 </body>
 </html>

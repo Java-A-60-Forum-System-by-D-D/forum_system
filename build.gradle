@@ -39,6 +39,9 @@ dependencies {
 	implementation 'io.github.cdimascio:dotenv-java:2.2.4'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'com.sun.mail:javax.mail'
+	implementation 'org.apache.commons:commons-email:1.5'
 }
 
 tasks.named('test') {
