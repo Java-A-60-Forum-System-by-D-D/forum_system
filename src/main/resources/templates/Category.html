@@ -14,10 +14,10 @@
 
             <ul th:each="post: ${posts}" th:object="${post}">
                 <li>
-                    <h2 th:text="*{title}"></h2>
+                    <a th:text="*{title}"   th:href="@{/posts/{id}(id=${post.id})}"></a>
                     <p th:text="*{content}"></p>
                     <p><strong>User:</strong> <span th:text="*{getUser().username}"></span></p>
-                    <p><strong>Category:</strong> <span th:text="*{category}"></span></p>
+                    <p><strong>Category:</strong> <span th:text="*{category.categoryName}"></span></p>
                     <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
                     <p><strong>Tags:</strong>
                         <span th:if="${post.tags != null and !post.tags.isEmpty()}" th:each="tag : ${post.tags}" th:text="${tag.getName()} + ' '"></span>

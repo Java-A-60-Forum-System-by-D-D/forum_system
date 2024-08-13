@@ -67,6 +67,19 @@
                 </form>
             </div>
         </li>
+
+        <li th:if="${isAdmin}">
+            <p>Phone number:</p>
+            <button type="button" class="btn btn-secondary" onclick="showUpdateField('updatePhoneNumber')">Update Phone Number</button>
+            <div id="updatePhoneNumber" class="hidden-form">
+                <form th:action="@{/profile/update/phoneNumber}" method="post" enctype="multipart/form-data">
+                    <input type="text" name="phone number"  required/>
+                    <button type="submit" class="btn">Update</button>
+                </form>
+            </div>
+        </li>
+
+
         //Todo Add other fields as necessary
 <!--        <li>-->
 <!--            <a href="/profile/posts" class="btn btn-secondary">All My Posts</a>-->

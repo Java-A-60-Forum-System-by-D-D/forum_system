@@ -1,15 +1,13 @@
 package com.example.ForumProject.controllers.MVC;
 
-import com.example.ForumProject.models.dto.UserDTO;
 import com.example.ForumProject.models.helpers.UserMapper;
 import com.example.ForumProject.models.persistentClasses.User;
+import com.example.ForumProject.models.persistentClasses.UserRoleEnum;
 import com.example.ForumProject.services.contracts.CloudinaryImageService;
 import com.example.ForumProject.services.contracts.UserService;
-import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,10 +27,21 @@ public class UserMVCController {
         this.passwordEncoder = passwordEncoder;
         this.cloudinaryImageService = cloudinaryImageService;
     }
+
     @GetMapping("/profile")
     public String getUserById(Principal principal, Model model) {
         User userByUsername = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", userByUsername);
+        Boolean isAdmin = false;
+        if (userByUsername.getUserRole()
+                          .stream()
+                          .anyMatch(u -> u.getRole()
+                                          .equals(UserRoleEnum.ADMIN))) {
+            isAdmin = true;
+        }
+
+
+        model.addAttribute("isAdmin", isAdmin);
 
         return "UserDetails";
     }
@@ -77,6 +86,7 @@ public class UserMVCController {
         userService.updateUser(user);
         return "redirect:/profile";
     }
+
     @PostMapping("/profile/update/photoURL")
     public String updatePhotoURL(@RequestParam("photoURL") MultipartFile photoURL, Principal principal) throws IOException {
         User user = userService.getUserByUsername(principal.getName());
@@ -90,6 +100,14 @@ public class UserMVCController {
     public String updatePassword(@RequestParam("password") String password, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
         user.setPassword(passwordEncoder.encode(password));
+        userService.updateUser(user);
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/profile/update/phoneNumber")
+    public String updatePhoneNumber(@RequestParam("phoneNumber") String phoneNumber, Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        user.setPhoneNumber(phoneNumber);
         userService.updateUser(user);
         return "redirect:/profile";
     }
