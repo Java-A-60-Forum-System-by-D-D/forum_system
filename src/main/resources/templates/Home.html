@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>Home</title>
-    <link href="../static/css/Style.css" th:href="@{/Style.css}" rel="stylesheet">
+<head th:replace="~{commons/fragments::head}">
+
 </head>
 <body>
 
@@ -72,8 +70,8 @@
     </div>
 </div>
 
-<footer class="footer">
-    <p>&copy; 2024 Forum. All rights reserved.</p>
+<footer th:replace="~{commons/fragments::footer}">
+
 </footer>
 
 <script>

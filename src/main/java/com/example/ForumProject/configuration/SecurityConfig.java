@@ -28,6 +28,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 
 
 @Configuration
@@ -66,7 +68,7 @@ public class SecurityConfig {
                         .hasAnyRole("Admin");
                     auth.requestMatchers("/api/posts/**")
                         .hasAnyRole("Admin", "User,", "ADMIN", "USER");
-                    auth.requestMatchers("/Style.css")
+                    auth.requestMatchers("/css/**", "/img/**")
                         .permitAll();
                     auth.anyRequest()
                         .authenticated();
@@ -145,6 +147,13 @@ public class SecurityConfig {
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
         jwtConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtConverter;
+    }
+    @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
+        serializer.setSameSite("None");
+        serializer.setUseSecureCookie(true); // Ensure cookies are sent over HTTPS
+        return serializer;
     }
 
 

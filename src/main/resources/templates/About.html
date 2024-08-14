@@ -3,17 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>About</title>
-    <link href="../static/css/Style.css" th:href="@{/Style.css}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/deb7b6e8b0.js" crossorigin="anonymous"></script>
+    <link href="../static/css/Style.css" th:href="@{/css/Style.css}" rel="stylesheet">
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
 <div class="about-container">
     <h1>About</h1>
-    <p>Welcome to our forum! This platform is dedicated to sharing interesting facts about the world. Whether you're curious about history, science, culture, or any other topic, you'll find fascinating information here.</p>
-    <p>This forum was created by Dimitar and Desislava, who are passionate about learning and sharing knowledge with others. We hope you enjoy your time here and find the content both informative and engaging.</p>
+
+    <p>Welcome to our forum! This platform is dedicated to sharing interesting facts about the world. Whether you're
+        curious about history, science, culture, or any other topic, you'll find fascinating information here.</p>
+    <p>This forum was created by Dimitar and Desislava, who are passionate about learning and sharing knowledge with
+        others. We hope you enjoy your time here and find the content both informative and engaging.</p>
 </div>
-<footer class="footer">
-    <p>&copy; 2024 Forum. All rights reserved.</p>
+<div class="about-container">
+    <h2>Our Team</h2>
+    <div class="team-member">
+        <img src="../static/images/dimitar.jpg" th:src="@{/images/dimitar.jpg}" alt="Dimitar">
+        <h3>Dimitar</h3>
+        <p>Founder and developer</p>
+        <p><i class="fas fa-envelope"></i>
+            <a href="mailto:">
+            </a>
+        </p>
+    </div>
+    <div class="team-member">
+        <img src="../static/images/desislava.jpg" th:src="@{/images/desislava.jpg}" alt="Desislava">
+        <h3>Desislava</h3>
+        <p>Founder and designer</p>
+        <p><i class="fas fa-envelope"></i>
+            <a href="mailto:">
+            </a>
+        </p>
+    </div>
+
+</div>
+<div class="about-git"><a href="https://github.com/Java-A-60-Forum-System-by-D-D/forum_system">
+    <i class="fa-brands fa-github" style="font-size:48px;"></i>    </a>
+</div>
+<footer th:replace="~{commons/fragments::footer}">
+
 </footer>
 </body>
 </html>

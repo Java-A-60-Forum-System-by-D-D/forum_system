@@ -42,6 +42,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'com.sun.mail:javax.mail'
 	implementation 'org.apache.commons:commons-email:1.5'
+	implementation 'org.springframework.session:spring-session-core'
 }
 
 tasks.named('test') {

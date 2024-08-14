@@ -6,19 +6,29 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title>Home</title>
-    <link href="../static/css/Style.css" th:href="@{/Style.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="../../static/css/Style.css" th:href="@{/css/Style.css}" rel="stylesheet" type="text/css">
+    <link href="../../img/logo-ico.ico" th:src="@{/img/logo-ico.ico}" rel="icon">
 </head>
 
 <body>
 <header th:fragment="nav" class="header">
-    <div class="logo">Forum</div>
+    <div class="logo">
+        <a th:href="@{/home}">
+            <img src="../../img/forum-logo.png" alt="Forum Logo">
+        </a></div>
     <nav class="nav">
         <ul>
             <li><a th:href="@{/home}">Home</a></li>
             <li><a th:href="@{/categories}">Categories</a></li>
+
+
+            <li th:if="${isAdmin}"><a th:href="@{/admin}">Admin</a></li>
+
             <li><a th:href="@{/home/about}">About</a></li>
             <li><a th:href="@{/home/contact}">Contact</a></li>
             <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">SignUp</a></li>
+
             <li sec:authorize="isAuthenticated()">
                 <form th:method="post"
                       th:action="@{/logout}">
@@ -28,6 +38,8 @@
         </ul>
     </nav>
 </header>
-
+<footer th:fragment="footer" class="footer">
+    <p>&copy; 2024 D&D Forum. All rights reserved.</p>
+</footer>
 </body>
 </html>

@@ -5,6 +5,7 @@ import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
+import com.example.ForumProject.models.persistentClasses.UserRoleEnum;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
 import com.sun.jna.WString;
@@ -38,6 +39,19 @@ public class HomeMVCController {
         this.userService = userService;
     }
 
+
+    @ModelAttribute("isAdmin")
+    public boolean isAdmin(Principal principal) {
+        if (principal != null) {
+            User user = userService.getUserByUsername(principal.getName());
+            return user.getUserRole()
+                   .stream()
+                   .anyMatch(u -> u.getRole()
+                           .equals(UserRoleEnum.ADMIN));
+
+        }
+        return false;
+    }
 
     @GetMapping
     public String getHomePage(Model model, Principal principal) {

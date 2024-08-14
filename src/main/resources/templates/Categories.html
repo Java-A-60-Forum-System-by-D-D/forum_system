@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Categories</title>
-    <link href="../static/css/Style.css" th:href="@{/Style.css}" rel="stylesheet">
+    <link href="../static/css/Style.css" th:href="@{/css/Style.css}" rel="stylesheet">
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
@@ -20,8 +20,8 @@
         </div>
     </div>
 </div>
-<footer class="footer">
-    <p>&copy; 2024 Forum. All rights reserved.</p>
+<footer th:replace="~{commons/fragments::footer}">
+
 </footer>
 </body>
 </html>
