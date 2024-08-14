@@ -2,8 +2,10 @@ package com.example.ForumProject.models.dto;
 
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class FilterPostsDTO {
 
     private String title;
@@ -14,5 +16,6 @@ public class FilterPostsDTO {
     private String sortOrder;
 
     public FilterPostsDTO() {
+
     }
 }

@@ -15,9 +15,9 @@ public class FilterOptionsPosts {
     private Optional<String> sortBy;
     private Optional<String> sortOrder;
 
-    public FilterOptionsPosts() {
-        this(null, null, null, null, null, null);
-    }
+//    public FilterOptionsPosts() {
+//        this(null, null, null, null, null, null);
+//    }
 
     public FilterOptionsPosts(String title, String content, Integer userId, Integer tagId, String sortBy, String sortOrder) {
         this.title = Optional.ofNullable(title);

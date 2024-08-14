@@ -90,13 +90,13 @@ public class SecurityConfig {
                                   .logoutSuccessUrl("/")
                                   .invalidateHttpSession(true);
                         })
-//
-//
+
+
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create sessions if required
                 );
 
-//
+////
 //        http.oauth2ResourceServer()
 //            .jwt()
 //            .jwtAuthenticationConverter(jwtAuthenticationConverter());

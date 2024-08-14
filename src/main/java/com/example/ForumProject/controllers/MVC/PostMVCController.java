@@ -51,17 +51,23 @@ public class PostMVCController {
     public String getAllPosts(@ModelAttribute("filterOptions") FilterPostsDTO filterPostsDTO, Principal principal, Model model) {
 
         User user = userService.getUserByUsername(principal.getName());
-        FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(filterPostsDTO.getTitle(),
+        FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(
+                filterPostsDTO.getTitle(),
                 filterPostsDTO.getContent(),
                 filterPostsDTO.getUserId(),
                 filterPostsDTO.getTagId(),
                 filterPostsDTO.getSortBy(),
-                filterPostsDTO.getSortOrder());
+                filterPostsDTO.getSortOrder()
+        );
+
+        System.out.println("This is title" + filterPostsDTO.getTitle());
+        System.out.println("This is content" + filterPostsDTO.getContent());
 
 
         List<PostSummaryDTO> allPosts = postService.getPosts(user, filterOptionsPosts);
+        model.addAttribute("filterOptions", filterPostsDTO);
         model.addAttribute("allPosts", allPosts);
-        model.addAttribute("filterOptions", filterOptionsPosts);
+
 
         return "AllPosts";
 
