@@ -140,8 +140,8 @@ public class PostMVCController {
         return "PostUpdateForm";
     }
 
-    @PostMapping("/update")
-    public String updatePost(@Valid @ModelAttribute("postDTO") PostDTO postDTO,@ModelAttribute("originalPost") Post post,
+    @PostMapping("/update/{id}")
+    public String updatePost(@PathVariable int id, @Valid @ModelAttribute("postDTO") PostDTO postDTO,@ModelAttribute("originalPost") Post post,
                              BindingResult bindingResult,
                              Principal principal) {
         if (bindingResult.hasErrors()) {
@@ -149,22 +149,25 @@ public class PostMVCController {
         }
 
         User author = userService.getUserByUsername(principal.getName());
-        Post updatedPost = postMapper.createFromDto(postDTO, author);
-        Post originalPost = post;
+         post = postService.getPostByPostId(id);
+        post.setTitle(postDTO.getTitle());
+        post.setContent(postDTO.getContent());
+        post.setCategory(categoriesService.getCategoryById(postDTO.getCategoryNumber()));
+        post.setTags(postDTO.getTags()
+                          .stream()
+                          .map(tagMapper::tagFromString)
+                          .map(tag -> tagService.createTag(tag, author))
+                          .collect(Collectors.toSet()));
 
-        if (!originalPost.getUser()
-                         .getUsername()
-                         .equals(author.getUsername())) {
-            return "redirect:/posts";
-        }
+//          //todo: check if the user is the author of the post in template
+//        if (!originalPost.getUser()
+//                         .getUsername()
+//                         .equals(author.getUsername())) {
+//            return "redirect:/posts";
+//        }
+        postService.updatePost(post);
+        return "redirect:/posts/" + post.getId();
 
-        originalPost.setTitle(updatedPost.getTitle());
-        originalPost.setContent(updatedPost.getContent());
-        originalPost.setCategory(updatedPost.getCategory());
-        originalPost.setTags(updatedPost.getTags());
-
-        postService.updatePost(originalPost);
-        return "redirect:/posts/" + originalPost.getId();
     }
 
 
@@ -180,6 +183,7 @@ public class PostMVCController {
         model.addAttribute("isLiked", isLiked);
         model.addAttribute("comments", comments);
         model.addAttribute("commentDTO", new CommentDTO());
+        model.addAttribute("user", user);
 
 
         return "PostDetails";

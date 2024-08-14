@@ -15,7 +15,7 @@
     </h3>
     <ul th:each="post: ${posts}" th:object="${post}">
         <li>
-            <h2 th:text="*{title}"></h2>
+            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="*{title}"></a>
             <p th:text="*{content}"></p>
             <p><strong>User:</strong> <span th:text="*{username}"></span></p>
             <p><strong>Category:</strong> <span th:text="*{category}"></span></p>

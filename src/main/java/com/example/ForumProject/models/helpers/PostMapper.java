@@ -36,8 +36,10 @@ public class PostMapper {
     }
 
 
-    public Post updatePostFromDto(PostDTO postDTO, User user) {
+    public Post updatePostFromDto(PostDTO postDTO, User user,int id) {
         Post post = modelMapper.map(postDTO, Post.class);
+        post.setId(id);
+
         Category category = categoriesService.getCategoryById(postDTO.getCategoryNumber());
         post.setCategory(category);
         post.setUser(user);

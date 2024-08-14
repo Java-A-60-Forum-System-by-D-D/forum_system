@@ -5,6 +5,31 @@
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
+<div class="container">
+    <h1>Admin Portal</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Users</h2>
+            <ul>
+                <li th:each="user: ${users}">
+                    <span th:text="${user.username}"></span>
 
+                    <a th:href="@{/admin/users/{id}/edit(id=${user.id})}">GiveARole</a>
+                    <a th:href="@{/admin/users/{id}/block(id=${user.id})}">Block</a>
+                    <a th:href="@{/admin/users/{id}/delete(id=${user.id})}">Delete</a>
+                </li>
+            </ul>
+        </div>
+<!--        <div class="col-md-6">-->
+<!--            <h2>Posts</h2>-->
+<!--            <ul>-->
+<!--                <li th:each="post: ${posts}">-->
+<!--                    <span th:text="${post.title}"></span>-->
+<!--                    <a th:href="@{/admin/posts/{id}/delete}(id=${post.id})">Delete</a>-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+    </div>
+</div>
 </body>
 </html>

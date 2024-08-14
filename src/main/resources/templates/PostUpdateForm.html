@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<head th:replace="~{commons/fragments::head}">
+
     <title>Update Post</title>
-    <link rel="stylesheet" href="/Style.css"/>
+
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
 <div class="post-update-container">
     <h1>Update Post</h1>
-    <form th:action="@{/posts/update}" method="post" th:object="${postDTO}">
+    <form th:action="@{/posts/update/{id}(id=${originalPost.id})}" method="post" th:object="${postDTO}">
         <label>
             <span>Title</span>
             <input type="text" th:field="*{title}" required minlength="16" maxlength="64"/>

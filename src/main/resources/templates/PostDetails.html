@@ -37,7 +37,7 @@
             </form>
             <!-- Edit Button -->
             <a
-               th:href="@{/posts/updateForm/{id}(id=${post.id})}">
+               th:href="@{/posts/updateForm/{id}(id=${post.id})}" th:if="${post.user} == ${user}">
                 <button type="button" class="btn btn-primary">Edit</button>
             </a>
 <!--            <button class="comment_toggle_btn"> <a th:href="@{/posts/updateForm/{id}(id=${post.id})}"></a>Edit</button>-->

@@ -21,4 +21,5 @@ public interface TagService {
     Tag updateTag(Tag tag, User user, Tag newTag);
 
     Tag createTag(Tag tag, User user);
+    Tag findOrCreateTagByName(String name);
 }

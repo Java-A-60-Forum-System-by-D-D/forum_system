@@ -76,4 +76,13 @@ public class TagServiceImpl implements TagService {
             return tagRepository.createTag(tag);
         }
     }
+
+    @Override
+    public Tag findOrCreateTagByName(String name) {
+        return tagRepository.findByName(name).orElseGet(() -> {
+            Tag tag = new Tag();
+            tag.setName(name);
+            return tagRepository.createTag(tag);
+        });
+    }
 }
