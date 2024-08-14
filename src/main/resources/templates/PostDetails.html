@@ -35,6 +35,12 @@
             <form class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
                 <button class="like_btn" type="submit" th:text="${isLiked != null and isLiked ? 'Unlike' : 'Like'}"></button>
             </form>
+            <!-- Edit Button -->
+            <a
+               th:href="@{/posts/updateForm/{id}(id=${post.id})}">
+                <button type="button" class="btn btn-primary">Edit</button>
+            </a>
+<!--            <button class="comment_toggle_btn"> <a th:href="@{/posts/updateForm/{id}(id=${post.id})}"></a>Edit</button>-->
             <!-- Comment Button -->
             <button class="comment_toggle_btn" th:onclick="'toggleForm(\'comment-form\', \'/posts/' + ${post.id} + '/comments\', \'Add a comment...\')'">Add Comment</button>
 

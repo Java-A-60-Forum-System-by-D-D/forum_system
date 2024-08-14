@@ -60,8 +60,7 @@ public class PostMVCController {
                 filterPostsDTO.getSortOrder()
         );
 
-        System.out.println("This is title" + filterPostsDTO.getTitle());
-        System.out.println("This is content" + filterPostsDTO.getContent());
+
 
 
         List<PostSummaryDTO> allPosts = postService.getPosts(user, filterOptionsPosts);
@@ -121,6 +120,51 @@ public class PostMVCController {
         postService.updatePost(post);
 
         return "redirect:/posts";
+    }
+
+    @GetMapping("/updateForm/{id}")
+    public String showUpdateForm(@PathVariable int id, Model model, Principal principal) {
+        Post post = postService.getPostByPostId(id);
+        User user = userService.getUserByUsername(principal.getName());
+
+        if (!post.getUser()
+                 .getUsername()
+                 .equals(user.getUsername())) {
+            return "redirect:/posts";
+        }
+
+        PostDTO postDTO = postMapper.toDTO(post);
+        model.addAttribute("postDTO", postDTO);
+        model.addAttribute("originalPost",post);
+        model.addAttribute("categories", categoriesService.getAllCategories());
+        return "PostUpdateForm";
+    }
+
+    @PostMapping("/update")
+    public String updatePost(@Valid @ModelAttribute("postDTO") PostDTO postDTO,@ModelAttribute("originalPost") Post post,
+                             BindingResult bindingResult,
+                             Principal principal) {
+        if (bindingResult.hasErrors()) {
+            return "PostUpdateForm";
+        }
+
+        User author = userService.getUserByUsername(principal.getName());
+        Post updatedPost = postMapper.createFromDto(postDTO, author);
+        Post originalPost = post;
+
+        if (!originalPost.getUser()
+                         .getUsername()
+                         .equals(author.getUsername())) {
+            return "redirect:/posts";
+        }
+
+        originalPost.setTitle(updatedPost.getTitle());
+        originalPost.setContent(updatedPost.getContent());
+        originalPost.setCategory(updatedPost.getCategory());
+        originalPost.setTags(updatedPost.getTags());
+
+        postService.updatePost(originalPost);
+        return "redirect:/posts/" + originalPost.getId();
     }
 
 

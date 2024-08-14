@@ -2,6 +2,7 @@ package com.example.ForumProject.models.helpers;
 
 import com.example.ForumProject.models.persistentClasses.Category;
 import com.example.ForumProject.models.persistentClasses.Post;
+import com.example.ForumProject.models.persistentClasses.Tag;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.PostDTO;
 import com.example.ForumProject.services.contracts.CategoriesService;
@@ -9,6 +10,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class PostMapper {
@@ -38,6 +42,20 @@ public class PostMapper {
         post.setCategory(category);
         post.setUser(user);
         return post;
+    }
+
+    public PostDTO toDTO(Post post) {
+        PostDTO postDTO = new PostDTO();
+        postDTO.setTitle(post.getTitle());
+        postDTO.setContent(post.getContent());
+        Set<String> tags = post.getTags()
+                               .stream()
+                               .map(Tag::getName)
+                               .collect(Collectors.toSet());
+
+        postDTO.setTags(tags);
+        postDTO.setCategoryNumber(post.getCategory().id);
+        return postDTO;
     }
 
 
