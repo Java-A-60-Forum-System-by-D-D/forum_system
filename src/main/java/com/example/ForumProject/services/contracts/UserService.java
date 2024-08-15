@@ -2,6 +2,7 @@ package com.example.ForumProject.services.contracts;
 
 import com.example.ForumProject.models.dto.UserSummaryDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsPosts;
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsers;
 import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.Tag;
@@ -24,4 +25,5 @@ public interface UserService {
 
     List<Post> getPostsByUser(User user, FilterOptionsUsersPosts filterOptionsUsersPosts);
 
+    List<User> getUsers(FilterOptionsUsers filterOptionsUsers);
 }

@@ -1,9 +1,11 @@
 package com.example.ForumProject.repositories.contracts;
 
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsers;
 import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface UserRepository {
@@ -23,4 +25,5 @@ public interface UserRepository {
 
     List<Post> getUsersPosts(User user, FilterOptionsUsersPosts filterOptionsUsersPosts);
 
+    List<User> getUsers(FilterOptionsUsers filterOptionsUsers);
 }

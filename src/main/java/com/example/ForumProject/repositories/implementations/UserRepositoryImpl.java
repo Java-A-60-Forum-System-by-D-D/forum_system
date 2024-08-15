@@ -2,9 +2,11 @@ package com.example.ForumProject.repositories.implementations;
 
 
 import com.example.ForumProject.exceptions.EntityNotFoundException;
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsers;
 import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.models.persistentClasses.User;
+import com.example.ForumProject.models.persistentClasses.UserRoleEnum;
 import com.example.ForumProject.repositories.contracts.UserRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,8 +31,8 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Post> getUsersPosts(User user, FilterOptionsUsersPosts filterOptionsUsersPosts){
-        try(Session session = sessionFactory.openSession()){
+    public List<Post> getUsersPosts(User user, FilterOptionsUsersPosts filterOptionsUsersPosts) {
+        try (Session session = sessionFactory.openSession()) {
 
             List<String> filters = new ArrayList<>();
             Map<String, Object> params = new HashMap<>();
@@ -50,7 +52,6 @@ public class UserRepositoryImpl implements UserRepository {
                 filters.add("p.title like :title");
                 params.put("title", "%" + value + "%");
             });
-
 
 
             filterOptionsUsersPosts.getContent().ifPresent(value -> {
@@ -83,6 +84,46 @@ public class UserRepositoryImpl implements UserRepository {
             }
 
             Query<Post> query = session.createQuery(queryString.toString(), Post.class);
+            params.forEach(query::setParameter);
+
+            return query.list();
+        }
+    }
+
+    @Override
+    public List<User> getUsers(FilterOptionsUsers filterOptionsUsers) {
+        try (Session session = sessionFactory.openSession()) {
+            List<String> filters = new ArrayList<>();
+            Map<String, Object> params = new HashMap<>();
+
+            StringBuilder queryString = new StringBuilder("select distinct u from User u");
+
+            if (filterOptionsUsers.getUsername().isPresent()) {
+                filters.add("u.username like :username");
+                params.put("username", "%" + filterOptionsUsers.getUsername().get() + "%");
+            }
+
+            if (filterOptionsUsers.getFirstName().isPresent()) {
+                filters.add("u.firstName like :firstName");
+                params.put("firstName", "%" + filterOptionsUsers.getFirstName().get() + "%");
+            }
+
+            if (filterOptionsUsers.getLastName().isPresent()) {
+                filters.add("u.lastName like :lastName");
+                params.put("lastName", "%" + filterOptionsUsers.getLastName().get() + "%");
+            }
+
+            if (filterOptionsUsers.getRole().isPresent()) {
+                queryString.append(" join u.roles r");
+                filters.add("r.role = :role");
+                params.put("role", UserRoleEnum.fromString(filterOptionsUsers.getRole().get()));
+            }
+
+            if (!filters.isEmpty()) {
+                queryString.append(" where ").append(String.join(" and ", filters));
+            }
+
+            Query<User> query = session.createQuery(queryString.toString(), User.class);
             params.forEach(query::setParameter);
 
             return query.list();
@@ -124,11 +165,11 @@ public class UserRepositoryImpl implements UserRepository {
             Query<User> query = session.createQuery("From User where firstName = :name", User.class);
             query.setParameter("name", firstName);
             if (query.list()
-                     .isEmpty()) {
+                    .isEmpty()) {
                 throw new EntityNotFoundException("User", "first_name", firstName);
             }
             return query.list()
-                        .get(0);
+                    .get(0);
         }
     }
 
@@ -150,7 +191,7 @@ public class UserRepositoryImpl implements UserRepository {
             user.setCreatedAt(LocalDateTime.now());
             user.setUpdatedAt(LocalDateTime.now());
             session.getTransaction()
-                   .commit();
+                    .commit();
             return user;
         }
     }
@@ -162,7 +203,7 @@ public class UserRepositoryImpl implements UserRepository {
             session.merge(user);
             user.setUpdatedAt(LocalDateTime.now());
             session.getTransaction()
-                   .commit();
+                    .commit();
             return user;
         }
     }

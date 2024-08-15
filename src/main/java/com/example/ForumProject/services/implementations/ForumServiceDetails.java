@@ -25,14 +25,21 @@ public class ForumServiceDetails implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.getUserByUsername(username)
-                                  .stream()
-                                  .findFirst()
-                                  .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        return user;
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .authorities(user.getUserRole()
+                        .stream()
+                        .map(ForumServiceDetails::map)
+                        .toList())
+                .build();
     }
 
-//
+
 //    private static UserDetails map(User forumDetailSerivce) {
 //
 //        return org.springframework.security.core.userdetails.User
@@ -45,12 +52,12 @@ public class ForumServiceDetails implements UserDetailsService {
 //                .build();
 //    }
 
-//    private static GrantedAuthority map(UserRole userRoleEntity) {
-//        return new SimpleGrantedAuthority(
-//                "ROLE_" + userRoleEntity.getRole()
-//                                        .name()
-//        );
-//    }
+    private static GrantedAuthority map(UserRole userRoleEntity) {
+        return new SimpleGrantedAuthority(
+                "ROLE_" + userRoleEntity.getRole()
+                                        .name()
+        );
+    }
 
 
 }

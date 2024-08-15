@@ -23,7 +23,7 @@
             <li><a th:href="@{/categories}">Categories</a></li>
 
 
-            <li th:if="${isAdmin}"><a th:href="@{/admin}">Admin</a></li>
+            <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/admin}">Admin</a></li>
 
             <li><a th:href="@{/home/about}">About</a></li>
             <li><a th:href="@{/home/contact}">Contact</a></li>

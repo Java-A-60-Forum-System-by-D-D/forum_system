@@ -1,5 +1,6 @@
 package com.example.ForumProject.models.persistentClasses;
 
+import com.example.ForumProject.exceptions.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Hidden;
 
 public enum UserRoleEnum {
@@ -18,5 +19,13 @@ public enum UserRoleEnum {
             default:
                 return "Moderator";
         }
+    }
+    public static UserRoleEnum fromString(String role) {
+        for (UserRoleEnum r : UserRoleEnum.values()) {
+            if (r.toString().equalsIgnoreCase(role)) {
+                return r;
+            }
+        }
+        throw new EntityNotFoundException("No enum constant " + UserRoleEnum.class.getCanonicalName() + "." + role);
     }
 }

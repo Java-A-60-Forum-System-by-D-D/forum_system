@@ -3,6 +3,7 @@ package com.example.ForumProject.services.implementations;
 
 import com.example.ForumProject.exceptions.EntityNotFoundException;
 import com.example.ForumProject.models.dto.UserSummaryDTO;
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsers;
 import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
 import com.example.ForumProject.models.persistentClasses.Post;
 import com.example.ForumProject.services.contracts.UserService;
@@ -50,7 +51,6 @@ public class UserServiceImpl implements UserService{
     public List<User> getUsers() {
 
         List<User> users = userRepository.getUsers();
-        System.out.println("users: " + users);
         users.forEach(user -> Hibernate.initialize(user.getPosts()));
         return users;
     }
@@ -104,6 +104,12 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<Post> getPostsByUser(User user, FilterOptionsUsersPosts filterOptionsUsersPosts) {
         return userRepository.getUsersPosts(user, filterOptionsUsersPosts);
+    }
+
+    @Override
+    public List<User> getUsers(FilterOptionsUsers filterOptionsUsers) {
+        return userRepository.getUsers(filterOptionsUsers)
+                .stream().toList();
     }
 
 

@@ -25,7 +25,7 @@ import java.util.*;
 @Schema(description = "User Entity")
 @JsonSerialize(using = UserSerializer.class)
 @JsonDeserialize(using = UserDeserializer.class)
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity implements UserDetails, GrantedAuthority {
 
     public User(String username, String password, Set<UserRole> userRoles) {
         this.username = username;
@@ -132,6 +132,13 @@ public class User extends BaseEntity implements UserDetails {
         this.likes = new HashSet<>();
         this.userRole = new HashSet<>();
     }
+    public Set<UserRole> getRoles() {
+        return userRole;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.userRole = roles;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -144,5 +151,14 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.userRole.toString();
+    }
+
+    public boolean isAdmin() {
+        return this.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("Admin"));
     }
 }
