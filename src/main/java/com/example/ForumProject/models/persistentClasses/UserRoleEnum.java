@@ -26,6 +26,7 @@ public enum UserRoleEnum {
                 return r;
             }
         }
+
         throw new EntityNotFoundException("No enum constant " + UserRoleEnum.class.getCanonicalName() + "." + role);
     }
 }

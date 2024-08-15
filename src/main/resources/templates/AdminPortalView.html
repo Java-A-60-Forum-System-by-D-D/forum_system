@@ -14,7 +14,7 @@
         <input type="text" id="firstNameFilter" placeholder="Filter by First Name" th:field="*{firstName}">
         <input type="text" id="lastNameFilter" placeholder="Filter by Last Name" th:field="*{lastName}">
         <input type="text" id="roleFilter" placeholder="Filter by Role" th:field="*{role}">
-        <button onclick="applyFilters()">Apply Filters</button>
+        <button type="submit">Apply Filters</button>
         </form>
     </div>
     <div class="row">
@@ -46,14 +46,14 @@
         </div>
     </div>
 </div>
-<script>
-    function applyFilters() {
-        const username = document.getElementById('usernameFilter').value;
-        const firstName = document.getElementById('firstNameFilter').value;
-        const lastName = document.getElementById('lastNameFilter').value;
-        const role = document.getElementById('roleFilter').value;
-        window.location.href = `/admin?username=${username}&firstName=${firstName}&lastName=${lastName}&role=${role}`;
-    }
-</script>
+<!--<script>-->
+<!--    function applyFilters() {-->
+<!--        const username = document.getElementById('usernameFilter').value;-->
+<!--        const firstName = document.getElementById('firstNameFilter').value;-->
+<!--        const lastName = document.getElementById('lastNameFilter').value;-->
+<!--        const role = document.getElementById('roleFilter').value;-->
+<!--        window.location.href = `/admin?username=${username}&firstName=${firstName}&lastName=${lastName}&role=${role}`;-->
+<!--    }-->
+<!--</script>-->
 </body>
 </html>

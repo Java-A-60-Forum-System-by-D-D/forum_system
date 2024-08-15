@@ -112,11 +112,26 @@ public class UserRepositoryImpl implements UserRepository {
                 filters.add("u.lastName like :lastName");
                 params.put("lastName", "%" + filterOptionsUsers.getLastName().get() + "%");
             }
-
+//            if (filterOptionsUsers.getRole().isPresent()) {
+//                queryString.append(" join u.userRole r");
+//                filters.add("r.role = :role");
+//                params.put("role", UserRoleEnum.valueOf(filterOptionsUsers.getRole().get().toUpperCase()));
+//            }
+            //todo fix this ... a big big trouble
+//            if (filterOptionsUsers.getRole().isPresent()) {
+//                queryString.append(" join u.userRole r");
+//                filters.add("r.role = :role");
+//                params.put("role", UserRoleEnum.fromString(filterOptionsUsers.getRole().get()));
+//            }
             if (filterOptionsUsers.getRole().isPresent()) {
-                queryString.append(" join u.roles r");
-                filters.add("r.role = :role");
-                params.put("role", UserRoleEnum.fromString(filterOptionsUsers.getRole().get()));
+                try {
+                    UserRoleEnum roleEnum = UserRoleEnum.fromString(filterOptionsUsers.getRole().get());
+                    queryString.append(" join u.userRole r");
+                    filters.add("r.role = :role");
+                    params.put("role", roleEnum);
+                } catch (EntityNotFoundException e) {
+                    System.out.println("Invalid role provided: " + filterOptionsUsers.getRole().get() + ". Ignoring role filter.");
+                }
             }
 
             if (!filters.isEmpty()) {
