@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 
 public class MVCSecurityConfig {
 
-    private final RSAKeyProperties keys;
+
     private final String rememberMeKey;
     private final PasswordEncoder passwordEncoder;
     private final ForumServiceDetails forumServiceDetails;
@@ -37,8 +37,11 @@ public class MVCSecurityConfig {
 
 
     @Autowired
-    public MVCSecurityConfig(RSAKeyProperties keys, @Value("${forum.remember.me.key}") String rememberMeKey, PasswordEncoder passwordEncoder, ForumServiceDetails forumServiceDetails, CustomEntryPoint customEntryPoint) {
-        this.keys = keys;
+    public MVCSecurityConfig( @Value("${forum.remember.me.key}") String rememberMeKey,
+                              PasswordEncoder passwordEncoder,
+                              ForumServiceDetails forumServiceDetails,
+                              CustomEntryPoint customEntryPoint) {
+
         this.rememberMeKey = rememberMeKey;
         this.passwordEncoder = passwordEncoder;
         this.forumServiceDetails = forumServiceDetails;
@@ -58,12 +61,13 @@ public class MVCSecurityConfig {
     @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/**")
                 .csrf(csrf -> csrf.disable())
 //                .csrf(csrf -> csrf.ignoringRequestMatchers("/swagger-ui/**","/v3/api-docs/", "/api/"))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/css/**", "/js/**", "/img/**").permitAll();
                     auth.requestMatchers("/", "/home", "/home/**", "/login", "/register", "/error").permitAll();
-                    auth.requestMatchers("/api/**").permitAll();
+//                    auth.requestMatchers("/api/**").permitAll();
                     auth.anyRequest().authenticated();
 
                 })
