@@ -4,6 +4,8 @@ package com.example.ForumProject.models.persistentClasses;
 
 import com.example.ForumProject.utility.validation.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -21,8 +23,9 @@ import java.util.*;
 @Getter
 @Setter
 @Schema(description = "User Entity")
+@JsonSerialize(using = UserSerializer.class)
+@JsonDeserialize(using = UserDeserializer.class)
 public class User extends BaseEntity implements UserDetails {
-
 
     public User(String username, String password, Set<UserRole> userRoles) {
         this.username = username;
@@ -78,11 +81,11 @@ public class User extends BaseEntity implements UserDetails {
 
     @JsonIgnore
     @Column(name = "created_at")
-    private transient LocalDateTime createdAt;
+    private  LocalDateTime createdAt;
 
     @JsonIgnore
     @Column(name = "updated_at")
-    private transient LocalDateTime updatedAt;
+    private  LocalDateTime updatedAt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)

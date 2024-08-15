@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService{
     public List<User> getUsers() {
 
         List<User> users = userRepository.getUsers();
+        System.out.println("users: " + users);
         users.forEach(user -> Hibernate.initialize(user.getPosts()));
         return users;
     }

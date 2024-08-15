@@ -17,8 +17,11 @@ public class AdminMVCController {
 
     @GetMapping
     public String showAdminPortal(Model model) {
+        System.out.println("Admin portal");
         model.addAttribute("users", userService.getUsers());
+        System.out.println("2");
 
         return "AdminPortalView";
     }
+
 }
