@@ -5,6 +5,7 @@ import com.example.ForumProject.models.helpers.UserMapper;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.LoggInUserDTO;
 import com.example.ForumProject.models.dto.UserDTO;
+import com.example.ForumProject.services.contracts.RestAuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,11 +27,11 @@ public class AuthenticationController {
     /**
      *
      */
-    private AuthenticationService authenticationService;
+    private RestAuthenticationService authenticationService;
     private UserMapper userMapper;
 
     @Autowired
-    public AuthenticationController(AuthenticationService authenticationService, UserMapper userMapper) {
+    public AuthenticationController(RestAuthenticationService authenticationService, UserMapper userMapper) {
         this.authenticationService = authenticationService;
         this.userMapper = userMapper;
     }

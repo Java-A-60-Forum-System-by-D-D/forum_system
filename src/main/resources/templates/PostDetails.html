@@ -27,7 +27,7 @@
         <li>
             <h2 th:text="*{title}"></h2>
             <p th:text="*{content}"></p>
-            <p><strong>User:</strong> <span th:text="*{user.username}"></span></p>
+            <p><strong>Author:</strong> <span th:text="*{user.username}"></span></p>
             <p><strong>Category:</strong> <span th:text="*{category.getCategoryName()}"></span></p>
             <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
             <p><strong>Tags:</strong> <span th:each="tag : ${post.tags}" th:text="${tag.name} + ' '"></span></p>
@@ -36,10 +36,11 @@
                 <button class="like_btn" type="submit" th:text="${isLiked != null and isLiked ? 'Unlike' : 'Like'}"></button>
             </form>
             <!-- Edit Button -->
-            <a
-               th:href="@{/posts/updateForm/{id}(id=${post.id})}" th:if="${post.user} == ${user}">
-                <button type="button" class="btn btn-primary">Edit</button>
-            </a>
+            <div class="center-button">
+                <a th:href="@{/posts/updateForm/{id}(id=${post.id})}" th:if="${post.user} == ${user}">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                </a>
+            </div>
 <!--            <button class="comment_toggle_btn"> <a th:href="@{/posts/updateForm/{id}(id=${post.id})}"></a>Edit</button>-->
             <!-- Comment Button -->
             <button class="comment_toggle_btn" th:onclick="'toggleForm(\'comment-form\', \'/posts/' + ${post.id} + '/comments\', \'Add a comment...\')'">Add Comment</button>

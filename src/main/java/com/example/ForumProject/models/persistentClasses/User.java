@@ -69,7 +69,7 @@ public class User extends BaseEntity implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_Id")
     )
-    private Set<UserRole> userRole;
+    private  Set<UserRole> userRole;
 
 
     @JsonIgnore
@@ -78,23 +78,23 @@ public class User extends BaseEntity implements UserDetails {
 
     @JsonIgnore
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private transient LocalDateTime createdAt;
 
     @JsonIgnore
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private transient LocalDateTime updatedAt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Post> posts;
+    private transient Set<Post> posts;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-    private Set<Comment> comments;
+    private transient Set<Comment> comments;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private Set<Like> likes;
+    private transient Set<Like> likes;
 
 
     @Override

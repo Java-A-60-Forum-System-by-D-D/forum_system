@@ -7,9 +7,17 @@ import com.example.ForumProject.models.helpers.UserMapper;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.services.contracts.AuthenticationService;
 import com.example.ForumProject.services.contracts.UserService;
+import com.example.ForumProject.services.implementations.AuthenticationServiceMVC;
+import jakarta.servlet.ServletException;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +27,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.security.Principal;
 
@@ -26,14 +37,21 @@ import java.security.Principal;
 
 public class AuthenticationMVCController {
 
-    private final AuthenticationService authenticationService;
+    private final AuthenticationServiceMVC authenticationService;
     private final UserMapper userMapper;
+    private final AuthenticationManager authenticationManager;
+    private final AuthenticationFailureHandler authenticationFailureHandler;
 
 
-    public AuthenticationMVCController(AuthenticationService authenticationService, UserMapper userMapper) {
+    @Autowired
+    public AuthenticationMVCController(AuthenticationServiceMVC authenticationService,
+                                       UserMapper userMapper,
+                                       @Qualifier("mvcAuthenticationManager") AuthenticationManager authenticationManager,
+                                       AuthenticationFailureHandler authenticationFailureHandler) {
         this.authenticationService = authenticationService;
         this.userMapper = userMapper;
-
+        this.authenticationManager = authenticationManager;
+        this.authenticationFailureHandler = authenticationFailureHandler;
     }
 
 
@@ -48,21 +66,40 @@ public class AuthenticationMVCController {
 
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("LoginUser") LoggInUserDTO loggInUserDTO, BindingResult bindingResult, Model model) {
+    public String login(@Valid @ModelAttribute("LoginUser") LoggInUserDTO loggInUserDTO,
+                        BindingResult bindingResult,
+                        Model model, HttpServletRequest request,
+                        HttpServletResponse response) throws ServletException, IOException {
+
         if (bindingResult.hasErrors()) {
             return "SignUp";
         }
+//        var username = request.getAttribute("username");
+//        var password = request.getAttribute("password");
 
-        authenticationService.loginUser(loggInUserDTO.getUsername(), loggInUserDTO.getPassword());
-        Authentication authentication = SecurityContextHolder.getContext()
-                                                             .getAuthentication();
-        System.out.println(authentication);
-        return "redirect:/";
+
+//        authenticationService.loginUser(loggInUserDTO.getUsername(), loggInUserDTO.getPassword(), request, response);
+
+        try {
+            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loggInUserDTO.getUsername(),
+                    loggInUserDTO.getPassword()));
+
+            SecurityContextHolder.getContext()
+                                 .setAuthentication(auth);
+            return "redirect:/home";
+
+        } catch (AuthenticationException e) {
+            authenticationFailureHandler.onAuthenticationFailure(request, response, e);
+            return "SignUp";
+        }
+
+
     }
 
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute("registerUser") UserMVCDTO  userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model){
+    public String register(@Valid @ModelAttribute("registerUser") UserMVCDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
 
             model.addAttribute("hasErrors", true);

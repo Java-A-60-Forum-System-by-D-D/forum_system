@@ -61,6 +61,8 @@ public class TagRepositoryImpl implements TagRepository {
         }
     }
 
+
+
     @Override
     public List<Tag> findAllTags() {
         try (Session session = sessionFactory.openSession()) {

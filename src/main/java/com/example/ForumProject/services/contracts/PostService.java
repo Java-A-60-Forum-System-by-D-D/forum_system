@@ -10,7 +10,7 @@ import com.example.ForumProject.models.persistentClasses.User;
 import java.util.List;
 
 public interface PostService {
-    List<PostSummaryDTO> getPosts(User user, FilterOptionsPosts filterOptionsPosts);
+    List<PostSummaryDTO> getPosts( FilterOptionsPosts filterOptionsPosts);
 
     PostSummaryDTO getPostSummaryByPostId(int id);
     Post getPostByPostId(int id);

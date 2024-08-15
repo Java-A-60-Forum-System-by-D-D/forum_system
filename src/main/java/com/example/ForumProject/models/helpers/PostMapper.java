@@ -18,11 +18,13 @@ import java.util.stream.Collectors;
 public class PostMapper {
     private final ModelMapper modelMapper;
     private final CategoriesService categoriesService;
+    private final TagMapper tagMapper;
 
 
-    public PostMapper(ModelMapper modelMapper, CategoriesService categoriesService) {
+    public PostMapper(ModelMapper modelMapper, CategoriesService categoriesService, TagMapper tagMapper) {
         this.modelMapper = modelMapper;
         this.categoriesService = categoriesService;
+        this.tagMapper = tagMapper;
     }
 
     public Post createFromDto(PostDTO postDTO, User user) {
@@ -54,6 +56,7 @@ public class PostMapper {
                                .stream()
                                .map(Tag::getName)
                                .collect(Collectors.toSet());
+
 
         postDTO.setTags(tags);
         postDTO.setCategoryNumber(post.getCategory().id);

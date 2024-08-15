@@ -8,11 +8,10 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -28,84 +27,47 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.session.web.http.CookieSerializer;
-import org.springframework.session.web.http.DefaultCookieSerializer;
-
 
 @Configuration
-
-public class SecurityConfig {
+public class JWTConfig {
 
     private final RSAKeyProperties keys;
-    private final String rememberMeKey;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomEntryPoint customEntryPoint;
 
-    @Autowired
-    public SecurityConfig(RSAKeyProperties keys,@Value("${forum.remember.me.key}") String rememberMeKey) {
+
+    public JWTConfig(RSAKeyProperties keys, PasswordEncoder passwordEncoder, CustomEntryPoint customEntryPoint) {
         this.keys = keys;
-        this.rememberMeKey = rememberMeKey;
+        this.passwordEncoder = passwordEncoder;
+        this.customEntryPoint = customEntryPoint;
     }
 
+
     @Bean
+    @Order(1)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/api/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(HttpMethod.GET, "/api/posts")
+                        .permitAll();
                     auth.requestMatchers("/api/auth/**")
                         .permitAll();
-                    auth.requestMatchers("/api")
+                    auth.requestMatchers("/swagger-ui/")
                         .permitAll();
-                    auth.requestMatchers("/login", "/register")
+                    auth.requestMatchers("/v3/api-docs/")
                         .permitAll();
-                    auth.requestMatchers("/home", "/")
-                        .permitAll();
-                    auth.requestMatchers("/categories")
-                        .permitAll();
-                    auth.requestMatchers("/home/**")
-                        .permitAll();
-                    auth.requestMatchers("/api/users/**")
-                        .hasAnyRole("User", "Admin");
-                    auth.requestMatchers("/api/admin/**")
-                        .hasAnyRole("Admin");
-                    auth.requestMatchers("/api/posts/**")
-                        .hasAnyRole("Admin", "User,", "ADMIN", "USER");
-                    auth.requestMatchers("/css/**", "/img/**")
-                        .permitAll();
-                    auth.anyRequest()
+                    auth.requestMatchers("api/admin/**")
+                        .hasAnyRole("Admin", "ADMIN");
+                    auth.requestMatchers("/api/**")
                         .authenticated();
                 })
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/login")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
-                        .permitAll()
-                )
-                .rememberMe(
-                        rememberMe -> {
-                            rememberMe.key(rememberMeKey)
-                                    .rememberMeParameter("rememberme")
-                                    .rememberMeCookieName("rememberme");
-                        }
-                )
-                .logout(
-                        logout -> {
-                            logout.logoutUrl("/logout")
-                                  .logoutSuccessUrl("/")
-                                  .invalidateHttpSession(true);
-                        })
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+                        .authenticationEntryPoint(customEntryPoint))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Create sessions if required
-                );
-
-////
-//        http.oauth2ResourceServer()
-//            .jwt()
-//            .jwtAuthenticationConverter(jwtAuthenticationConverter());
-//        http.sessionManagement(
-//                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//
-//        );
 
         return http.build();
 
@@ -117,13 +79,14 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(UserDetailsService detailsService) {
+    @Bean("restAuthenticationManager")
+    public AuthenticationManager restAuthenticationManager(UserDetailsService detailsService) {
         DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
-        daoProvider.setPasswordEncoder(passwordEncoder());
+        daoProvider.setPasswordEncoder(passwordEncoder);
         daoProvider.setUserDetailsService(detailsService);
         return new ProviderManager(daoProvider);
     }
+
 
     @Bean
     public JwtDecoder jwtDecoder() {
@@ -147,13 +110,6 @@ public class SecurityConfig {
         JwtAuthenticationConverter jwtConverter = new JwtAuthenticationConverter();
         jwtConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtConverter;
-    }
-    @Bean
-    public CookieSerializer cookieSerializer() {
-        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-        serializer.setSameSite("None");
-        serializer.setUseSecureCookie(true); // Ensure cookies are sent over HTTPS
-        return serializer;
     }
 
 

@@ -36,17 +36,16 @@ public class PostController {
     private final UserService userService;
     private final TagService tagService;
     private final TagMapper tagMapper;
-    //to be deleted
-    private final PostRepository postRepository;
 
 
-    public PostController(PostService postService, PostMapper postMapper, UserService userService, TagService tagService, TagMapper tagMapper, PostRepository postRepository) {
+
+    public PostController(PostService postService, PostMapper postMapper, UserService userService, TagService tagService, TagMapper tagMapper) {
         this.postService = postService;
         this.postMapper = postMapper;
         this.userService = userService;
         this.tagService = tagService;
         this.tagMapper = tagMapper;
-        this.postRepository = postRepository;
+
     }
 
     @Operation(summary = "Get all posts", description = "Get a list of all posts, optionally filtered by title, content, user, or tag")
@@ -67,7 +66,7 @@ public class PostController {
                                                              .getAuthentication();
         String username = authentication.getName();
         User loggedUser = userService.getUserByUsername(username);
-        return postService.getPosts(loggedUser, filterOptionsPosts);
+        return postService.getPosts(filterOptionsPosts);
 
     }
 

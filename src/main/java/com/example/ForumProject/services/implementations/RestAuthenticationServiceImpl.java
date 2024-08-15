@@ -1,15 +1,13 @@
 package com.example.ForumProject.services.implementations;
 
-import com.example.ForumProject.exceptions.EntityDuplicateException;
-import com.example.ForumProject.services.contracts.AuthenticationService;
+import com.example.ForumProject.services.contracts.RestAuthenticationService;
 import com.example.ForumProject.services.contracts.TokenService;
 import com.example.ForumProject.services.contracts.UserService;
-import com.example.ForumProject.models.helpers.UserMapper;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.dto.LoggInUserDTO;
 import com.example.ForumProject.repositories.contracts.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,7 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService {
+@Qualifier("restAuthenticationService")
+public class RestAuthenticationServiceImpl implements RestAuthenticationService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -27,7 +26,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final EmailService emailService;
 
     @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository, UserService userService, UserRepository userRepository1, PasswordEncoder passwordEncoder, TokenService tokenService, AuthenticationManager authenticationManager, ForumServiceDetails forumServiceDetails, EmailService emailService) {
+    public RestAuthenticationServiceImpl(UserRepository userRepository,
+                                         UserService userService,
+                                         UserRepository userRepository1,
+                                         PasswordEncoder passwordEncoder,
+                                         TokenService tokenService, @Qualifier("restAuthenticationManager") AuthenticationManager authenticationManager,
+                                         ForumServiceDetails forumServiceDetails,
+                                         EmailService emailService) {
         this.userRepository = userRepository1;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;

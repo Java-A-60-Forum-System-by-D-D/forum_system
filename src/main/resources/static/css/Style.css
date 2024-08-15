@@ -1005,4 +1005,9 @@ i.fa-brands fa-github{
     height: 100px; /* Adjust height as needed */
 }
 
+.center-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
 

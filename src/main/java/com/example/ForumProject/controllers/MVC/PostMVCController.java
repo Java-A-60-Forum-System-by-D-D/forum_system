@@ -63,7 +63,7 @@ public class PostMVCController {
 
 
 
-        List<PostSummaryDTO> allPosts = postService.getPosts(user, filterOptionsPosts);
+        List<PostSummaryDTO> allPosts = postService.getPosts(filterOptionsPosts);
         model.addAttribute("filterOptions", filterPostsDTO);
         model.addAttribute("allPosts", allPosts);
 
@@ -149,7 +149,7 @@ public class PostMVCController {
         }
 
         User author = userService.getUserByUsername(principal.getName());
-         post = postService.getPostByPostId(id);
+        post = postService.getPostByPostId(id);
         post.setTitle(postDTO.getTitle());
         post.setContent(postDTO.getContent());
         post.setCategory(categoriesService.getCategoryById(postDTO.getCategoryNumber()));

@@ -39,9 +39,9 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<PostSummaryDTO> getPosts(User user, FilterOptionsPosts filterOptionsPosts) {
+    public List<PostSummaryDTO> getPosts( FilterOptionsPosts filterOptionsPosts) {
 
-        ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.USER), INVALID_GET_ALL_POSTS_COMMAND);
+//        ValidatorHelpers.roleAuthenticationValidator(user, new UserRole(UserRoleEnum.USER), INVALID_GET_ALL_POSTS_COMMAND);
 
 
         return postRepository.getPosts(filterOptionsPosts)
