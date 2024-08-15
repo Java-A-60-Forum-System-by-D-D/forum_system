@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,7 +41,16 @@ public class CommentMVCController {
 
 
     @PostMapping
-    public String createCommentOnPost(@PathVariable int postId, Model model, Principal principal, @Valid @ModelAttribute("commentDTO") CommentDTO commentDTO) {
+    public String createCommentOnPost(@PathVariable int postId, Model model, Principal principal,
+                                      @Valid @ModelAttribute("commentDTO") CommentDTO commentDTO,
+                                      BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Post post = postService.getPostByPostId(postId);
+            model.addAttribute("post", post);
+            model.addAttribute("commentDTO", commentDTO);
+            return "PostDetails";
+        }
+
         Post post = postService.getPostByPostId(postId);
         User user = userService.getUserByUsername(principal.getName());
         Comment comment = commentMapper.createFromDto(post, commentDTO, user);
@@ -51,7 +61,21 @@ public class CommentMVCController {
     }
 
     @PostMapping("/{commentId}")
-    public String createCommentOnPostComment(@PathVariable int postId, @PathVariable int commentId, Model model, Principal principal, @Valid @ModelAttribute("commentDTO") CommentDTO commentDTO) {
+    public String createCommentOnPostComment(@PathVariable int postId,
+                                             @PathVariable int commentId, Model model,
+                                             Principal principal,
+                                             @Valid @ModelAttribute("commentDTO") CommentDTO commentDTO,
+                                             BindingResult bindingResult) {
+
+
+        if (bindingResult.hasErrors()) {
+            Post post = postService.getPostByPostId(postId);
+            model.addAttribute("post", post);
+            model.addAttribute("commentDTO", commentDTO);
+            return "PostDetails";
+        }
+
+
         Post post = postService.getPostByPostId(postId);
         User user = userService.getUserByUsername(principal.getName());
         Comment comment = commentService.getCommentById(commentId, post);

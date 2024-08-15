@@ -49,6 +49,7 @@
             <div id="comment-form" class="form-container" style="display: none;">
                 <form class="form-like" id="dynamic-form" method="post" th:action="@{/posts/{postId}/comments(postId=${post.id})}" th:object="${commentDTO}">
                     <input type="text" id="dynamic-input" name="content" placeholder="Add a comment..." th:field="*{content}" required/>
+                    <small class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></small>
                     <button class="submit_btn" type="submit">Submit</button>
                 </form>
             </div>
@@ -64,8 +65,9 @@
 
                 <!-- Reply Form -->
                 <div th:id="'reply-form-' + ${comment.id}" class="form-container" style="display: none;">
-                    <form th:id="'dynamic-form-' + ${comment.id}" method="post" th:action="@{/posts/{postId}/comments/{commentId} (postId=${post.id}, commentId=${comment.id})}">
-                        <input type="text" th:id="'dynamic-input-' + ${comment.id}" name="content" placeholder="Write your reply..." required/>
+                    <form th:id="'dynamic-form-' + ${comment.id}" method="post" th:action="@{/posts/{postId}/comments/{commentId} (postId=${post.id}, commentId=${comment.id})}" th:object="${commentDTO}">
+                        <input type="text" th:id="'dynamic-input-' + ${comment.id}" name="content" placeholder="Write your reply..." th:field="*{content}" required/>
+                        <small class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></small>
                         <button class="submit_btn" type="submit">Submit</button>
                     </form>
                 </div>

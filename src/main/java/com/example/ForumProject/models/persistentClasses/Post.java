@@ -19,6 +19,7 @@ import java.util.Set;
 @Setter
 public class Post extends BaseEntity {
 
+    @JsonBackReference
     @JsonIgnore
     @ManyToOne
     @NotNull

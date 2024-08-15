@@ -74,11 +74,6 @@ public class AuthenticationMVCController {
         if (bindingResult.hasErrors()) {
             return "SignUp";
         }
-//        var username = request.getAttribute("username");
-//        var password = request.getAttribute("password");
-
-
-//        authenticationService.loginUser(loggInUserDTO.getUsername(), loggInUserDTO.getPassword(), request, response);
 
         try {
             Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(

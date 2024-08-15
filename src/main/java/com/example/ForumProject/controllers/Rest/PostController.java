@@ -62,10 +62,10 @@ public class PostController {
                                             @RequestParam(required = false) String sortOrder
     ) {
         FilterOptionsPosts filterOptionsPosts = new FilterOptionsPosts(title, content, userId, tagId, sortBy, sortOrder);
-        Authentication authentication = SecurityContextHolder.getContext()
-                                                             .getAuthentication();
-        String username = authentication.getName();
-        User loggedUser = userService.getUserByUsername(username);
+//        Authentication authentication = SecurityContextHolder.getContext()
+//                                                             .getAuthentication();
+//        String username = authentication.getName();
+//        User loggedUser = userService.getUserByUsername(username);
         return postService.getPosts(filterOptionsPosts);
 
     }

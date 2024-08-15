@@ -40,19 +40,6 @@ public class HomeMVCController {
     }
 
 
-    @ModelAttribute("isAdmin")
-    public boolean isAdmin(Principal principal) {
-        if (principal != null) {
-            User user = userService.getUserByUsername(principal.getName());
-            return user.getUserRole()
-                   .stream()
-                   .anyMatch(u -> u.getRole()
-                           .equals(UserRoleEnum.ADMIN));
-
-        }
-        return false;
-    }
-
     @GetMapping
     public String getHomePage(Model model, Principal principal) {
         if (principal != null) {
@@ -84,7 +71,7 @@ public class HomeMVCController {
     }
 
     @GetMapping("/contact")
-    public String getContactPage(){
+    public String getContactPage() {
         return "Contact";
     }
 

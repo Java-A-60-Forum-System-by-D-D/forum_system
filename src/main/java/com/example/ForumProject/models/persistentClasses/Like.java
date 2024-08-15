@@ -1,6 +1,7 @@
 package com.example.ForumProject.models.persistentClasses;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -24,6 +25,7 @@ public class Like extends BaseEntity {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
