@@ -43,35 +43,27 @@ public class JWTConfig {
     }
 
 
+
     @Bean
     @Order(1)
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain jwtSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/**")
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET, "/api/posts")
-                        .permitAll();
-                    auth.requestMatchers("/api/auth/**")
-                        .permitAll();
-                    auth.requestMatchers("/swagger-ui/")
-                        .permitAll();
-                    auth.requestMatchers("/v3/api-docs/")
-                        .permitAll();
-                    auth.requestMatchers("api/admin/**")
-                        .hasAnyRole("Admin", "ADMIN");
-                    auth.requestMatchers("/api/**")
-                        .authenticated();
+                    auth.requestMatchers(HttpMethod.GET, "/api/posts").permitAll();
+                    auth.requestMatchers("/api/auth/**").permitAll();
+                    auth.requestMatchers("/swagger-ui/").permitAll();
+                    auth.requestMatchers("/v3/api-docs/").permitAll();
+                    auth.requestMatchers("api/admin/**").hasAnyRole("Admin", "ADMIN");
+                    auth.requestMatchers("/api/**").authenticated();
                 })
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(customEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-
         return http.build();
-
-
     }
 
     @Bean
