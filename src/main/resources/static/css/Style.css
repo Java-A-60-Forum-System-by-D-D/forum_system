@@ -1140,3 +1140,25 @@ button:hover {
 .filter-container button:hover {
     background-color: #495551;
 }
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+    padding: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: flash 1s ease-in-out infinite alternate;
+}
+
+@keyframes flash {
+    from {
+        background-color: #d4edda;
+    }
+    to {
+        background-color: #c3e6cb;
+    }
+}

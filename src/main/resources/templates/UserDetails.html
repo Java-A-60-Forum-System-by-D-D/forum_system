@@ -13,6 +13,8 @@
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
+<div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
 <div class="user-container">
     <h1>Profile details for <span th:text="${user.username}"></span></h1>
     <ul th:object="${user}">
@@ -21,7 +23,8 @@
             <button type="button" class="btn btn-secondary" onclick="showUpdateField('updateFirstName')">Change First Name</button>
             <div id="updateFirstName" class="hidden-form">
                 <form th:action="@{/profile/update/firstName}" method="post">
-                    <input type="text" name="firstName" required/>
+                    <input type="text" name="firstName" th:field="*{firstName}" required/>
+                    <small class="error" th:if="${firstNameError}" th:text="${firstNameError}"></small>
                     <button type="submit" class="btn">Update</button>
                 </form>
             </div>
@@ -31,7 +34,8 @@
             <button type="button" class="btn btn-secondary" onclick="showUpdateField('updateLastName')">Change Last Name</button>
             <div id="updateLastName" class="hidden-form">
                 <form th:action="@{/profile/update/lastName}" method="post">
-                    <input type="text" name="lastName" required/>
+                    <input type="text" name="lastName" th:field="*{lastName}" required/>
+                    <small class="error" th:if="${lastNameError}" th:text="${lastNameError}"></small>
                     <button type="submit" class="btn">Update</button>
                 </form>
             </div>
@@ -41,7 +45,8 @@
             <button type="button" class="btn btn-secondary" onclick="showUpdateField('updateEmail')">Change Email</button>
             <div id="updateEmail" class="hidden-form">
                 <form th:action="@{/profile/update/email}" method="post">
-                    <input type="email" name="email" required/>
+                    <input type="email" name="email" th:field="*{email}" required/>
+                    <small class="error" th:if="${emailError}" th:text="${emailError}"></small>
                     <button type="submit" class="btn">Update</button>
                 </form>
             </div>
@@ -51,7 +56,8 @@
             <button type="button" class="btn btn-secondary" onclick="showUpdateField('updatePassword')">Change Password</button>
             <div id="updatePassword" class="hidden-form">
                 <form th:action="@{/profile/update/password}" method="post">
-                    <input type="password" name="password" required/>
+                    <input type="password" name="password" th:field="*{password}" required/>
+                    <small class="error" th:if="${passwordError}" th:text="${passwordError}"></small>
                     <button type="submit" class="btn">Update</button>
                 </form>
             </div>
@@ -63,18 +69,18 @@
             <div id="updatePhotoURL" class="hidden-form">
                 <form th:action="@{/profile/update/photoURL}" method="post" enctype="multipart/form-data">
                     <input type="file" name="photoURL" accept="image/*" required/>
+                    <small class="error" th:if="${photoURLError}" th:text="${photoURLError}"></small>
                     <button type="submit" class="btn">Update</button>
                 </form>
             </div>
         </li>
-
-
         <li th:if="${isAdmin}">
             <p th:text="'Phone Number: ' + *{phoneNumber}"></p>
             <button type="button" class="btn btn-secondary" onclick="showUpdateField('updatePhoneNumber')">Change Phone Number</button>
             <div id="updatePhoneNumber" class="hidden-form">
                 <form th:action="@{/profile/update/phoneNumber}" method="post">
-                    <input type="text" name="phoneNumber" required/>
+                    <input type="text" name="phoneNumber" th:field="*{phoneNumber}" required/>
+                    <small class="error" th:if="${phoneNumberError}" th:text="${phoneNumberError}"></small>
                     <button type="submit" class="btn">Update</button>
                 </form>
             </div>

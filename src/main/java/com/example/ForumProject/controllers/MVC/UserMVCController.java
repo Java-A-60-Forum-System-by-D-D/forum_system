@@ -5,16 +5,22 @@ import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.persistentClasses.UserRoleEnum;
 import com.example.ForumProject.services.contracts.CloudinaryImageService;
 import com.example.ForumProject.services.contracts.UserService;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.security.Principal;
 
 @Controller
+@RequestMapping("/profile")
 public class UserMVCController {
     private final UserService userService;
     private final UserMapper userMapper;
@@ -28,7 +34,7 @@ public class UserMVCController {
         this.cloudinaryImageService = cloudinaryImageService;
     }
 
-    @GetMapping("/profile")
+    @GetMapping()
     public String getUserById(Principal principal, Model model) {
         User userByUsername = userService.getUserByUsername(principal.getName());
         model.addAttribute("user", userByUsername);
@@ -63,54 +69,136 @@ public class UserMVCController {
 //        return "redirect:/profile";
 //    }
 
-    @PostMapping("/profile/update/firstName")
-    public String updateFirstName(@RequestParam("firstName") String firstName, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
-        user.setFirstName(firstName);
-        userService.updateUser(user);
+    @PostMapping("/update/firstName")
+    public String updateFirstName(@ModelAttribute("firstName") String firstName,
+                                  BindingResult bindingResult,
+                                  Principal principal,
+                                  RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("firstNameError", bindingResult.getFieldError("firstName")
+                                                                                .getDefaultMessage());
+            return "redirect:/profile";
+        }
+
+        try {
+            User user = userService.getUserByUsername(principal.getName());
+            user.setFirstName(firstName);
+            userService.updateUser(user);
+            redirectAttributes.addFlashAttribute("message", "First name updated successfully");
+        } catch (ConstraintViolationException e) {
+            // Extract the error message from the exception
+            String errorMessage = e.getConstraintViolations().iterator().next().getMessage();
+            redirectAttributes.addFlashAttribute("firstNameError", errorMessage);
+        }
         return "redirect:/profile";
     }
 
-    @PostMapping("/profile/update/lastName")
-    public String updateLastName(@RequestParam("lastName") String lastName, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
-        user.setLastName(lastName);
-        userService.updateUser(user);
+    @PostMapping("/update/lastName")
+    public String updateLastName(@ModelAttribute("lastName") String lastName,
+                                 BindingResult bindingResult,
+                                 Principal principal,
+                                 RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("lastNameError", bindingResult.getFieldError("lastName").getDefaultMessage());
+            return "redirect:/profile";
+        }
+
+        try {
+            User user = userService.getUserByUsername(principal.getName());
+            user.setLastName(lastName);
+            userService.updateUser(user);
+            redirectAttributes.addFlashAttribute("message", "Last name updated successfully");
+        } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("lastNameError", e.getConstraintViolations().iterator().next().getMessage());
+        }
         return "redirect:/profile";
     }
 
-    @PostMapping("/profile/update/email")
-    public String updateEmail(@RequestParam("email") String email, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
-        user.setEmail(email);
-        userService.updateUser(user);
+    @PostMapping("/update/email")
+    public String updateEmail(@Valid @ModelAttribute("email") String email,
+                              BindingResult bindingResult,
+                              Principal principal,
+                              RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("emailError", bindingResult.getFieldError("email").getDefaultMessage());
+            return "redirect:/profile";
+        }
+
+        try {
+            User user = userService.getUserByUsername(principal.getName());
+            user.setEmail(email);
+            userService.updateUser(user);
+            redirectAttributes.addFlashAttribute("message", "Email updated successfully");
+        } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("emailError", e.getConstraintViolations().iterator().next().getMessage());
+        }
         return "redirect:/profile";
     }
 
-    @PostMapping("/profile/update/photoURL")
-    public String updatePhotoURL(@RequestParam("photoURL") MultipartFile photoURL, Principal principal) throws IOException {
-        User user = userService.getUserByUsername(principal.getName());
-        String photoURLPath = cloudinaryImageService.uploadImage(photoURL);
-        user.setPhotoURL(photoURLPath);
-        userService.updateUser(user);
+    @PostMapping("/update/photoURL")
+    public String updatePhotoURL(@Valid @ModelAttribute("photoURL") MultipartFile photoURL,
+                                 BindingResult bindingResult,
+                                 Principal principal,
+                                 RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("photoURLError", bindingResult.getFieldError("photoURL").getDefaultMessage());
+            return "redirect:/profile";
+        }
+
+        try {
+            User user = userService.getUserByUsername(principal.getName());
+            String photoURLPath = cloudinaryImageService.uploadImage(photoURL);
+            user.setPhotoURL(photoURLPath);
+            userService.updateUser(user);
+            redirectAttributes.addFlashAttribute("message", "Profile picture updated successfully");
+        } catch (IOException e) {
+            redirectAttributes.addFlashAttribute("photoURLError", "Error uploading image: " + e.getMessage());
+        } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("photoURLError", e.getConstraintViolations().iterator().next().getMessage());
+        }
         return "redirect:/profile";
     }
 
-    @PostMapping("/profile/update/password")
-    public String updatePassword(@RequestParam("password") String password, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
-        user.setPassword(passwordEncoder.encode(password));
-        userService.updateUser(user);
+    @PostMapping("/update/password")
+    public String updatePassword(@Valid @ModelAttribute("password") String password,
+                                 BindingResult bindingResult,
+                                 Principal principal,
+                                 RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("passwordError", bindingResult.getFieldError("password").getDefaultMessage());
+            return "redirect:/profile";
+        }
+
+        try {
+            User user = userService.getUserByUsername(principal.getName());
+            user.setPassword(passwordEncoder.encode(password));
+            userService.updateUser(user);
+            redirectAttributes.addFlashAttribute("message", "Password updated successfully");
+        } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("passwordError", e.getConstraintViolations().iterator().next().getMessage());
+        }
         return "redirect:/profile";
     }
 
-    @PostMapping("/profile/update/phoneNumber")
-    public String updatePhoneNumber(@RequestParam("phoneNumber") String phoneNumber, Principal principal) {
-        User user = userService.getUserByUsername(principal.getName());
-        user.setPhoneNumber(phoneNumber);
-        userService.updateUser(user);
+    @PostMapping("/update/phoneNumber")
+    public String updatePhoneNumber(@Valid @ModelAttribute("phoneNumber") String phoneNumber,
+                                    BindingResult bindingResult,
+                                    Principal principal,
+                                    RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("phoneNumberError", bindingResult.getFieldError("phoneNumber").getDefaultMessage());
+            return "redirect:/profile";
+        }
+
+        try {
+            User user = userService.getUserByUsername(principal.getName());
+            user.setPhoneNumber(phoneNumber);
+            userService.updateUser(user);
+            redirectAttributes.addFlashAttribute("message", "Phone number updated successfully");
+        } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("phoneNumberError", e.getConstraintViolations().iterator().next().getMessage());
+        }
         return "redirect:/profile";
     }
-
 
 }
