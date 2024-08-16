@@ -123,11 +123,8 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             }
             if (filterOptionsUsers.getIsBlocked().isPresent()) {
-                String isBlockedValue = String.valueOf(filterOptionsUsers.getIsBlocked().get());
-                if (!isBlockedValue.isEmpty()) {
-                    filters.add("u.isBlocked = :isBlocked");
-                    params.put("true", Boolean.parseBoolean(isBlockedValue));
-                }
+                filters.add("u.isBlocked = :isBlocked");
+                params.put("isBlocked", filterOptionsUsers.getIsBlocked().get());
             }
 
             if (!filters.isEmpty()) {

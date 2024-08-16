@@ -14,10 +14,10 @@
         <input type="text" id="firstNameFilter" placeholder="Filter by First Name" th:field="*{firstName}">
         <input type="text" id="lastNameFilter" placeholder="Filter by Last Name" th:field="*{lastName}">
         <input type="text" id="roleFilter" placeholder="Filter by Role" th:field="*{role}">
-            <select id="blockedFilter">
+            <select id="blockedFilter" th:field="*{isBlocked}">
                 <option value="">All</option>
-                <option value="true" >Blocked</option>
-                <option value="false" >Not Blocked</option>
+                <option value="true">Blocked</option>
+                <option value="false">Not Blocked</option>
             </select>
         <button type="submit">Apply Filters</button>
         </form>

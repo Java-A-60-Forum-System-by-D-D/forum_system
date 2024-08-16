@@ -32,7 +32,7 @@ public class AdminMVCController {
                 filterUserDTO.getFirstName(),
                 filterUserDTO.getLastName(),
                 filterUserDTO.getRole(),
-                filterUserDTO.isBlocked()
+                filterUserDTO.getIsBlocked()
         );
         List<User> users = userService.getUsers(filterOptionsUsers);
         model.addAttribute("userFilter", filterUserDTO);

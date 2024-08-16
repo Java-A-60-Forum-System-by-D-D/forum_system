@@ -1,9 +1,11 @@
 package com.example.ForumProject.models.filterOptions;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Optional;
 @Getter
+@Setter
 public class FilterOptionsUsers {
     private final Optional<String> username;
     private final Optional<String> firstName;
