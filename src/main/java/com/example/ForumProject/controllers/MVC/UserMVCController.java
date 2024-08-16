@@ -74,6 +74,7 @@ public class UserMVCController {
                                   BindingResult bindingResult,
                                   Principal principal,
                                   RedirectAttributes redirectAttributes) {
+
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("firstNameError", bindingResult.getFieldError("firstName")
                                                                                 .getDefaultMessage());
@@ -87,6 +88,7 @@ public class UserMVCController {
             redirectAttributes.addFlashAttribute("message", "First name updated successfully");
         } catch (ConstraintViolationException e) {
             // Extract the error message from the exception
+            redirectAttributes.addFlashAttribute("message", "First name must be between 4 and 32 symbols");
             String errorMessage = e.getConstraintViolations().iterator().next().getMessage();
             redirectAttributes.addFlashAttribute("firstNameError", errorMessage);
         }
@@ -109,6 +111,7 @@ public class UserMVCController {
             userService.updateUser(user);
             redirectAttributes.addFlashAttribute("message", "Last name updated successfully");
         } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("message", "Last name must be between 4 and 32 symbols");
             redirectAttributes.addFlashAttribute("lastNameError", e.getConstraintViolations().iterator().next().getMessage());
         }
         return "redirect:/profile";
@@ -130,6 +133,7 @@ public class UserMVCController {
             userService.updateUser(user);
             redirectAttributes.addFlashAttribute("message", "Email updated successfully");
         } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("message", "Email must be unique");
             redirectAttributes.addFlashAttribute("emailError", e.getConstraintViolations().iterator().next().getMessage());
         }
         return "redirect:/profile";
@@ -175,6 +179,7 @@ public class UserMVCController {
             userService.updateUser(user);
             redirectAttributes.addFlashAttribute("message", "Password updated successfully");
         } catch (ConstraintViolationException e) {
+            redirectAttributes.addFlashAttribute("message", "Password must have 1 capital letter 1 lowercase letter and 1 number");
             redirectAttributes.addFlashAttribute("passwordError", e.getConstraintViolations().iterator().next().getMessage());
         }
         return "redirect:/profile";
