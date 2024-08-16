@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="/css/Style.css" />
-    <script>
-        function showUpdateField(fieldId) {
-            document.getElementById(fieldId).style.display = 'block';
-        }
-    </script>
-</head>
+
+<head th:replace="~{commons/fragments::head(title=${'UserDetails'})}">
+
+    </head>
+
+
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
 <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
@@ -70,9 +66,16 @@
                 <form th:action="@{/profile/update/photoURL}" method="post" enctype="multipart/form-data">
                     <input type="file" name="photoURL" accept="image/*" required/>
                     <small class="error" th:if="${photoURLError}" th:text="${photoURLError}"></small>
-                    <button type="submit" class="btn">Update</button>
+                    <button type="submit" class="btn">Change Photo</button>
                 </form>
             </div>
+            <button type="button" class="btn btn-secondary" onclick="confirmDeletion('deletePhotoURL')">Remove Profile Picture</button>
+            <div id="deletePhotoURL" class="hidden-form">
+                <form th:action="@{/profile/delete/photoURL}" method="post">
+                    <button type="submit" class="btn">Remove Photo</button>
+                </form>
+            </div>
+
         </li>
         <li th:if="${isAdmin}">
             <p th:text="'Phone Number: ' + *{phoneNumber}"></p>
@@ -100,5 +103,17 @@
 <footer th:replace="~{commons/fragments::footer}">
 
 </footer>
+<script>
+    function confirmDeletion(formId) {
+        if (confirm('Are you sure you want to delete your profile picture?')) {
+            document.getElementById(formId).querySelector('form').submit();
+        }
+    }
+</script>
+<script>
+    function showUpdateField(fieldId) {
+        document.getElementById(fieldId).style.display = 'block';
+    }
+</script>
 </body>
 </html>

@@ -112,17 +112,6 @@ public class UserRepositoryImpl implements UserRepository {
                 filters.add("u.lastName like :lastName");
                 params.put("lastName", "%" + filterOptionsUsers.getLastName().get() + "%");
             }
-//            if (filterOptionsUsers.getRole().isPresent()) {
-//                queryString.append(" join u.userRole r");
-//                filters.add("r.role = :role");
-//                params.put("role", UserRoleEnum.valueOf(filterOptionsUsers.getRole().get().toUpperCase()));
-//            }
-            //todo fix this ... a big big trouble
-//            if (filterOptionsUsers.getRole().isPresent()) {
-//                queryString.append(" join u.userRole r");
-//                filters.add("r.role = :role");
-//                params.put("role", UserRoleEnum.fromString(filterOptionsUsers.getRole().get()));
-//            }
             if (filterOptionsUsers.getRole().isPresent()) {
                 try {
                     UserRoleEnum roleEnum = UserRoleEnum.fromString(filterOptionsUsers.getRole().get());
@@ -131,6 +120,13 @@ public class UserRepositoryImpl implements UserRepository {
                     params.put("role", roleEnum);
                 } catch (EntityNotFoundException e) {
                     System.out.println("Invalid role provided: " + filterOptionsUsers.getRole().get() + ". Ignoring role filter.");
+                }
+            }
+            if (filterOptionsUsers.getIsBlocked().isPresent()) {
+                String isBlockedValue = String.valueOf(filterOptionsUsers.getIsBlocked().get());
+                if (!isBlockedValue.isEmpty()) {
+                    filters.add("u.isBlocked = :isBlocked");
+                    params.put("true", Boolean.parseBoolean(isBlockedValue));
                 }
             }
 

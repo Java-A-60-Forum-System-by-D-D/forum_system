@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{commons/fragments::head}">
+<head th:replace="~{commons/fragments::head(title=${'AdminPortal'})}">
     <title>Admin Portal</title>
 </head>
 <body>
@@ -14,6 +14,11 @@
         <input type="text" id="firstNameFilter" placeholder="Filter by First Name" th:field="*{firstName}">
         <input type="text" id="lastNameFilter" placeholder="Filter by Last Name" th:field="*{lastName}">
         <input type="text" id="roleFilter" placeholder="Filter by Role" th:field="*{role}">
+            <select id="blockedFilter">
+                <option value="">All</option>
+                <option value="true" >Blocked</option>
+                <option value="false" >Not Blocked</option>
+            </select>
         <button type="submit">Apply Filters</button>
         </form>
     </div>

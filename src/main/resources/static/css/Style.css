@@ -1162,3 +1162,23 @@ button:hover {
         background-color: #c3e6cb;
     }
 }
+
+.container-blocked {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-blocked .alert {
+    max-width: 600px;
+    margin: 20px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container-blocked .alert-heading {
+    font-size: 1.5rem;
+    font-weight: bold;
+}

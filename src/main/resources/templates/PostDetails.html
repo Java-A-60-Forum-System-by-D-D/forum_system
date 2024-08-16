@@ -1,24 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>All Posts</title>
-    <link rel="stylesheet" href="/css/Style.css"/>
-    <script>
-        function toggleForm(formId, actionUrl, placeholderText) {
-            var formContainer = document.getElementById(formId);
-            if (formContainer.style.display === "none") {
-                formContainer.style.display = "block";
-                var form = formContainer.querySelector("form");
-                form.action = actionUrl;
-                var input = form.querySelector("input[name='content']");
-                input.placeholder = placeholderText;
-            } else {
-                formContainer.style.display = "none";
-            }
-        }
-    </script>
-</head>
+
+<head th:replace="~{commons/fragments::head(title=${'PostDetails'})}">
+
+    </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
 <div class="posts-container">
@@ -78,5 +63,19 @@
 <footer th:replace="~{commons/fragments::footer}">
 
 </footer>
+<script>
+    function toggleForm(formId, actionUrl, placeholderText) {
+        var formContainer = document.getElementById(formId);
+        if (formContainer.style.display === "none") {
+            formContainer.style.display = "block";
+            var form = formContainer.querySelector("form");
+            form.action = actionUrl;
+            var input = form.querySelector("input[name='content']");
+            input.placeholder = placeholderText;
+        } else {
+            formContainer.style.display = "none";
+        }
+    }
+</script>
 </body>
 </html>

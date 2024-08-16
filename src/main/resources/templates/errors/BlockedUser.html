@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{commons/fragments::head(title=${'Blocked'})}">
+
+</head>
+
+<body>
+<header th:replace="~{commons/fragments::nav}"></header>
+<div class="container-blocked">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">You are blocked!</h4>
+        <p>You are blocked by the admin. You can't access Posts form.</p>
+        <strong>Now you will be redirected.</strong>
+    </div>
+
+</div>
+<footer th:replace="~{commons/fragments::footer}">
+</footer>
+<script>
+    function autoRedirect(url, delay) {
+        setTimeout(function() {
+            window.location.href = url;
+        }, delay);
+    }
+
+    // Redirect to the home page after 5 seconds
+    autoRedirect('/', 5000);
+</script>
+</body>
+</html>

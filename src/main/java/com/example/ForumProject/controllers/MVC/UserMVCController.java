@@ -140,14 +140,10 @@ public class UserMVCController {
     }
 
     @PostMapping("/update/photoURL")
-    public String updatePhotoURL(@Valid @ModelAttribute("photoURL") MultipartFile photoURL,
-                                 BindingResult bindingResult,
+    public String updatePhotoURL(@RequestPart("photoURL") MultipartFile photoURL,
+
                                  Principal principal,
                                  RedirectAttributes redirectAttributes) {
-        if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("photoURLError", bindingResult.getFieldError("photoURL").getDefaultMessage());
-            return "redirect:/profile";
-        }
 
         try {
             User user = userService.getUserByUsername(principal.getName());
@@ -160,6 +156,15 @@ public class UserMVCController {
         } catch (ConstraintViolationException e) {
             redirectAttributes.addFlashAttribute("photoURLError", e.getConstraintViolations().iterator().next().getMessage());
         }
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/delete/photoURL")
+    public String deletePhotoURL(Principal principal, RedirectAttributes redirectAttributes) {
+        User user = userService.getUserByUsername(principal.getName());
+        user.setPhotoURL("http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png");
+        userService.updateUser(user);
+        redirectAttributes.addFlashAttribute("message", "Profile picture deleted successfully");
         return "redirect:/profile";
     }
 

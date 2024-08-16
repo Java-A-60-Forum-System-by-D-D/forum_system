@@ -1,4 +1,4 @@
-use FORUM_TEST;
+use forum_system;
 -- Insert data into roles table
 INSERT INTO roles (role) VALUES ('ADMIN');
 INSERT INTO roles (role) VALUES ('MODERATOR');

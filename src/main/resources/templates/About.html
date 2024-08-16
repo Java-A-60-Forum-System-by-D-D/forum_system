@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>About</title>
+
+<head th:replace="~{commons/fragments::head(title=${'About'})}">
     <script src="https://kit.fontawesome.com/deb7b6e8b0.js" crossorigin="anonymous"></script>
-    <link href="../static/css/Style.css" th:href="@{/css/Style.css}" rel="stylesheet">
 </head>
+
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
 <div class="about-container">
@@ -39,7 +38,7 @@
 
 </div>
 <div class="about-git"><a href="https://github.com/Java-A-60-Forum-System-by-D-D/forum_system">
-    <i class="fa-brands fa-github" style="font-size:48px;"></i>    </a>
+    <i class="fa-brands fa-github" style="font-size:48px;"></i> </a>
 </div>
 <footer th:replace="~{commons/fragments::footer}">
 

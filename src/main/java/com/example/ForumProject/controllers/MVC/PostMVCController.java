@@ -87,7 +87,11 @@ public class PostMVCController {
 
 
     @GetMapping("/createForm")
-    public String showCreateForm(Model model) {
+    public String showCreateForm(Model model, Principal principal) {
+        User user = userService.getUserByUsername(principal.getName());
+        if(user.isBlocked()){
+            return "errors/BlockedUser";
+        }
         model.addAttribute("postDTO", new PostDTO());
         model.addAttribute("categories", categoriesService.getAllCategories());
         return "PostCreationForm";

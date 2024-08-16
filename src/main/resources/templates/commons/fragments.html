@@ -3,9 +3,9 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 
-<head th:fragment="head">
+<head th:fragment="head(title)">
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title th:text="${title}">Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="../../static/css/Style.css" th:href="@{/css/Style.css}" rel="stylesheet" type="text/css">
     <link href="../../img/logo-ico.ico" th:src="@{/img/logo-ico.ico}" rel="icon">

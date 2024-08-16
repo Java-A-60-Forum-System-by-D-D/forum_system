@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Categories</title>
-    <link href="../static/css/Style.css" th:href="@{/css/Style.css}" rel="stylesheet">
+<head th:replace="~{commons/fragments::head(title=${'Category'})}">
+
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
