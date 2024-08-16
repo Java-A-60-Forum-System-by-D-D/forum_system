@@ -18,12 +18,16 @@
             <p><strong>Tags:</strong> <span th:each="tag : ${post.tags}" th:text="${tag.name} + ' '"></span></p>
             <br/>
             <form class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
-                <button class="like_btn" type="submit" th:text="${isLiked != null and isLiked ? 'Unlike' : 'Like'}"></button>
+                <button class="like_btn" type="submit">
+                    <i th:unless="${isLiked != null and isLiked}" class="fa-solid fa-thumbs-up"></i>
+                    <i th:if="${isLiked != null and isLiked}" class="fa-regular fa-thumbs-down"></i>
+                </button>
+
             </form>
             <!-- Edit Button -->
             <div class="center-button">
                 <a th:href="@{/posts/updateForm/{id}(id=${post.id})}" th:if="${post.user} == ${user}">
-                    <button type="button" class="btn btn-primary">Edit</button>
+                    <button type="button" >Edit</button>
                 </a>
             </div>
 <!--            <button class="comment_toggle_btn"> <a th:href="@{/posts/updateForm/{id}(id=${post.id})}"></a>Edit</button>-->

@@ -86,6 +86,8 @@ public class PostMVCController {
     }
 
 
+
+
     @GetMapping("/createForm")
     public String showCreateForm(Model model, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
