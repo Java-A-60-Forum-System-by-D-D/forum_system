@@ -47,12 +47,9 @@ public class UserMVCController {
             isAdmin = true;
         }
 
-
         model.addAttribute("isAdmin", isAdmin);
-        Boolean isExistPhoto = true;
-        if(userByUsername.getPhotoURL().equals(BASE_PHOTO_URL)){
-            model.addAttribute("isExistPhoto", false);
-        }
+        boolean isExistPhoto = userByUsername.getPhotoURL().equals(BASE_PHOTO_URL) ? false : true;
+        model.addAttribute("isExistPhoto", isExistPhoto);
 
         return "UserDetails";
     }
