@@ -61,8 +61,6 @@ public class PostMVCController {
         );
 
 
-
-
         List<PostSummaryDTO> allPosts = postService.getPosts(filterOptionsPosts);
         model.addAttribute("filterOptions", filterPostsDTO);
         model.addAttribute("allPosts", allPosts);
@@ -86,12 +84,10 @@ public class PostMVCController {
     }
 
 
-
-
     @GetMapping("/createForm")
     public String showCreateForm(Model model, Principal principal) {
         User user = userService.getUserByUsername(principal.getName());
-        if(user.isBlocked()){
+        if (user.isBlocked()) {
             return "errors/BlockedUser";
         }
         model.addAttribute("postDTO", new PostDTO());
@@ -141,13 +137,13 @@ public class PostMVCController {
 
         PostDTO postDTO = postMapper.toDTO(post);
         model.addAttribute("postDTO", postDTO);
-        model.addAttribute("originalPost",post);
+        model.addAttribute("originalPost", post);
         model.addAttribute("categories", categoriesService.getAllCategories());
         return "PostUpdateForm";
     }
 
     @PostMapping("/update/{id}")
-    public String updatePost(@PathVariable int id, @Valid @ModelAttribute("postDTO") PostDTO postDTO,@ModelAttribute("originalPost") Post post,
+    public String updatePost(@PathVariable int id, @Valid @ModelAttribute("postDTO") PostDTO postDTO, @ModelAttribute("originalPost") Post post,
                              BindingResult bindingResult,
                              Principal principal) {
         if (bindingResult.hasErrors()) {
@@ -160,10 +156,10 @@ public class PostMVCController {
         post.setContent(postDTO.getContent());
         post.setCategory(categoriesService.getCategoryById(postDTO.getCategoryNumber()));
         post.setTags(postDTO.getTags()
-                          .stream()
-                          .map(tagMapper::tagFromString)
-                          .map(tag -> tagService.createTag(tag, author))
-                          .collect(Collectors.toSet()));
+                            .stream()
+                            .map(tagMapper::tagFromString)
+                            .map(tag -> tagService.createTag(tag, author))
+                            .collect(Collectors.toSet()));
 
 //          //todo: check if the user is the author of the post in template
 //        if (!originalPost.getUser()
@@ -193,6 +189,16 @@ public class PostMVCController {
 
 
         return "PostDetails";
+    }
+
+    @PostMapping("/{id}")
+    public String deletePost(@PathVariable int id, Model model, Principal principal) {
+        Post post = postService.getPostByPostId(id);
+        User user = userService.getUserByUsername(principal.getName());
+        postService.deletePost(post.id, user);
+
+        return "redirect:/posts";
+
     }
 
 

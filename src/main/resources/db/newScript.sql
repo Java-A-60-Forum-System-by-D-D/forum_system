@@ -1,4 +1,4 @@
-use forum_system;
+use FORUM_TEST;
 -- Populate roles
 INSERT INTO roles (role)
 VALUES ('ADMIN'),

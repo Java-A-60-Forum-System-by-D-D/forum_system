@@ -1382,3 +1382,20 @@ button:hover {
     background-color: #0056b3;
 }
 
+.button-link {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #ff0000; /* Red color */
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-link:hover {
+    background-color: #cc0000; /* Darker red on hover */
+}
