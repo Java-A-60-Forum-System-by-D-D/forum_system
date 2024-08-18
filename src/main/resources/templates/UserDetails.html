@@ -69,7 +69,7 @@
                     <button type="submit" class="btn">Change Photo</button>
                 </form>
             </div>
-            <button type="button" class="btn btn-secondary" onclick="confirmDeletion('deletePhotoURL')">Remove Profile Picture</button>
+            <button th:if="${isExistPhoto}" type="button" class="btn btn-secondary" onclick="confirmDeletion('deletePhotoURL')">Remove Profile Picture</button>
             <div id="deletePhotoURL" class="hidden-form">
                 <form th:action="@{/profile/delete/photoURL}" method="post">
                     <button type="submit" class="btn">Remove Photo</button>

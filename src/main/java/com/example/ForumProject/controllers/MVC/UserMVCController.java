@@ -22,6 +22,7 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/profile")
 public class UserMVCController {
+    public static final String BASE_PHOTO_URL = "http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png";
     private final UserService userService;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
@@ -48,6 +49,10 @@ public class UserMVCController {
 
 
         model.addAttribute("isAdmin", isAdmin);
+        Boolean isExistPhoto = true;
+        if(userByUsername.getPhotoURL().equals(BASE_PHOTO_URL)){
+            model.addAttribute("isExistPhoto", false);
+        }
 
         return "UserDetails";
     }
@@ -162,7 +167,7 @@ public class UserMVCController {
     @PostMapping("/delete/photoURL")
     public String deletePhotoURL(Principal principal, RedirectAttributes redirectAttributes) {
         User user = userService.getUserByUsername(principal.getName());
-        user.setPhotoURL("http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png");
+        user.setPhotoURL(BASE_PHOTO_URL);
         userService.updateUser(user);
         redirectAttributes.addFlashAttribute("message", "Profile picture deleted successfully");
         return "redirect:/profile";
