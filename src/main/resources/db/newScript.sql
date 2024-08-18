@@ -1,9 +1,10 @@
+use forum_system;
 -- Populate roles
-INSERT INTO forum_test.roles (role) VALUES
+INSERT INTO roles (role) VALUES
                                         ('ADMIN'), ('MODERATOR'), ('USER');
 
 -- Populate categories
-INSERT INTO forum_test.categories (category_name, description) VALUES
+INSERT INTO categories (category_name, description) VALUES
                                                                    ('Science', 'Fascinating scientific discoveries'),
                                                                    ('History', 'Intriguing historical events'),
                                                                    ('Technology', 'Latest tech innovations'),
@@ -16,20 +17,20 @@ INSERT INTO forum_test.categories (category_name, description) VALUES
                                                                    ('Psychology', 'Interesting human behaviors');
 
 -- Populate users with the same password hash for all users
-INSERT INTO forum_test.users (is_blocked, created_at, updated_at, first_name, last_name, password_hash, email, phone_number, photo_url, username) VALUES
-                                                                                                                                                      (0, NOW(), NOW(), 'John', 'Doe', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'john@example.com', '1234567890', 'photo1.jpg', 'johnd'),
-                                                                                                                                                      (0, NOW(), NOW(), 'Jane', 'Smith', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'jane@example.com', '2345678901', 'photo2.jpg', 'janes'),
-                                                                                                                                                      (0, NOW(), NOW(), 'Mike', 'Johnson', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'mike@example.com', '3456789012', 'photo3.jpg', 'mikej'),
-                                                                                                                                                      (0, NOW(), NOW(), 'Emily', 'Brown', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'emily@example.com', '4567890123', 'photo4.jpg', 'emilyb'),
-                                                                                                                                                      (0, NOW(), NOW(), 'David', 'Lee', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'david@example.com', '5678901234', 'photo5.jpg', 'davidl'),
-                                                                                                                                                      (0, NOW(), NOW(), 'Sarah', 'Wilson', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'sarah@example.com', '6789012345', 'photo6.jpg', 'sarahw'),
-                                                                                                                                                      (0, NOW(), NOW(), 'Chris', 'Taylor', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'chris@example.com', '7890123456', 'photo7.jpg', 'christ'),
-                                                                                                                                                      (0, NOW(), NOW(), 'Lisa', 'Anderson', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'lisa@example.com', '8901234567', 'photo8.jpg', 'lisaa'),
-                                                                                                                                                      (0, NOW(), NOW(), 'Tom', 'Martin', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'tom@example.com', '9012345678', 'photo9.jpg', 'tomm'),
-                                                                                                                                                      (0, NOW(), NOW(), 'Emma', 'White', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'emma@example.com', '0123456789', 'photo10.jpg', 'emmaw');
+INSERT INTO users (is_blocked, created_at, updated_at, first_name, last_name, password_hash, email, phone_number, photo_url, username) VALUES
+                                                                                                                                                      (0, NOW(), NOW(), 'John', 'Doe', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'john@example.com', '1234567890', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'johnd'),
+                                                                                                                                                      (0, NOW(), NOW(), 'Jane', 'Smith', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'jane@example.com', '2345678901', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'janes'),
+                                                                                                                                                      (0, NOW(), NOW(), 'Mike', 'Johnson', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'mike@example.com', '3456789012', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'mikej'),
+                                                                                                                                                      (0, NOW(), NOW(), 'Emily', 'Brown', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'emily@example.com', '4567890123', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'emilyb'),
+                                                                                                                                                      (0, NOW(), NOW(), 'David', 'Lee', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'david@example.com', '5678901234', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'davidl'),
+                                                                                                                                                      (0, NOW(), NOW(), 'Sarah', 'Wilson', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'sarah@example.com', '6789012345', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'sarahw'),
+                                                                                                                                                      (0, NOW(), NOW(), 'Chris', 'Taylor', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'chris@example.com', '7890123456', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'christ'),
+                                                                                                                                                      (0, NOW(), NOW(), 'Lisa', 'Anderson', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'lisa@example.com', '8901234567', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'lisaa'),
+                                                                                                                                                      (0, NOW(), NOW(), 'Tom', 'Martin', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'tom@example.com', '9012345678', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'tomm'),
+                                                                                                                                                      (0, NOW(), NOW(), 'Emma', 'White', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2', 'emma@example.com', '0123456789', 'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'emmaw');
 
 -- Populate posts
-INSERT INTO forum_test.posts (category_id, user_id, created_At, updated_at, title, content, likes_count) VALUES
+INSERT INTO posts (category_id, user_id, created_At, updated_at, title, content, likes_count) VALUES
                                                                                                              (1, 1, NOW(), NOW(), 'Water on Mars', 'Scientists have found evidence of liquid water on Mars.', 0),
                                                                                                              (2, 2, NOW(), NOW(), 'Lost city discovered', 'Archaeologists uncover ancient city in the Amazon rainforest.', 0),
                                                                                                              (3, 3, NOW(), NOW(), 'AI breakthrough', 'New AI model can predict protein structures with high accuracy.', 0),
@@ -42,7 +43,7 @@ INSERT INTO forum_test.posts (category_id, user_id, created_At, updated_at, titl
                                                                                                              (10, 10, NOW(), NOW(), 'Dream study results', 'Research reveals common themes in dreams across cultures.', 0);
 
 -- Populate comments
-INSERT INTO forum_test.comments (post_id, user_id, created_At, updated_at, content) VALUES
+INSERT INTO comments (post_id, user_id, created_At, updated_at, content) VALUES
                                                                                         (1, 2, NOW(), NOW(), 'This is groundbreaking! What are the implications for future Mars missions?'),
                                                                                         (2, 3, NOW(), NOW(), 'I wonder how old this city is and what civilization built it.'),
                                                                                         (3, 4, NOW(), NOW(), 'The potential applications in medicine are exciting!'),
@@ -55,7 +56,7 @@ INSERT INTO forum_test.comments (post_id, user_id, created_At, updated_at, conte
                                                                                         (10, 1, NOW(), NOW(), 'I''ve always been fascinated by dream interpretation. Great study!');
 
 -- Populate comment replies
-INSERT INTO forum_test.comments (parent_comment_id, post_id, user_id, created_At, updated_at, content) VALUES
+INSERT INTO comments (parent_comment_id, post_id, user_id, created_At, updated_at, content) VALUES
                                                                                                            (1, 1, 3, NOW(), NOW(), 'It could lead to more advanced life-support systems for astronauts.'),
                                                                                                            (2, 2, 4, NOW(), NOW(), 'Some estimates suggest it could be over 3000 years old!'),
                                                                                                            (3, 3, 5, NOW(), NOW(), 'Agreed! It could revolutionize drug discovery processes.'),
@@ -68,19 +69,19 @@ INSERT INTO forum_test.comments (parent_comment_id, post_id, user_id, created_At
                                                                                                            (10, 10, 2, NOW(), NOW(), 'It''s interesting how dreams can reflect our shared human experiences.');
 
 -- Populate tags
-INSERT INTO forum_test.tags (name) VALUES
+INSERT INTO tags (name) VALUES
                                        ('Mars'), ('Archaeology'), ('AI'), ('Biology'), ('Astronomy'),
                                        ('Neuroscience'), ('Ancient History'), ('Transportation'), ('Marine Biology'), ('Psychology');
 
 -- Populate post_tags
-INSERT INTO forum_test.post_tags (id, tag_id) VALUES
+INSERT INTO post_tags (id, tag_id) VALUES
                                                   (1, 1), (2, 2), (3, 3), (4, 4), (5, 5),
                                                   (6, 6), (7, 7), (8, 8), (9, 9), (10, 10);
 
 -- Populate users_roles (assuming all users are regular users)
-INSERT INTO forum_test.users_roles (role_Id, user_id)
-SELECT 3, id FROM forum_test.users;
+INSERT INTO users_roles (role_Id, user_id)
+SELECT 3, id FROM users;
 
 -- Make the first user an admin and the second a moderator
-UPDATE forum_test.users_roles SET role_Id = 1 WHERE user_id = 1;
-UPDATE forum_test.users_roles SET role_Id = 2 WHERE user_id = 2;
+UPDATE users_roles SET role_Id = 1 WHERE user_id = 1;
+UPDATE users_roles SET role_Id = 2 WHERE user_id = 2;
