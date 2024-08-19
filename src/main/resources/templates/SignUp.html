@@ -10,18 +10,23 @@
 <div class="cont" th:classappend="${showSignUp} ? 's--signup' : ''">
     <div class="form sign-in">
         <h2>Welcome</h2>
+        <h3 th:if="${isFound == false}" class="mt-5 text-center">
+            <strong class="bg-blur rounded text-danger">
+                Wrong username and password combination.
+            </strong>
+        </h3>
         <form th:action="@{/login}" th:object="${LoginUser}" th:method="post">
             <label>
                 <span>Username</span>
-                <input type="text" name="username" th:field="*{username}" required />
-                <small class="error" th:errors="*{username}" />
+                <input type="text" name="username" th:field="*{username}" required/>
+                <small class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
             </label>
             <label>
                 <span>Password</span>
-                <input type="password" name="password" th:field="*{password}" required />
-                <small class="error" th:errors="*{password}" />
+                <input type="password" name="password" th:field="*{password}" required/>
+                <small class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
             </label>
-<!--            <p class="forgot-pass"><a href="/forgot-password">Forgot password?</a></p>-->
+            <!--            <p class="forgot-pass"><a href="/forgot-password">Forgot password?</a></p>-->
             <div>
                 <label for="rememberme">Remember me</label>
                 <input type="checkbox" id="rememberme" name="rememberme">
@@ -43,44 +48,44 @@
                 <span class="m--in">Sign In</span>
             </div>
         </div>
-        <div class="form sign-up" id = "SignUpForm">
+        <div class="form sign-up" id="SignUpForm">
             <h2>Create your Account</h2>
             <form th:action="@{/register}" th:object="${registerUser}" method="post" enctype="multipart/form-data">
                 <label>
                     <span>Username</span>
-                    <input type="text" th:field="*{username}" required />
-                    <small class="error" th:errors="*{username}" />
+                    <input type="text" th:field="*{username}" required/>
+                    <small class="error" th:errors="*{username}"/>
                 </label>
                 <label>
                     <span>First Name</span>
-                    <input type="text" th:field="*{firstName}" required />
-                    <small class="error" th:errors="*{firstName}" />
+                    <input type="text" th:field="*{firstName}" required/>
+                    <small class="error" th:errors="*{firstName}"/>
                 </label>
                 <label>
                     <span>Last Name</span>
-                    <input type="text"  th:field="*{lastName}" required />
-                    <small class="error" th:errors="*{lastName}" />
+                    <input type="text" th:field="*{lastName}" required/>
+                    <small class="error" th:errors="*{lastName}"/>
                 </label>
                 <label>
                     <span>Email</span>
-                    <input type="email" th:field="*{email}" required />
-                    <small class="error" th:errors="*{email}" />
+                    <input type="email" th:field="*{email}" required/>
+                    <small class="error" th:errors="*{email}"/>
                 </label>
                 <label>
                     <span>Password</span>
-                    <input type="password" th:field="*{password}" id="password" required />
-                    <small class="error" th:errors="*{password}" />
+                    <input type="password" th:field="*{password}" id="password" required/>
+                    <small class="error" th:errors="*{password}"/>
                 </label>
                 <label>
                     <span>Photo URL</span>
-<!--                    <input type="text" th:field="*{photoURL}" value="photo URL"/>-->
+                    <!--                    <input type="text" th:field="*{photoURL}" value="photo URL"/>-->
                 </label>
                 <label class="text-white font-weight-bold" for="imageUrl">
                     <input id="imageUrl"
                            th:field="*{photoURL}"
                            th:errorclass="is-invalid"
                            type="file" class="form-control"
-                           placeholder="Put profile image here"  accept="image/png, image/jpeg">
+                           placeholder="Put profile image here" accept="image/png, image/jpeg">
                 </label>
 
                 <p class="invalid-feedback errors alert alert-danger">
@@ -99,11 +104,11 @@
 
 </footer>
 <script th:inline="javascript">
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var cont = document.querySelector('.cont');
         var imgBtn = document.querySelector('.img__btn');
 
-        imgBtn.addEventListener('click', function() {
+        imgBtn.addEventListener('click', function () {
             cont.classList.toggle('s--signup');
         });
 

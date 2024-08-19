@@ -57,6 +57,9 @@ public class AuthenticationMVCController {
 
     @GetMapping("/login")
     public String login(Model model) {
+        if(!model.containsAttribute("isFound")) {
+            model.addAttribute("isFound", true);
+        }
         if (!model.containsAttribute("registerUser")) {
             model.addAttribute("registerUser", new UserMVCDTO());
         }
@@ -69,9 +72,10 @@ public class AuthenticationMVCController {
     public String login(@Valid @ModelAttribute("LoginUser") LoggInUserDTO loggInUserDTO,
                         BindingResult bindingResult,
                         HttpServletRequest request,
-                        HttpServletResponse response) throws ServletException, IOException {
-
+                        HttpServletResponse response, Model model) throws ServletException, IOException {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("isFound", false);
+            model.addAttribute("errors", bindingResult.getAllErrors());
             return "SignUp";
         }
 
