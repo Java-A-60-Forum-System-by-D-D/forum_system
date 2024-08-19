@@ -1,0 +1,16 @@
+<!-- src/main/resources/templates/error.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{commons/fragments::head(title=${'Unauthorized'})}">
+
+</head>
+<body>
+<header th:replace="~{commons/fragments::nav}"></header>
+<div class="container-error">
+    <h1>Error</h1>
+    <p>An error occurred. You must be logged in to view this resource</p>
+    <a th:href="@{/login}" class="button-link">Login</a>
+</div>
+<footer th:replace="~{commons/fragments::footer}"></footer>
+</body>
+</html>
