@@ -11,6 +11,7 @@
                 <li>
                     <a th:text="${category.categoryName}"
                        th:href="@{/categories/{id}(id=${category.id})}"></a>
+                    <small th:text="${category.description}"></small>
                 </li>
             </ul>
         </div>
