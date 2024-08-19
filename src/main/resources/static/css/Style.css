@@ -56,7 +56,8 @@
     padding: 0;
     margin: 0;
     display: inline-flex;
-    align-items: center;
+    align-items: baseline;
+    justify-content: center;
 }
 
 .btn-out i {
@@ -65,7 +66,7 @@
 }
 
 /* Container Styles */
-.container {
+.container , .post-container {
     display: flex;
 }
 
@@ -125,7 +126,7 @@ p {
 /* Sidebar Styles */
 .sidebar {
     width: 250px;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: fixed;
@@ -273,23 +274,23 @@ button {
 
 /* Specific styles for .like_btn class */
 .like_btn {
-    background-color: #007bff; /* Blue background */
+    background-color: #616d69; /* Grey background */
     color: white; /* White text */
-    border: 2px solid #007bff; /* Blue border */
+    border: 2px solid #616d69; /* Grey border */
 }
 
 .like_btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    border-color: #0056b3; /* Match border color on hover */
+    background-color: #616d69; /* Darker grey on hover */
+    border-color: #616d69; /* Match border color on hover */
 }
 
 .like_btn:active {
-    background-color: #004085; /* Even darker blue when clicked */
-    border-color: #004085; /* Match border color on active */
+    background-color: #495551; /* Even darker grey when clicked */
+    border-color: #495551; /* Match border color on active */
 }
 
 .like_btn:focus {
-    box-shadow: 0 0 0 2px rgba(38, 143, 255, 0.5); /* Light blue shadow for focus */
+    box-shadow: 0 0 0 2px rgba(97, 109, 105, 0.5); /* Light grey shadow for focus */
 }
 
 .tip {
@@ -787,8 +788,8 @@ about-container {
 
 .post-creation-container button {
     padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+    background-color: #616d69; /* Grey background */
+    color: white; /* White text */
     border: none;
     border-radius: 4px;
     font-size: 1.2em;
@@ -798,7 +799,7 @@ about-container {
 }
 
 .post-creation-container button:hover {
-    background-color: #0056b3;
+    background-color: #495551; /* Darker grey on hover */
 }
 
 .posts-container {
@@ -843,13 +844,13 @@ about-container {
     margin-bottom: 5px;
 }
 
-.submit_btn{
-    color: #007bff;
+.submit_btn {
+    color: #ffffff; /* Grey color */
 }
 
 .comment_toggle_btn {
     padding: 10px 20px;
-    background-color: #007bff; /* Blue color */
+    background-color: #616d69; /* Grey background */
     color: white;
     border: none;
     border-radius: 4px;
@@ -859,12 +860,11 @@ about-container {
 }
 
 .comment_toggle_btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #495551; /* Darker grey on hover */
 }
-
 .reply_toggle_btn {
     padding: 10px 20px;
-    background-color: #28a745; /* Green color */
+    background-color: #616d69; /* Grey color */
     color: white;
     border: none;
     border-radius: 4px;
@@ -874,11 +874,10 @@ about-container {
 }
 
 .reply_toggle_btn:hover {
-    background-color: #218838; /* Darker green on hover */
+    background-color: #495551; /* Darker grey on hover */
 }
 
-
-/* END SignUp Form Styles*/
+/* END SignUp Form Styles */
 .btn {
     display: inline-block;
     padding: 10px 20px;
@@ -887,7 +886,7 @@ about-container {
     text-align: center;
     text-decoration: none;
     color: #fff;
-    background-color: #007bff;
+    background-color: #616d69; /* Grey color */
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -895,7 +894,7 @@ about-container {
 }
 
 .btn:hover {
-    background-color: #0056b3;
+    background-color: #495551; /* Darker grey on hover */
 }
 
 .btn-secondary {
@@ -922,6 +921,97 @@ header a {
     color: #fff;
     text-decoration: none;
     margin: 0 15px;
+}
+.user-container {
+    padding: 20px;
+    background-color: #6e7d80; /* Light cyan background color */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    max-width: 800px;
+    text-align: center;
+}
+
+.user-container h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.user-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.user-container li {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.user-container p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.user-container img {
+    display: block;
+    margin: 10px auto;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hidden-form {
+    display: none;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.hidden-form .btn {
+    margin: 0 auto;
+    display: block;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    background-color: #b6e2d3;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    background-color: #feedaa;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+    display: block;
 }
 
 .user-container, .post-container {
@@ -973,24 +1063,7 @@ header a {
 .post-content strong {
     color: #333;
 }
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
 
-.btn:hover {
-    background-color: #0056b3;
-}
 
 .btn-secondary {
     background-color: #6c757d;
@@ -1054,7 +1127,7 @@ header a {
     font-size: 1.5em;
     margin-bottom: 10px;
     display: block;
-    color: #007bff;
+    color: #616d69; /* Grey color */
     text-decoration: none;
 }
 
@@ -1095,27 +1168,6 @@ li {
     margin: 5px 0;
 }
 
-.btn {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 4px;
-    text-align: center;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-}
-
-.btn:hover {
-    background-color: #0056b3;
-}
-
-.btn-secondary:hover {
-    background-color: #5a6268;
-}
 
 img {
     border-radius: 50%;
@@ -1165,22 +1217,17 @@ i.fa-brands fa-github{
     margin-top: 20px;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #feedaa;
-    margin: 0;
-    padding: 0;
-}
+/*body {*/
+/*    font-family: Arial, sans-serif;*/
+/*    background-color: #feedaa;*/
+/*    margin: 0;*/
+/*    padding: 0;*/
+/*}*/
+
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #feedaa;
-    margin: 0;
-    padding: 0;
-}
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5; /* Light grey background */
+    background-color: #f8efce; /* Light grey background */
     margin: 0;
     padding: 0;
     font-size: 14px;
@@ -1342,12 +1389,12 @@ button:hover {
     border: none;
     cursor: pointer;
     font-size: 1.5em;
-    color: #007bff;
+    color: #616d69; /* Grey color */
     padding: 0;
 }
 
 .like_btn:hover {
-    color: #0056b3;
+    color: #495551; /* Darker grey on hover */
 }
 
 .like_btn i {
@@ -1369,7 +1416,7 @@ button:hover {
     padding: 10px 20px;
     font-size: 16px;
     color: #fff;
-    background-color: #007bff;
+    background-color: #616d69; /* Grey color */
     border: none;
     border-radius: 5px;
     text-align: center;
@@ -1379,9 +1426,8 @@ button:hover {
 }
 
 .button-link:hover {
-    background-color: #0056b3;
+    background-color: #495551; /* Darker grey on hover */
 }
-
 .button-link {
     display: inline-block;
     padding: 10px 20px;
@@ -1398,4 +1444,39 @@ button:hover {
 
 .button-link:hover {
     background-color: #cc0000; /* Darker red on hover */
+}
+
+.container-error {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.container-error h1 {
+    color: #333;
+    text-align: center;
+}
+
+.container-error p {
+    color: #666;
+    text-align: center;
+}
+
+.container-error .button-link {
+    display: block;
+    width: 100px;
+    margin: 20px auto;
+    padding: 10px;
+    text-align: center;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.container-error .button-link:hover {
+    background-color: #0056b3;
 }
