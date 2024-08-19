@@ -75,7 +75,7 @@ public class AuthenticationMVCController {
                         HttpServletResponse response, Model model) throws ServletException, IOException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
-            return "SignUp";
+            return "redirect:/login";
         }
 
         try {
@@ -100,6 +100,9 @@ public class AuthenticationMVCController {
     }
 
 
+
+
+
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("registerUser") UserMVCDTO userDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
@@ -110,7 +113,7 @@ public class AuthenticationMVCController {
             model.addAttribute("showSignUp", true);
             redirectAttributes.addFlashAttribute("registerUser", userDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerUser", bindingResult);
-            return "SignUp";
+            return "redirect:/login";
         }
         User user = userMapper.createUserMVCFromDto(userDTO);
         authenticationService.createUser(user);

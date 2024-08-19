@@ -22,7 +22,7 @@ VALUES ('Science', 'Fascinating scientific discoveries'),
 -- Populate users with the same password hash for all users
 INSERT INTO users (is_blocked, created_at, updated_at, first_name, last_name, password_hash, email, phone_number,
                    photo_url, username)
-VALUES (0, NOW(), NOW(), 'John', 'e', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2',
+VALUES (0, NOW(), NOW(), 'John', 'Ivanov', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2',
         'john@example.com', '1234567890',
         'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'johnd'),
        (0, NOW(), NOW(), 'Jane', 'Smith', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2',
@@ -34,7 +34,7 @@ VALUES (0, NOW(), NOW(), 'John', 'e', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBT
        (0, NOW(), NOW(), 'Emily', 'Brown', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2',
         'emily@example.com', '4567890123',
         'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'emilyb'),
-       (0, NOW(), NOW(), 'David', 'Leee', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2',
+       (0, NOW(), NOW(), 'David', 'Leavov', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2',
         'david@example.com', '5678901234',
         'http://res.cloudinary.com/dtwfzrl2v/image/upload/v1721740155/l4pjsbzmpyk5jfknwf4q.png', 'davidl'),
        (0, NOW(), NOW(), 'Sarah', 'Wilson', '$2a$10$rrjF9VyOCpbky9ORAbCDeObUV2KU7HdlBTKhSBOoytGo1sa0UzoI2',

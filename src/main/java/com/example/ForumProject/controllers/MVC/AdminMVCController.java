@@ -5,6 +5,7 @@ import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsUsers;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.persistentClasses.UserRole;
+import com.example.ForumProject.models.persistentClasses.UserRoleEnum;
 import com.example.ForumProject.services.contracts.AdminService;
 import com.example.ForumProject.services.contracts.AuthenticationService;
 import com.example.ForumProject.services.contracts.PostService;
@@ -66,16 +67,29 @@ public class AdminMVCController {
 
     @GetMapping("/users/{id}/revokeAdmin")
     public String revokeAdminRights(@PathVariable int id) {
+
+
+
         adminService.revokeAdminRights(id);
         return "redirect:/admin";
+
     }
 
 
     @GetMapping("/users/{id}/block")
     public String blockUser(@PathVariable int id) {
-        adminService.blockUser(id);
 
-        return "redirect:/admin";
+        if (userService.getUserById(id)
+                       .getRoles()
+                       .contains(new UserRole(UserRoleEnum.ADMIN))) {
+            return "errors/BlockError";
+        }else{
+            adminService.blockUser(id);
+
+            return "redirect:/admin";
+
+        }
+
     }
 
     @GetMapping("/users/{id}/unblock")
