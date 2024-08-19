@@ -5,8 +5,7 @@
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
-<div class="container">
-    <div class="main-content">
+
         <div class="categories-container">
             <h1 th:text="'Posts for ' + ${category.categoryName}"></h1>
 
@@ -29,8 +28,7 @@
                 </li>
             </ul>
         </div>
-    </div>
-</div>
+
 <footer th:replace="~{commons/fragments::footer}">
 
 </footer>

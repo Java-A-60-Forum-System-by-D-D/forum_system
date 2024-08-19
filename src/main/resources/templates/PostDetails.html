@@ -9,9 +9,9 @@
 <header th:replace="~{commons/fragments::nav}"></header>
 <div class="post-container">
     <div sec:authorize="hasRole('ADMIN')" style="text-align: center;">
-        <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post" style="display:inline;">
+        <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post" style="display:inline;" onsubmit="showSuccessPopup()">
             <input type="hidden" name="_method" value="delete"/>
-            <button type="submit" class="button-link" style="background:none; border:none; color:blue; cursor:pointer;">
+            <button type="submit" class="button-link" style="background:none; border:none; color:blue; cursor:pointer;" >
                 Delete Post
             </button>
         </form>
@@ -92,6 +92,11 @@
 <footer th:replace="~{commons/fragments::footer}">
 
 </footer>
+<script>
+    function showSuccessPopup() {
+        alert("Post deleted successfully!");
+    }
+</script>
 <script>
     function toggleForm(formId, actionUrl, placeholderText) {
         var formContainer = document.getElementById(formId);

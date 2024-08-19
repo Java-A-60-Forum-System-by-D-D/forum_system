@@ -1,5 +1,6 @@
-use FORUM_TEST;
+# use FORUM_TEST;
 -- Populate roles
+use forum_system;
 INSERT INTO roles (role)
 VALUES ('ADMIN'),
        ('MODERATOR'),

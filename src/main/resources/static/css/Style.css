@@ -633,12 +633,7 @@ input {
     transform: translate3d(0, 0, 0);
 }
 
-.categories-container {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+
 .categories-container h1 {
     font-size: 2em;
     margin-bottom: 20px;
@@ -1222,6 +1217,14 @@ i.fa-brands fa-github{
     flex: 1 1 30%;
     margin: 10px;
     text-align: center;
+}
+.team-member img {
+    width: 150px; /* Set the width of the images */
+    height: 150px; /* Set the height of the images */
+    border-radius: 50%; /* Make the images circular */
+    object-fit: cover; /* Ensure the images cover the entire area */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    margin-bottom: 10px; /* Add space below the images */
 }
 .about-git {
     display: flex;
