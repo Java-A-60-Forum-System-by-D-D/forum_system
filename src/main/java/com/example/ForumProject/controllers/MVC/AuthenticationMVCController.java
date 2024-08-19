@@ -68,7 +68,7 @@ public class AuthenticationMVCController {
     @PostMapping("/login")
     public String login(@Valid @ModelAttribute("LoginUser") LoggInUserDTO loggInUserDTO,
                         BindingResult bindingResult,
-                        Model model, HttpServletRequest request,
+                        HttpServletRequest request,
                         HttpServletResponse response) throws ServletException, IOException {
 
         if (bindingResult.hasErrors()) {
