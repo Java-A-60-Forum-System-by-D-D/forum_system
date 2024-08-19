@@ -45,11 +45,12 @@
                 <ul th:each="post: ${Top10MostCommented}" th:object="${post}">
                     <li>
                         <a th:href="@{/posts/{id}(id=${post.id})}" th:text="*{title}"></a>
-                        <p th:text="*{content}"></p>
-                        <p><strong>User:</strong> <span th:text="*{username}"></span></p>
-                        <p><strong>Category:</strong> <span th:text="*{category}"></span></p>
-
-                        <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
+                        <div class="content"><p th:text="*{content}"></p></div>
+                        <div class="details">
+                            <small><strong>User:</strong> <span th:text="*{username}"></span></small>
+                            <small><strong>Category:</strong> <span th:text="*{category}"></span></small>
+                            <small><strong>Likes:</strong> <span th:text="*{likesCount}"></span></small>
+                        </div>
                     </li>
                 </ul>
             </section>
@@ -59,10 +60,12 @@
                 <ul th:each="post: ${Top10MostRecent}" th:object="${post}">
                     <li>
                         <a th:href="@{/posts/{id}(id=${post.id})}" th:text="*{title}"></a>
-                        <p th:text="*{content}"></p>
-                        <p><strong>User:</strong> <span th:text="*{username}"></span></p>
-                        <p><strong>Category:</strong> <span th:text="*{category}"></span></p>
-                        <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
+                        <div class="content"><p th:text="*{content}"></p></div>
+                        <div class="details">
+                            <small><strong>User:</strong> <span th:text="*{username}"></span></small>
+                            <small><strong>Category:</strong> <span th:text="*{category}"></span></small>
+                            <small><strong>Likes:</strong> <span th:text="*{likesCount}"></span></small>
+                        </div>
                     </li>
                 </ul>
             </section>

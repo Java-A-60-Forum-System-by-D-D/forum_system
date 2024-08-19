@@ -3,9 +3,8 @@
 <head th:replace="~{commons/fragments::head(title=${'Categories'})}"></head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
-<div class="container">
-    <div class="main-content">
-        <div class="categories-container">
+
+<div class="categories-container">
             <h1>Categories</h1>
             <ul class="categories-list" th:each="category : ${categories}">
                 <li>
@@ -15,8 +14,7 @@
                 </li>
             </ul>
         </div>
-    </div>
-</div>
+
 <footer th:replace="~{commons/fragments::footer}">
 
 </footer>

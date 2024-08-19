@@ -7,24 +7,28 @@
 </head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
-<div class="posts-container">
-    <li sec:authorize="hasRole('ADMIN')" style="text-align: center;">
+<div class="post-container">
+    <div sec:authorize="hasRole('ADMIN')" style="text-align: center;">
         <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post" style="display:inline;">
             <input type="hidden" name="_method" value="delete"/>
             <button type="submit" class="button-link" style="background:none; border:none; color:blue; cursor:pointer;">
                 Delete Post
             </button>
         </form>
-    </li>
+    </div>
     <h1>Post</h1>
-    <ul th:object="${post}">
-        <li>
+    <div th:object="${post}">
+        <div>
             <h2 th:text="*{title}"></h2>
-            <p th:text="*{content}"></p>
-            <p><strong>Author:</strong> <span th:text="*{user.username}"></span></p>
-            <p><strong>Category:</strong> <span th:text="*{category.getCategoryName()}"></span></p>
-            <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
-            <p><strong>Tags:</strong> <span th:each="tag : ${post.tags}" th:text="${tag.name} + ' '"></span></p>
+            <div class="content"><p th:text="*{content}"></p></div>
+            <div class="details">
+                <small><strong>Author:</strong> <span th:text="*{user.username}"></span></small>
+                <small><strong>Category:</strong> <span th:text="*{category.getCategoryName()}"></span></small>
+                <small><strong>Likes:</strong> <span th:text="*{likesCount}"></span></small>
+                <small><strong>Tags:</strong> <span th:each="tag : ${post.tags}" th:text="${tag.name} + ' '"></span></small>
+                <small><strong>Created:</strong><span th:text="*{createdAt}"></span></small>
+                <small><strong>Updated:</strong>  <span th:text="*{updatedAt}"></span></small>
+            </div>
             <br/>
             <form class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
                 <button class="like_btn" type="submit">
@@ -82,8 +86,8 @@
                     </form>
                 </div>
             </ul>
-        </li>
-    </ul>
+        </div>
+    </div>
 </div>
 <footer th:replace="~{commons/fragments::footer}">
 
