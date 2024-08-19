@@ -66,4 +66,8 @@ public class Comment extends BaseEntity {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    public boolean isReply() {
+        return getParentCommentId() != null;
+    }
 }

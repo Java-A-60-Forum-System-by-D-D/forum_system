@@ -61,8 +61,9 @@
 
             <ul th:each="comment : ${post.getComments()}" th:object="${comment}">
                 <li th:text="*{content}"></li>
-                <li th:text="*{user.getUsername}"></li>
-                <li th:text="*{createdAt}"></li>
+                <li th:text="'Author: ' + *{user.getUsername}"></li>
+                <li th:text="'Created: ' + *{createdAt}"></li>
+                <li th:if="${comment.getParentCommentId() != null }" th:text="'Last updated: ' + *{updatedAt}"></li>
                 <!-- Reply Button -->
                 <button class="reply_toggle_btn"
                         th:onclick="'toggleForm(\'reply-form-' + ${comment.id} + '\', \'/posts/' + ${post.id} + '/comments/' + ${comment.id} + '\', \'Write your reply...\')'">

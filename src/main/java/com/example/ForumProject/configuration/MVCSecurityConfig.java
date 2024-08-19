@@ -37,10 +37,10 @@ public class MVCSecurityConfig {
 
 
     @Autowired
-    public MVCSecurityConfig( @Value("${forum.remember.me.key}") String rememberMeKey,
-                              PasswordEncoder passwordEncoder,
-                              ForumServiceDetails forumServiceDetails,
-                              CustomEntryPoint customEntryPoint) {
+    public MVCSecurityConfig(@Value("${forum.remember.me.key}") String rememberMeKey,
+                             PasswordEncoder passwordEncoder,
+                             ForumServiceDetails forumServiceDetails,
+                             CustomEntryPoint customEntryPoint) {
 
         this.rememberMeKey = rememberMeKey;
         this.passwordEncoder = passwordEncoder;
@@ -52,7 +52,7 @@ public class MVCSecurityConfig {
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
         builder.userDetailsService(forumServiceDetails)
-               .passwordEncoder(passwordEncoder);
+                .passwordEncoder(passwordEncoder);
         return builder.build();
     }
 
@@ -66,8 +66,8 @@ public class MVCSecurityConfig {
 //                .csrf(csrf -> csrf.ignoringRequestMatchers("/swagger-ui/**","/v3/api-docs/", "/api/"))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/css/**", "/js/**", "/img/**").permitAll();
-                    auth.requestMatchers("/", "/home", "/home/**", "/login", "/register", "/error").permitAll();
-//                    auth.requestMatchers("/api/**").permitAll();
+                    auth.requestMatchers("/", "/home", "/home/**", "/login", "/register", "/errors/**").permitAll();
+//                    auth.requestMatchers("/api/**").permitAll()
                     auth.anyRequest().authenticated();
 
                 })
@@ -82,17 +82,17 @@ public class MVCSecurityConfig {
                 .rememberMe(
                         rememberMe -> {
                             rememberMe.key(rememberMeKey)
-                                      .rememberMeParameter("rememberme")
-                                      .rememberMeCookieName("rememberme");
+                                    .rememberMeParameter("rememberme")
+                                    .rememberMeCookieName("rememberme");
                         }
                 )
                 .logout(
                         logout -> {
                             logout.logoutUrl("/logout")
-                                  .logoutSuccessUrl("/home")
-                                  .invalidateHttpSession(true)
-                                  .clearAuthentication(true)
-                                  .permitAll();
+                                    .logoutSuccessUrl("/home")
+                                    .invalidateHttpSession(true)
+                                    .clearAuthentication(true)
+                                    .permitAll();
                         })
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(customEntryPoint))
 

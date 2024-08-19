@@ -29,7 +29,7 @@ public class CatgoriesRepositroyImpl implements CategoriesRepository {
             Query<Category> query = session.createQuery("From Category", Category.class);
             if (query.list()
                      .isEmpty()) {
-                throw new EntityNotFoundException("Categories", "emtpty");
+                throw new EntityNotFoundException("Categories", "empty");
             }
             return query.list();
         }
