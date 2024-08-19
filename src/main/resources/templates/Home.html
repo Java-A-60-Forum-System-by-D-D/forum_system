@@ -11,9 +11,9 @@
 </header>
 
 <div class="container">
-<!--    <div class="logged-user nav-item nav-link" sec:authorize="isAuthenticated()">-->
-<!--&lt;!&ndash;        Welcome, <th:block sec:authentication="principal.username"></th:block>!&ndash;&gt;-->
-<!--    </div>-->
+    <!--    <div class="logged-user nav-item nav-link" sec:authorize="isAuthenticated()">-->
+    <!--&lt;!&ndash;        Welcome, <th:block sec:authentication="principal.username"></th:block>!&ndash;&gt;-->
+    <!--    </div>-->
 
     <aside class="sidebar" id="sidebar">
         <div class="profile" sec:authorize="isAuthenticated()" th:object="${user}">
@@ -26,14 +26,14 @@
         </div>
         <nav class="sidebar-nav">
             <ul>
-<!--                <li><a href="#">Home</a></li>-->
-                <li> <a sec:authorize="isAuthenticated()" th:href="@{/posts/createForm}">Create New Post</a></li>
-                <li> <a sec:authorize="isAuthenticated()" th:href="@{/posts/myPosts}">My Posts</a></li>
-                <li> <a sec:authorize="isAuthenticated()" th:href="@{/posts}">All Posts</a></li>
+                <!--                <li><a href="#">Home</a></li>-->
+                <li><a sec:authorize="isAuthenticated()" th:href="@{/posts/createForm}">Create New Post</a></li>
+                <li><a sec:authorize="isAuthenticated()" th:href="@{/posts/myPosts}">My Posts</a></li>
+                <li><a sec:authorize="isAuthenticated()" th:href="@{/posts}">All Posts</a></li>
                 <li><a th:href="@{/categories}">Categories</a></li>
-                <li><a href="#">Popular Topics</a></li>
-                <li><a href="#">New Posts</a></li>
-                <li><a href="#">Notifications</a></li>
+                <li><a th:href="@{/posts}">Popular Topics</a></li>
+                <!--                <li><a href="#">New Posts</a></li>-->
+                <!--                <li><a href="#">Notifications</a></li>-->
             </ul>
         </nav>
     </aside>
