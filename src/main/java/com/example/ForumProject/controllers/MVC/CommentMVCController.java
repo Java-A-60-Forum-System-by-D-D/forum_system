@@ -9,6 +9,7 @@ import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.services.contracts.CommentService;
 import com.example.ForumProject.services.contracts.PostService;
 import com.example.ForumProject.services.contracts.UserService;
+import com.example.ForumProject.services.implementations.EmailService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,13 +31,15 @@ public class CommentMVCController {
     private final UserService userService;
     private final CommentService commentService;
     private final CommentMapper commentMapper;
+    private final EmailService emailService;
 
     @Autowired
-    public CommentMVCController(PostService postService, UserService userService, CommentService commentService, CommentMapper commentMapper) {
+    public CommentMVCController(PostService postService, UserService userService, CommentService commentService, CommentMapper commentMapper, EmailService emailService) {
         this.postService = postService;
         this.userService = userService;
         this.commentService = commentService;
         this.commentMapper = commentMapper;
+        this.emailService = emailService;
     }
 
 
@@ -52,6 +55,7 @@ public class CommentMVCController {
         }
 
         Post post = postService.getPostByPostId(postId);
+        emailService.sendCommentNotification(post.getUser().getEmail(), post.getTitle());
         User user = userService.getUserByUsername(principal.getName());
         Comment comment = commentMapper.createFromDto(post, commentDTO, user);
 

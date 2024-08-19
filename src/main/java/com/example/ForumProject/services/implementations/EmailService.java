@@ -55,4 +55,10 @@ public class EmailService {
         String text = "Thank you for registering at our forum. We are excited to have you!";
         sendEmail(to, subject, text);
     }
+    public void sendCommentNotification(String to, String postTitle) {
+        String subject = "New comment on " + postTitle;
+        String text = "There is a new comment on the post " + postTitle;
+        sendEmail(to, subject, text);
+    }
+
 }
