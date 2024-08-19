@@ -1511,3 +1511,12 @@ button:hover {
 .container-error .button-link:hover {
     background-color: #0056b3;
 }
+.error-login {
+    color: #ff0000; /* Red color for error text */
+    background-color: #ffe6e6; /* Light red background */
+    border: 1px solid #ff0000; /* Red border */
+    padding: 10px; /* Padding around the text */
+    border-radius: 5px; /* Rounded corners */
+    margin-top: 10px; /* Space above the error message */
+    text-align: center; /* Center the text */
+}

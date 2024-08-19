@@ -14,14 +14,16 @@
     <ul th:each="post: ${posts}" th:object="${post}" class="post-list">
         <li class="post-item">
             <a th:href="@{/posts/{id}(id=${post.id})}" th:text="*{title}" class="post-title"></a>
-            <p th:text="*{content}" class="post-content"></p>
-            <p><strong>User:</strong> <span th:text="*{username}"></span></p>
-            <p><strong>Category:</strong> <span th:text="*{category}"></span></p>
-            <p><strong>Likes:</strong> <span th:text="*{likesCount}"></span></p>
-            <p><strong>Tags:</strong>
-                <span th:if="${post.tags != null and !post.tags.isEmpty()}" th:each="tag : ${post.tags}" th:text="${tag.getName()} + ' '"></span>
-                <span th:if="${post.tags == null or post.tags.isEmpty()}">No tags</span>
-            </p>
+            <div class="content"><p th:text="*{content}" class="post-content"></p></div>
+            <div class="details">
+                <small><strong>User:</strong> <span th:text="*{username}"></span></small>
+                <small><strong>Category:</strong> <span th:text="*{category}"></span></small>
+                <small><strong>Likes:</strong> <span th:text="*{likesCount}"></span></small>
+                <small><strong>Tags:</strong>
+                    <span th:if="${post.tags != null and !post.tags.isEmpty()}" th:each="tag : ${post.tags}" th:text="${tag.getName()} + ' '"></span>
+                    <span th:if="${post.tags == null or post.tags.isEmpty()}">No tags</span>
+                </small>
+            </div>
         </li>
     </ul>
 </div>

@@ -74,7 +74,6 @@ public class AuthenticationMVCController {
                         HttpServletRequest request,
                         HttpServletResponse response, Model model) throws ServletException, IOException {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("isFound", false);
             model.addAttribute("errors", bindingResult.getAllErrors());
             return "SignUp";
         }
@@ -90,7 +89,11 @@ public class AuthenticationMVCController {
 
         } catch (AuthenticationException e) {
             authenticationFailureHandler.onAuthenticationFailure(request, response, e);
+            model.addAttribute("isFound", false);
+
             return "SignUp";
+
+
         }
 
 

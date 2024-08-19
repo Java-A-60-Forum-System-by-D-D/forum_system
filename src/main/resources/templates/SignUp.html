@@ -10,8 +10,8 @@
 <div class="cont" th:classappend="${showSignUp} ? 's--signup' : ''">
     <div class="form sign-in">
         <h2>Welcome</h2>
-        <h3 th:if="${isFound == false}" class="mt-5 text-center">
-            <strong class="bg-blur rounded text-danger">
+        <h3 th:if="${param.error}" class="error-login">
+            <strong class="text-danger">
                 Wrong username and password combination.
             </strong>
         </h3>
