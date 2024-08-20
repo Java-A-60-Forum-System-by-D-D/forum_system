@@ -113,7 +113,7 @@ public class AuthenticationMVCController {
             model.addAttribute("showSignUp", true);
             redirectAttributes.addFlashAttribute("registerUser", userDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.registerUser", bindingResult);
-            return "redirect:/login";
+            return "SignUp";
         }
         User user = userMapper.createUserMVCFromDto(userDTO);
         authenticationService.createUser(user);
