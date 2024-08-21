@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
-
-<head th:replace="~{commons/fragments::head(title=${'PostDetails'})}">
-
-</head>
+<head th:replace="~{commons/fragments::head(title=${'PostDetails'})}"></head>
 <body>
 <header th:replace="~{commons/fragments::nav}"></header>
 <div class="post-container">
     <div sec:authorize="hasRole('ADMIN')" style="text-align: center;">
-        <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post" style="display:inline;"
-              onsubmit="showSuccessPopup()">
+        <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post" style="display:inline;">
             <input type="hidden" name="_method" value="delete"/>
             <button type="submit" class="button-link" style="background:none; border:none; color:blue; cursor:pointer;">
                 Delete Post
@@ -26,69 +21,36 @@
                 <small><strong>Author:</strong> <span th:text="*{user.username}"></span></small>
                 <small><strong>Category:</strong> <span th:text="*{category.getCategoryName()}"></span></small>
                 <small><strong>Likes:</strong> <span th:text="*{likesCount}"></span></small>
-                <small><strong>Tags:</strong> <span th:each="tag : ${post.tags}"
-                                                    th:text="${tag.name} + ' '"></span></small>
+                <small><strong>Tags:</strong> <span th:each="tag : ${post.tags}" th:text="${tag.name} + ' '"></span></small>
                 <small><strong>Created:</strong><span th:text="*{createdAt}"></span></small>
-                <small><strong>Updated:</strong> <span th:text="*{updatedAt}"></span></small>
+                <small><strong>Updated:</strong>  <span th:text="*{updatedAt}"></span></small>
             </div>
             <br/>
-            <form class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post"
-                  th:if="${!user.isBlocked()}">
-                <button class="like_btn" type="submit">
+            <form class="form-like" th:action="@{/posts/{postId}/likes(postId=${post.id})}" method="post">
+                <button class="like_btn" type="submit" th:if="${!user.isBlocked()}">
                     <i th:unless="${isLiked != null and isLiked}" class="fa-solid fa-thumbs-up"></i>
                     <i th:if="${isLiked != null and isLiked}" class="fa-regular fa-thumbs-down"></i>
                 </button>
-
             </form>
-            <!-- Edit Button -->
             <div class="center-button">
                 <a th:href="@{/posts/updateForm/{id}(id=${post.id})}" th:if="${post.user} == ${user}">
                     <button type="button">Edit</button>
                 </a>
             </div>
-            <!--            <button class="comment_toggle_btn"> <a th:href="@{/posts/updateForm/{id}(id=${post.id})}"></a>Edit</button>-->
-            <!-- Comment Button -->
             <button class="comment_toggle_btn" th:if="${!user.isBlocked()}"
                     th:onclick="'toggleForm(\'comment-form\', \'/posts/' + ${post.id} + '/comments\', \'Add a comment...\')'">
                 Add Comment
             </button>
-
-            <!-- Comment Form -->
             <div id="comment-form" class="form-container" style="display: none;">
                 <form class="form-like" id="dynamic-form" method="post"
                       th:action="@{/posts/{postId}/comments(postId=${post.id})}" th:object="${commentDTO}">
                     <input type="text" id="dynamic-input" name="content" placeholder="Add a comment..."
                            th:field="*{content}" required/>
                     <small class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></small>
-                    <button class="submit_btn" type="submit">Submit</button>
+                    <button class="submit_btn" type="submit" th:if="${!user.isBlocked()}" >Submit</button>
                 </form>
             </div>
-
             <p><strong>Comments:</strong><span th:text="'(' + ${post.getComments().size()} + ')'"></span></p>
-
-            <!--            <ul th:each="comment : ${post.getComments()}" th:object="${comment}">-->
-            <!--                <li th:text="*{content}"></li>-->
-            <!--                <li th:text="'Author: ' + *{user.getUsername}"></li>-->
-            <!--                <li th:text="'Created: ' + *{createdAt}"></li>-->
-            <!--                <li th:if="${comment.getParentCommentId() != null }" th:text="'Last updated: ' + *{updatedAt}"></li>-->
-            <!--                &lt;!&ndash; Reply Button &ndash;&gt;-->
-            <!--                <button class="reply_toggle_btn" th:if="${!user.isBlocked()}"-->
-            <!--                        th:onclick="'toggleForm(\'reply-form-' + ${comment.id} + '\', \'/posts/' + ${post.id} + '/comments/' + ${comment.id} + '\', \'Write your reply...\')'">-->
-            <!--                    Reply-->
-            <!--                </button>-->
-
-            <!--                &lt;!&ndash; Reply Form &ndash;&gt;-->
-            <!--                <div th:id="'reply-form-' + ${comment.id}" class="form-container" style="display: none;" th:if="${!user.isBlocked()}">-->
-            <!--                    <form th:id="'dynamic-form-' + ${comment.id}" method="post"-->
-            <!--                          th:action="@{/posts/{postId}/comments/{commentId} (postId=${post.id}, commentId=${comment.id})}"-->
-            <!--                          th:object="${commentDTO}">-->
-            <!--                        <input type="text" th:id="'dynamic-input-' + ${comment.id}" name="content"-->
-            <!--                               placeholder="Write your reply..." th:field="*{content}" required/>-->
-            <!--                        <small class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></small>-->
-            <!--                        <button class="submit_btn" type="submit">Submit</button>-->
-            <!--                    </form>-->
-            <!--                </div>-->
-            <!--            </ul>-->
             <ul th:each="comment : ${post.getComments()}" th:object="${comment}">
                 <div class="comment-block">
                     <div class="content">
@@ -112,24 +74,15 @@
                           th:object="${commentDTO}">
                         <input type="text" th:id="'dynamic-input-' + ${comment.id}" name="content"
                                placeholder="Write your reply..." th:field="*{content}" required/>
-                        <small class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></small>
+                        <small class="error" th:if="${#fields.hasErrors('content')}" th:errors="*{content}" th:id="'error-' + ${comment.id}"></small>
                         <button class="submit_btn" type="submit">Submit</button>
                     </form>
                 </div>
             </ul>
-
         </div>
-
     </div>
 </div>
-<footer th:replace="~{commons/fragments::footer}">
-
-</footer>
-<script>
-    function showSuccessPopup() {
-        alert("Post deleted successfully!");
-    }
-</script>
+<footer th:replace="~{commons/fragments::footer}"></footer>
 <script>
     function toggleForm(formId, actionUrl, placeholderText) {
         var formContainer = document.getElementById(formId);

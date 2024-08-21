@@ -47,16 +47,18 @@ public class CommentMVCController {
     public String createCommentOnPost(@PathVariable int postId, Model model, Principal principal,
                                       @Valid @ModelAttribute("commentDTO") CommentDTO commentDTO,
                                       BindingResult bindingResult) {
+        User user = userService.getUserByUsername(principal.getName());
         if (bindingResult.hasErrors()) {
             Post post = postService.getPostByPostId(postId);
             model.addAttribute("post", post);
             model.addAttribute("commentDTO", commentDTO);
+            model.addAttribute("user", user);
             return "PostDetails";
         }
 
         Post post = postService.getPostByPostId(postId);
         emailService.sendCommentNotification(post.getUser().getEmail(), post.getTitle());
-        User user = userService.getUserByUsername(principal.getName());
+
         Comment comment = commentMapper.createFromDto(post, commentDTO, user);
 
         commentService.createComment(comment, post);
