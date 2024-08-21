@@ -3,6 +3,7 @@ package com.example.ForumProject.controllers.MVC;
 import com.example.ForumProject.models.dto.FilterUserDTO;
 import com.example.ForumProject.models.dto.PostSummaryDTO;
 import com.example.ForumProject.models.filterOptions.FilterOptionsUsers;
+import com.example.ForumProject.models.filterOptions.FilterOptionsUsersPosts;
 import com.example.ForumProject.models.persistentClasses.User;
 import com.example.ForumProject.models.persistentClasses.UserRole;
 import com.example.ForumProject.models.persistentClasses.UserRoleEnum;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
@@ -40,7 +43,18 @@ public class AdminMVCController {
                 filterUserDTO.getRole(),
                 filterUserDTO.getIsBlocked()
         );
+
         List<User> users = userService.getUsers(filterOptionsUsers);
+
+
+        Map<Integer, Integer> postCount = new HashMap<>();
+        for(User user:users){
+            postCount.put(user.id,
+                    postService.getPostsByUser(user.getId()).size());
+        }
+
+
+        model.addAttribute("UsersPostsCount",postCount);
         model.addAttribute("userFilter", filterUserDTO);
         model.addAttribute("users", users);
         return "AdminPortalView";
@@ -51,8 +65,10 @@ public class AdminMVCController {
     public String getUserPosts(@PathVariable int id, Model model) {
         User user = userService.getUserById(id);
         List<PostSummaryDTO> posts = postService.getPostsByUser(user.getId());
+        int countPosts = posts.size();
 
 
+        model.addAttribute("countPosts", countPosts);
         model.addAttribute("posts", posts);
         model.addAttribute("username", user.getUsername());
 
@@ -69,7 +85,6 @@ public class AdminMVCController {
     public String revokeAdminRights(@PathVariable int id) {
 
 
-
         adminService.revokeAdminRights(id);
         return "redirect:/admin";
 
@@ -83,7 +98,7 @@ public class AdminMVCController {
                        .getRoles()
                        .contains(new UserRole(UserRoleEnum.ADMIN))) {
             return "errors/BlockError";
-        }else{
+        } else {
             adminService.blockUser(id);
 
             return "redirect:/admin";

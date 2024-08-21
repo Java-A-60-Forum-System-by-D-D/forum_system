@@ -22,4 +22,11 @@ public class FilterOptionsUsersPosts {
     }
 
 
+    public FilterOptionsUsersPosts() {
+        this.title = Optional.empty();
+        this.content = Optional.empty();
+        this.tagId = Optional.empty();
+        this.sortBy = Optional.empty();
+        this.sortOrder = Optional.empty();
+    }
 }

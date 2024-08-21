@@ -32,7 +32,7 @@
                         <p th:text="'FirstName: ' + ${user.firstName}"></p>
                         <p th:text="'LastName: ' + ${user.lastName}"></p>
                         <p th:text="'Email: ' + ${user.email}"></p>
-                        <p th:text="'Posts: ' + ${user.getPostsCount()}"></p>
+                        <p th:text="'Posts: ' + ${UsersPostsCount[user.getId()]}"></p>
                         <p>Roles:</p>
                         <ul class="roles-list" th:each="role: ${user.getAuthorities()}" th:object="${role}">
                             <li>
