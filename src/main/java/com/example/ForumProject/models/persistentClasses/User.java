@@ -161,4 +161,7 @@ public class User extends BaseEntity implements UserDetails, GrantedAuthority {
     public boolean isAdmin() {
         return this.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("Admin"));
     }
+    public int getPostsCount() {
+        return this.posts.size();
+    }
 }

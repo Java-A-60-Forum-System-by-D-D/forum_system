@@ -853,6 +853,14 @@ about-container {
     cursor: pointer;
     margin-top: 20px;
 }
+.comment-block {
+    border: 1px solid #ddd; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 10px; /* Padding inside the border */
+    margin-bottom: 10px; /* Space between comments */
+    background-color: #f9f9f9; /* Light background color */
+}
 
 .comment_toggle_btn:hover {
     background-color: #495551; /* Darker grey on hover */
@@ -865,7 +873,7 @@ about-container {
     border-radius: 4px;
     font-size: 1.2em;
     cursor: pointer;
-    margin-top: 20px;
+    /*margin-top: 20px;*/
 }
 
 .reply_toggle_btn:hover {
@@ -1034,6 +1042,28 @@ header a {
     flex-wrap: wrap;
     justify-content: space-between;
     margin-top: 20px;
+
+}
+.details li{
+    padding: 0;
+}
+.details .elements {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.elements li:nth-child(1) {
+    justify-self: start;
+}
+
+.elements li:nth-child(2) {
+    justify-self: center;
+}
+
+.elements button {
+    justify-self: end;
 }
 .posts-container {
     padding: 20px;
