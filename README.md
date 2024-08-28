@@ -43,19 +43,16 @@ cd ForumProject
  - `mySQLuser`: Database URL
  - `mySQLuser`: your database username
  - `mySQLpassword`: your database password
- - 
-   Example:
-   mySQLuser=root;mySQLpassword=12345;dbURL=jdbc:mariadb://localhost:3306/forum_system?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC&sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false;
+
+
 
  - `API_KEY`: Cloudinary API key
  - `API_SECRET`: Cloudinary API secret
  - `CLOUD_NAME`: Cloudinary cloud name
-   Example:
-   API_KEY=794954315984349;API_SECRET=-CeCea1-2ZoUs8KmT_4BKIVRW2s;CLOUD_NAME=dtwfzrl2v;
 
  - `MAILUSER`: Email address for sending emails
  - `MAILPASS`: Email password for sending emails
-   MAILUSER=forumdd01@gmail.com;MAILPASS=hohq ofox lpvy kivi
+  
 
 2. Database Setup
    2.1 Hibernate Configuration
@@ -105,4 +102,4 @@ cd ForumProject
 This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 ## Contact
-For any inquiries or issues, please contact `your-email@example.com`.
+For any inquiries or issues, please contact deszafirova@gmail.com or hadzhiev96@gmail.com
